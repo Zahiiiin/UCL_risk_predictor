@@ -55,14 +55,14 @@ if MODEL_FILE:
 
 print("Models ready. Starting dashboard...")
 
-# ── Dropdown lists ───────────────────────────────────────────────
-COUNTRIES   = sorted(df['Country'].dropna().unique().tolist())
-TYPES       = sorted(df['Type'].dropna().unique().tolist())
-NSSS_GROUPS = sorted(df['NSSS_Group'].dropna().unique().tolist())
-MDL_FAMS    = sorted(df['Model_Family'].dropna().unique().tolist()) if 'Model_Family' in df.columns else ['Other']
-CAP_CATS    = sorted(df['Capacity_Category'].astype(str).unique().tolist())
-AGE_GRPS    = sorted(df['Age_Group'].astype(str).unique().tolist()) if 'Age_Group' in df.columns else ['Mature']
-OP_CATS     = sorted(df['Op_Category'].astype(str).unique().tolist()) if 'Op_Category' in df.columns else ['A']
+# ── Dropdown lists — loaded from pickle, not from df ─────────────
+COUNTRIES   = M['countries_list']
+TYPES       = M['types_list']
+NSSS_GROUPS = M['nsss_grp_list']
+MDL_FAMS    = M['mdl_fam_list']
+CAP_CATS    = M['cap_cats']
+AGE_GRPS    = M['age_grps']
+OP_CATS     = M['op_cats']
 
 # ── Dash App ─────────────────────────────────────────────────────
 import dash
