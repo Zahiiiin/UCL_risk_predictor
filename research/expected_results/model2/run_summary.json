@@ -1,0 +1,441 @@
+{
+  "n_reactors_full": 407,
+  "n_reactors_model2": 370,
+  "n_countries_full": 31,
+  "n_countries_model2": 29,
+  "n_train": 296,
+  "n_test": 74,
+  "thermal_efficiency": "constant 33.0",
+  "best_model_1": "RF",
+  "best_model_2": "XGB",
+  "model1_results": {
+    "LR": {
+      "Accuracy": 72.97,
+      "F1": 72.42,
+      "AUC_ROC": 86.15,
+      "MCC": 0.538,
+      "CV_Mean_balanced_train": 67.9,
+      "CV_Std_balanced_train": 3.62
+    },
+    "RF": {
+      "Accuracy": 79.73,
+      "F1": 79.64,
+      "AUC_ROC": 90.93,
+      "MCC": 0.654,
+      "CV_Mean_balanced_train": 83.34,
+      "CV_Std_balanced_train": 5.12
+    },
+    "ETC": {
+      "Accuracy": 78.38,
+      "F1": 77.87,
+      "AUC_ROC": 90.89,
+      "MCC": 0.627,
+      "CV_Mean_balanced_train": 84.37,
+      "CV_Std_balanced_train": 2.36
+    },
+    "XGB": {
+      "Accuracy": 79.73,
+      "F1": 79.53,
+      "AUC_ROC": 90.43,
+      "MCC": 0.655,
+      "CV_Mean_balanced_train": 82.93,
+      "CV_Std_balanced_train": 3.38
+    },
+    "Stacking": {
+      "Accuracy": 78.38,
+      "F1": 77.87,
+      "AUC_ROC": 91.45,
+      "MCC": 0.627,
+      "CV_Mean_balanced_train": 83.33,
+      "CV_Std_balanced_train": 2.55
+    }
+  },
+  "model2_results": {
+    "LR": {
+      "Accuracy": 81.08,
+      "F1": 82.69,
+      "AUC_ROC": 95.79,
+      "MCC": 0.701,
+      "CV_Mean_balanced_train": 84.15,
+      "CV_Std_balanced_train": 3.19
+    },
+    "RF": {
+      "Accuracy": 89.19,
+      "F1": 89.24,
+      "AUC_ROC": 98.25,
+      "MCC": 0.818,
+      "CV_Mean_balanced_train": 93.42,
+      "CV_Std_balanced_train": 1.64
+    },
+    "ETC": {
+      "Accuracy": 89.19,
+      "F1": 89.18,
+      "AUC_ROC": 98.37,
+      "MCC": 0.822,
+      "CV_Mean_balanced_train": 93.21,
+      "CV_Std_balanced_train": 2.39
+    },
+    "XGB": {
+      "Accuracy": 93.24,
+      "F1": 92.83,
+      "AUC_ROC": 96.35,
+      "MCC": 0.887,
+      "CV_Mean_balanced_train": 94.45,
+      "CV_Std_balanced_train": 2.72
+    },
+    "Stacking": {
+      "Accuracy": 90.54,
+      "F1": 90.72,
+      "AUC_ROC": 98.78,
+      "MCC": 0.841,
+      "CV_Mean_balanced_train": 94.04,
+      "CV_Std_balanced_train": 1.75
+    }
+  },
+  "model1_best_params": {
+    "LR": {
+      "solver": "lbfgs",
+      "C": 6.158482110660261
+    },
+    "RF": {
+      "n_estimators": 300,
+      "min_samples_split": 5,
+      "max_features": "log2",
+      "max_depth": 20
+    },
+    "ETC": {
+      "n_estimators": 300,
+      "min_samples_split": 2,
+      "max_features": "sqrt",
+      "max_depth": null
+    },
+    "XGB": {
+      "subsample": 0.8,
+      "n_estimators": 100,
+      "max_depth": 7,
+      "learning_rate": 0.1
+    },
+    "Stacking": {}
+  },
+  "model2_best_params": {
+    "LR": {
+      "solver": "lbfgs",
+      "C": 54.555947811685144
+    },
+    "RF": {
+      "n_estimators": 200,
+      "min_samples_split": 2,
+      "max_features": "log2",
+      "max_depth": 10
+    },
+    "ETC": {
+      "n_estimators": 300,
+      "min_samples_split": 10,
+      "max_features": "log2",
+      "max_depth": 20
+    },
+    "XGB": {
+      "subsample": 1.0,
+      "n_estimators": 200,
+      "max_depth": 7,
+      "learning_rate": 0.01
+    },
+    "Stacking": {}
+  },
+  "per_class_all_models": {
+    "model1": {
+      "LR": {
+        "Low": {
+          "precision": 85.0,
+          "recall": 85.0,
+          "f1": 85.0,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 33.3,
+          "recall": 27.3,
+          "f1": 30.0,
+          "support": 11
+        },
+        "High": {
+          "precision": 68.0,
+          "recall": 73.9,
+          "f1": 70.8,
+          "support": 23
+        }
+      },
+      "RF": {
+        "Low": {
+          "precision": 87.8,
+          "recall": 90.0,
+          "f1": 88.9,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 54.5,
+          "recall": 54.5,
+          "f1": 54.5,
+          "support": 11
+        },
+        "High": {
+          "precision": 77.3,
+          "recall": 73.9,
+          "f1": 75.6,
+          "support": 23
+        }
+      },
+      "ETC": {
+        "Low": {
+          "precision": 85.7,
+          "recall": 90.0,
+          "f1": 87.8,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 55.6,
+          "recall": 45.5,
+          "f1": 50.0,
+          "support": 11
+        },
+        "High": {
+          "precision": 73.9,
+          "recall": 73.9,
+          "f1": 73.9,
+          "support": 23
+        }
+      },
+      "XGB": {
+        "Low": {
+          "precision": 90.0,
+          "recall": 90.0,
+          "f1": 90.0,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 50.0,
+          "recall": 45.5,
+          "f1": 47.6,
+          "support": 11
+        },
+        "High": {
+          "precision": 75.0,
+          "recall": 78.3,
+          "f1": 76.6,
+          "support": 23
+        }
+      },
+      "Stacking": {
+        "Low": {
+          "precision": 85.7,
+          "recall": 90.0,
+          "f1": 87.8,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 55.6,
+          "recall": 45.5,
+          "f1": 50.0,
+          "support": 11
+        },
+        "High": {
+          "precision": 73.9,
+          "recall": 73.9,
+          "f1": 73.9,
+          "support": 23
+        }
+      }
+    },
+    "model2": {
+      "LR": {
+        "Low": {
+          "precision": 97.1,
+          "recall": 85.0,
+          "f1": 90.7,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 41.2,
+          "recall": 63.6,
+          "f1": 50.0,
+          "support": 11
+        },
+        "High": {
+          "precision": 86.4,
+          "recall": 82.6,
+          "f1": 84.4,
+          "support": 23
+        }
+      },
+      "RF": {
+        "Low": {
+          "precision": 97.4,
+          "recall": 95.0,
+          "f1": 96.2,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 63.6,
+          "recall": 63.6,
+          "f1": 63.6,
+          "support": 11
+        },
+        "High": {
+          "precision": 87.5,
+          "recall": 91.3,
+          "f1": 89.4,
+          "support": 23
+        }
+      },
+      "ETC": {
+        "Low": {
+          "precision": 97.3,
+          "recall": 90.0,
+          "f1": 93.5,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 63.6,
+          "recall": 63.6,
+          "f1": 63.6,
+          "support": 11
+        },
+        "High": {
+          "precision": 88.5,
+          "recall": 100.0,
+          "f1": 93.9,
+          "support": 23
+        }
+      },
+      "XGB": {
+        "Low": {
+          "precision": 97.5,
+          "recall": 97.5,
+          "f1": 97.5,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 87.5,
+          "recall": 63.6,
+          "f1": 73.7,
+          "support": 11
+        },
+        "High": {
+          "precision": 88.5,
+          "recall": 100.0,
+          "f1": 93.9,
+          "support": 23
+        }
+      },
+      "Stacking": {
+        "Low": {
+          "precision": 97.4,
+          "recall": 95.0,
+          "f1": 96.2,
+          "support": 40
+        },
+        "Medium": {
+          "precision": 66.7,
+          "recall": 72.7,
+          "f1": 69.6,
+          "support": 11
+        },
+        "High": {
+          "precision": 91.3,
+          "recall": 91.3,
+          "f1": 91.3,
+          "support": 23
+        }
+      }
+    }
+  },
+  "per_class_compared": {
+    "classifier": "XGB",
+    "model1": {
+      "Low": {
+        "precision": 90.0,
+        "recall": 90.0,
+        "f1": 90.0,
+        "support": 40
+      },
+      "Medium": {
+        "precision": 50.0,
+        "recall": 45.5,
+        "f1": 47.6,
+        "support": 11
+      },
+      "High": {
+        "precision": 75.0,
+        "recall": 78.3,
+        "f1": 76.6,
+        "support": 23
+      }
+    },
+    "model2": {
+      "Low": {
+        "precision": 97.5,
+        "recall": 97.5,
+        "f1": 97.5,
+        "support": 40
+      },
+      "Medium": {
+        "precision": 87.5,
+        "recall": 63.6,
+        "f1": 73.7,
+        "support": 11
+      },
+      "High": {
+        "precision": 88.5,
+        "recall": 100.0,
+        "f1": 93.9,
+        "support": 23
+      }
+    }
+  },
+  "mcnemar": {
+    "same classifier (XGB)": {
+      "b_M1_right_M2_wrong": 1,
+      "c_M1_wrong_M2_right": 11,
+      "chi2": 6.75,
+      "p_chi2_corrected": 0.0094,
+      "p_exact": 0.0063
+    },
+    "best M1 (RF) vs best M2 (XGB)": {
+      "b_M1_right_M2_wrong": 1,
+      "c_M1_wrong_M2_right": 11,
+      "chi2": 6.75,
+      "p_chi2_corrected": 0.0094,
+      "p_exact": 0.0063
+    }
+  },
+  "temporal_split": {
+    "RF": {
+      "Accuracy": 85.19,
+      "F1": 81.98,
+      "AUC_ROC": 95.81
+    },
+    "XGB": {
+      "Accuracy": 81.48,
+      "F1": 80.0,
+      "AUC_ROC": 94.33
+    },
+    "Stacking": {
+      "Accuracy": 85.19,
+      "F1": 79.98,
+      "AUC_ROC": 94.76
+    }
+  },
+  "history_feature_importance_share": {
+    "XGB": 0.5413,
+    "RF": 0.6059
+  },
+  "quick_run": false,
+  "versions": {
+    "python": "3.13.16",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.8.0",
+    "xgboost": "3.4.1",
+    "imbalanced-learn": "0.14.2",
+    "matplotlib": "3.11.2"
+  }
+}

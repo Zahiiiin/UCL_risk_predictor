@@ -1,0 +1,9 @@
+# Libraries for the analysis scripts in research/ (tested with Python 3.13)
+pandas==3.0.5
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.8.0
+xgboost==3.4.1
+imbalanced-learn==0.14.2
+matplotlib==3.11.2
+openpyxl==3.1.5

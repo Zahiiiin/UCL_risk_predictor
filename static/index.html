@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-class="Low">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>UCL Risk Predictor</title>
+  <meta name="description" content="Describe a nuclear reactor and see whether the model expects it to lose a Low, Medium or High share of its output to unplanned events. A research tool built on IAEA reactor data.">
+  <meta name="theme-color" content="#040a18">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23040a18'/%3E%3Crect x='5' y='5' width='10' height='10' rx='2.5' fill='%2344d4ff'/%3E%3Crect x='17' y='5' width='10' height='10' rx='2.5' fill='%23ffb43a'/%3E%3Crect x='5' y='17' width='10' height='10' rx='2.5' fill='%23ffb43a'/%3E%3Crect x='17' y='17' width='10' height='10' rx='2.5' fill='%23ff5c85'/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/bricolage-grotesque-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script>
+    /* Pick the colour mode before anything is drawn: saved choice, then the host's choice, then the device setting. */
+    (function () {
+      var d = document.documentElement, t = null;
+      try { t = localStorage.getItem("ucl-theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") {
+        var h = d.getAttribute("data-theme");
+        t = (h === "light" || h === "dark") ? h : (window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      }
+      d.setAttribute("data-theme", t);
+    })();
+  </script>
+  <a class="skip-link" href="#console">Skip to the inputs</a>
+  <div class="ambient" aria-hidden="true"><span></span><span></span></div>
+  <canvas class="atom" id="atom" aria-hidden="true"></canvas>
+
+  <div class="app">
+    <header class="top">
+      <div class="top__inner">
+        <a class="brand" href="#top" aria-label="UCL Risk Predictor, top of page">
+          <svg class="brand__mark" viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" focusable="false">
+            <rect x="1" y="1" width="12" height="12" rx="3" fill="var(--low)"/>
+            <rect x="15" y="1" width="12" height="12" rx="3" fill="var(--med)"/>
+            <rect x="1" y="15" width="12" height="12" rx="3" fill="var(--med)" opacity=".55"/>
+            <rect x="15" y="15" width="12" height="12" rx="3" fill="var(--high)"/>
+          </svg>
+          <span class="brand__name">UCL Risk Predictor</span>
+        </a>
+
+        <fieldset class="switch">
+          <legend class="visually-hidden">Model</legend>
+          <div class="switch__opt">
+            <input type="radio" name="model" id="model-1" value="1" checked>
+            <label class="switch__label" for="model-1">
+              <span class="switch__name">Design only</span>
+              <span class="switch__proof" data-proof="model1">&nbsp;</span>
+            </label>
+          </div>
+          <div class="switch__opt">
+            <input type="radio" name="model" id="model-2" value="2">
+            <label class="switch__label" for="model-2">
+              <span class="switch__name">With past performance</span>
+              <span class="switch__proof" data-proof="model2">&nbsp;</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="tools">
+          <button class="icon-btn" id="info-btn" type="button" aria-expanded="false" aria-controls="info" aria-label="About this tool">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.2" fill="currentColor"/></svg>
+          </button>
+          <button class="icon-btn theme-btn" id="theme-btn" type="button" aria-label="Switch to light mode">
+            <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.2 8.2 0 1 0 10.2 10.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <noscript><p class="notice">This tool needs JavaScript. Turn it on and reload the page.</p></noscript>
+    <p id="server-note" class="notice notice--wait" role="status" hidden></p>
+
+    <main id="top" class="workbench">
+      <section class="console" id="console" aria-label="Reactor details">
+        <div class="examples">
+          <span class="examples__label" id="examples-label">Examples</span>
+          <div class="examples__buttons" id="examples-buttons" role="group" aria-labelledby="examples-label"></div>
+        </div>
+        <form id="reactor-form" novalidate autocomplete="off">
+          <div class="fields" id="fields"></div>
+        </form>
+      </section>
+
+      <section class="stage" id="stage" aria-label="Result">
+        <p class="stage__tag" id="stage-tag" hidden></p>
+        <div class="stage__main">
+          <div class="verdict">
+            <p class="verdict__class" id="verdict-class" data-class="Low"><span class="verdict__word" id="verdict-word">Low</span></p>
+            <p class="verdict__meaning" id="verdict-meaning"></p>
+          </div>
+
+          <div class="core-col">
+            <div class="core" id="core-wrap">
+              <canvas id="core" role="img" aria-label="Model scores shown as 100 squares"></canvas>
+            </div>
+          </div>
+
+          <ul class="legend" id="legend"></ul>
+          <p class="certainty" id="certainty"></p>
+        </div>
+        <div class="notices" id="notices"></div>
+        <p class="reliability" id="reliability"></p>
+        <p class="visually-hidden" id="live" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Developed by Department of Nuclear Science and Engineering, Military Institute of Science and Technology</p>
+    </footer>
+  </div>
+
+  <div class="info" id="info" role="dialog" aria-labelledby="info-title" hidden>
+    <div class="info__head">
+      <h2 class="info__title" id="info-title">About this tool</h2>
+      <button class="icon-btn icon-btn--small" id="info-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <ul class="info__list">
+      <li><strong>UCL</strong> is the share of a plant&rsquo;s possible output lost to unplanned events. Low is under 2%, Medium is 2 to 6%, High is over 6%.</li>
+      <li><strong>Design only</strong> needs no operating record. <strong>With past performance</strong> also reads two average UCF values (unit capability factor) from IAEA reports, for 2013 to 2017 and 2010 to 2020.</li>
+      <li>Age counts to 2024. Construction time runs from the start of construction to first grid connection.</li>
+      <li>The squares show the model&rsquo;s score, one per point, filled clockwise from the top. The small bars show what pushed the result, compared with a typical reactor. The lighter band on a slider is the range the model learned from.</li>
+      <li>Medium is the hardest class. <span data-info="medium"></span></li>
+      <li>Research tool built on IAEA PRIS and RDS-2 data. Not for operating, safety or licensing decisions.</li>
+    </ul>
+  </div>
+
+  <div class="dock" id="dock" hidden>
+    <a class="dock__link" href="#stage" aria-label="Show the full result">
+      <span class="dock__dot" aria-hidden="true"></span>
+      <span class="dock__class" id="dock-class">Low</span>
+      <span class="dock__scores" id="dock-scores"></span>
+    </a>
+  </div>
+
+  <script src="local-engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

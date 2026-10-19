@@ -1,0 +1,344 @@
+{
+  "classes": [
+    "Low",
+    "Medium",
+    "High"
+  ],
+  "models": {
+    "model1": {
+      "n_reactors": 407,
+      "n_features": 13,
+      "class_counts": {
+        "Low": 231,
+        "Medium": 58,
+        "High": 118
+      },
+      "test": {
+        "n_test": 82,
+        "accuracy": 76.83,
+        "f1_weighted": 75.65,
+        "auc_ovr_weighted": 86.9,
+        "per_class": {
+          "Low": {
+            "precision": 84.6,
+            "recall": 95.7,
+            "f1": 89.8,
+            "support": 46
+          },
+          "Medium": {
+            "precision": 30.0,
+            "recall": 25.0,
+            "f1": 27.3,
+            "support": 12
+          },
+          "High": {
+            "precision": 80.0,
+            "recall": 66.7,
+            "f1": 72.7,
+            "support": 24
+          }
+        },
+        "confusion_matrix": [
+          [
+            44,
+            2,
+            0
+          ],
+          [
+            5,
+            3,
+            4
+          ],
+          [
+            3,
+            5,
+            16
+          ]
+        ]
+      },
+      "typical": {
+        "type": "PWR",
+        "country": null,
+        "net_capacity_mw": 950.0,
+        "age_years": 38.0,
+        "construction_years": 6.0,
+        "nsss_group": "Western_PWR",
+        "model_family": "Other"
+      },
+      "ranges": {
+        "net_capacity_mw": [
+          187.0,
+          1660.0
+        ],
+        "age_years": [
+          0.0,
+          55.0
+        ],
+        "construction_years": [
+          3.0,
+          43.0
+        ]
+      },
+      "types": [
+        "BWR",
+        "FBR",
+        "GCR",
+        "LWGR",
+        "PHWR",
+        "PWR"
+      ],
+      "families": [
+        "AP1000",
+        "BWR",
+        "CANDU",
+        "EPR",
+        "FBR",
+        "GCR",
+        "Other",
+        "VVER"
+      ],
+      "nsss_groups": [
+        "Canadian_CANDU",
+        "Chinese",
+        "French_PWR",
+        "GE_BWR",
+        "Korean_Other",
+        "Russian_VVER",
+        "Western_PWR"
+      ],
+      "countries": [
+        "ARGENTINA",
+        "ARMENIA",
+        "BELARUS",
+        "BELGIUM",
+        "BRAZIL",
+        "BULGARIA",
+        "CANADA",
+        "CHINA",
+        "CZECH REPUBLIC",
+        "FINLAND",
+        "FRANCE",
+        "HUNGARY",
+        "INDIA",
+        "IRAN, ISLAMIC REPUBLIC OF",
+        "JAPAN",
+        "KOREA, REPUBLIC OF",
+        "MEXICO",
+        "NETHERLANDS",
+        "PAKISTAN",
+        "ROMANIA",
+        "RUSSIA",
+        "SLOVAKIA",
+        "SLOVENIA",
+        "SOUTH AFRICA",
+        "SPAIN",
+        "SWEDEN",
+        "SWITZERLAND",
+        "UAE",
+        "UK",
+        "UKRAINE",
+        "USA"
+      ],
+      "suggest_by_type": {
+        "BWR": {
+          "nsss_group": "GE_BWR",
+          "model_family": "BWR"
+        },
+        "FBR": {
+          "nsss_group": "Russian_VVER",
+          "model_family": "FBR"
+        },
+        "GCR": {
+          "nsss_group": "Korean_Other",
+          "model_family": "GCR"
+        },
+        "LWGR": {
+          "nsss_group": "Russian_VVER",
+          "model_family": "Other"
+        },
+        "PHWR": {
+          "nsss_group": "Canadian_CANDU",
+          "model_family": "CANDU"
+        },
+        "PWR": {
+          "nsss_group": "Western_PWR",
+          "model_family": "Other"
+        }
+      }
+    },
+    "model2": {
+      "n_reactors": 370,
+      "n_features": 18,
+      "class_counts": {
+        "Low": 202,
+        "Medium": 55,
+        "High": 113
+      },
+      "test": {
+        "n_test": 74,
+        "accuracy": 93.24,
+        "f1_weighted": 92.83,
+        "auc_ovr_weighted": 96.35,
+        "per_class": {
+          "Low": {
+            "precision": 97.5,
+            "recall": 97.5,
+            "f1": 97.5,
+            "support": 40
+          },
+          "Medium": {
+            "precision": 87.5,
+            "recall": 63.6,
+            "f1": 73.7,
+            "support": 11
+          },
+          "High": {
+            "precision": 88.5,
+            "recall": 100.0,
+            "f1": 93.9,
+            "support": 23
+          }
+        },
+        "confusion_matrix": [
+          [
+            39,
+            1,
+            0
+          ],
+          [
+            1,
+            7,
+            3
+          ],
+          [
+            0,
+            0,
+            23
+          ]
+        ],
+        "best_params": {
+          "subsample": 1.0,
+          "n_estimators": 200,
+          "max_depth": 7,
+          "learning_rate": 0.01
+        }
+      },
+      "typical": {
+        "type": "PWR",
+        "country": null,
+        "net_capacity_mw": 941.0,
+        "age_years": 39.0,
+        "construction_years": 6.0,
+        "nsss_group": "Western_PWR",
+        "model_family": "Other",
+        "ucf_p1": 86.95,
+        "ucf_p2": 82.45
+      },
+      "ranges": {
+        "net_capacity_mw": [
+          187.0,
+          1500.0
+        ],
+        "age_years": [
+          5.0,
+          55.0
+        ],
+        "construction_years": [
+          3.0,
+          43.0
+        ],
+        "ucf_p1": [
+          0.0,
+          100.0
+        ],
+        "ucf_p2": [
+          48.3,
+          95.0
+        ]
+      },
+      "types": [
+        "BWR",
+        "FBR",
+        "GCR",
+        "LWGR",
+        "PHWR",
+        "PWR"
+      ],
+      "families": [
+        "AP1000",
+        "BWR",
+        "CANDU",
+        "FBR",
+        "GCR",
+        "Other",
+        "VVER"
+      ],
+      "nsss_groups": [
+        "Canadian_CANDU",
+        "Chinese",
+        "French_PWR",
+        "GE_BWR",
+        "Korean_Other",
+        "Russian_VVER",
+        "Western_PWR"
+      ],
+      "countries": [
+        "ARGENTINA",
+        "ARMENIA",
+        "BELGIUM",
+        "BRAZIL",
+        "BULGARIA",
+        "CANADA",
+        "CHINA",
+        "CZECH REPUBLIC",
+        "FINLAND",
+        "FRANCE",
+        "HUNGARY",
+        "INDIA",
+        "IRAN, ISLAMIC REPUBLIC OF",
+        "JAPAN",
+        "KOREA, REPUBLIC OF",
+        "MEXICO",
+        "NETHERLANDS",
+        "PAKISTAN",
+        "ROMANIA",
+        "RUSSIA",
+        "SLOVAKIA",
+        "SLOVENIA",
+        "SOUTH AFRICA",
+        "SPAIN",
+        "SWEDEN",
+        "SWITZERLAND",
+        "UK",
+        "UKRAINE",
+        "USA"
+      ],
+      "suggest_by_type": {
+        "BWR": {
+          "nsss_group": "GE_BWR",
+          "model_family": "BWR"
+        },
+        "FBR": {
+          "nsss_group": "Russian_VVER",
+          "model_family": "FBR"
+        },
+        "GCR": {
+          "nsss_group": "Korean_Other",
+          "model_family": "GCR"
+        },
+        "LWGR": {
+          "nsss_group": "Russian_VVER",
+          "model_family": "Other"
+        },
+        "PHWR": {
+          "nsss_group": "Canadian_CANDU",
+          "model_family": "CANDU"
+        },
+        "PWR": {
+          "nsss_group": "Western_PWR",
+          "model_family": "Other"
+        }
+      }
+    }
+  }
+}

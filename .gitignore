@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+# Spreadsheets stay out of the repository, except the paper's dataset
+*.xlsx
+!data/UCL_Dataset_v5_longitudinal.xlsx
+# Output folders created when the scripts run
+research/results_Model1/
+research/results_Model2/
+results_Model1/
+results_Model2/
+# One-file preview built by tools/build_preview.py
+preview/

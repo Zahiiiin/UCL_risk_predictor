@@ -1,0 +1,4 @@
+Class,Support,M1_precision,M1_recall,M1_F1,M2_precision,M2_recall,M2_F1,Delta_F1
+Low,40,90.0,90.0,90.0,97.5,97.5,97.5,7.5
+Medium,11,50.0,45.5,47.6,87.5,63.6,73.7,26.1
+High,23,75.0,78.3,76.6,88.5,100.0,93.9,17.3

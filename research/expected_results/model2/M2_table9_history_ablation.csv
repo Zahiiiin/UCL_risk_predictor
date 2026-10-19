@@ -1,0 +1,6 @@
+Feature_set,Test_accuracy,Test_F1,Test_AUC,Test_Medium_F1,CV_accuracy_mean,CV_accuracy_std,CV_F1_mean
+Design only (13),79.73,79.53,90.43,47.6,74.38,4.61,74.45
+Design + UCF 2013-2017 (14),78.38,76.33,91.16,23.5,75.46,3.85,75.41
+Design + UCF 2010-2020 (14),91.89,91.54,98.09,70.0,87.95,3.37,87.86
+"Design + both periods, no derived (15)",90.54,90.4,98.11,66.7,88.05,3.39,87.98
+Full Model 2 (18),93.24,92.83,96.35,73.7,88.0,3.25,87.77
