@@ -1,24 +1,24 @@
 """
 UCL_Model2_History_Ablation.py
 ==============================================================================
-How much does each UCF history period add to Model 2?
+How much does each UCL history period add to Model 2?
 
 WHY THIS CHECK EXISTS
-    The two history periods are UCF 2013-2017 and UCF 2010-2020. Both come from
-    earlier IAEA editions, but their time windows overlap each other (2013-2017
-    lies inside 2010-2020) and they also overlap the 2014-2024 window that defines
-    the UCL label (2014-2017 and 2014-2020 respectively). So Model 2 uses recent
-    performance data, not strictly earlier data. This script measures how much
-    each period contributes and how strongly each one tracks the 2014-2024 UCF.
+    The two history periods are the mean PRIS unplanned capability loss in
+    2010-2013 and in 2014-2017. Both end before the label window (2018-2024), so
+    nothing overlaps. This script measures how much each period contributes, how
+    strongly each one tracks the label value, and whether the same two periods
+    taken as UCF (instead of UCL) would do as well.
 
 WHAT IT DOES
-    1. Prints the correlation of each history period with UCF 2014-2024.
-       UCF 2014-2024 is read here ONLY for this printout. It is never a model input.
-    2. Trains the same tuned XGBoost as Model 2 on five feature sets and scores
-       it on the same 74 test reactors as the main pipeline.
+    1. Prints the correlation of each history period with the numeric label
+       UCL_Value (mean UCL 2018-2024). UCL_Value is read here ONLY for this
+       printout. It is never a model input.
+    2. Trains the same tuned XGBoost as Model 2 on six feature sets and scores
+       it on the same test reactors as the main pipeline.
     3. Repeats the comparison with 5 x 5-fold cross-validation (SMOTE inside each
-       fold, untuned XGBoost). A single 74-reactor test set moves by 1.35 points per
-       reactor, so the repeated version is the steadier comparison.
+       fold, untuned XGBoost). A single small test set moves by more than one
+       point per reactor, so the repeated version is the steadier comparison.
 
 HOW TO RUN (from the research folder)
     python UCL_Model2_History_Ablation.py
@@ -58,29 +58,32 @@ def main():
     df, _, _ = M.load_data(xlsx)
     df = M.engineer(df)
 
-    # 1. correlation with the label-defining window (diagnostic only)
-    lg = pd.read_excel(xlsx, sheet_name="UCL_LONGITUDAL", header=0)
-    lg["Reactor_Name"] = lg["Reactor_Name"].astype(str).str.strip()
-    diag = df.merge(lg[["Reactor_Name", "UCF_2014_2024"]], on="Reactor_Name", how="left")
-    print("Correlation with UCF 2014-2024 (the window that defines the label), n = %d" % len(diag))
+    # 1. correlation with the numeric label (diagnostic only, never a model input)
+    from scipy.stats import spearmanr
+    print("Correlation with UCL_Value (mean UCL 2018-2024, the label), n = %d" % len(df))
     corr_rows = []
-    for col, lab in [("UCF_P1", "UCF 2013-2017"), ("UCF_P2", "UCF 2010-2020")]:
-        r = float(np.corrcoef(diag[col], diag["UCF_2014_2024"])[0, 1])
-        corr_rows.append({"Period": lab, "Pearson_r_with_UCF_2014_2024": round(r, 3)})
-        print("    %-14s r = %.3f" % (lab, r))
-    r12 = float(np.corrcoef(diag["UCF_P1"], diag["UCF_P2"])[0, 1])
-    print("    2013-2017 vs 2010-2020  r = %.3f" % r12)
+    for col, lab in [("UCL_P1", "UCL 2010-2013"), ("UCL_P2", "UCL 2014-2017"),
+                     ("UCF_2010_2013", "UCF 2010-2013"), ("UCF_2014_2017", "UCF 2014-2017")]:
+        r = float(np.corrcoef(df[col], df["UCL_Value"])[0, 1])
+        rho = float(spearmanr(df[col], df["UCL_Value"])[0])
+        corr_rows.append({"Period": lab, "Pearson_r_with_UCL_Value": round(r, 3),
+                          "Spearman_rho_with_UCL_Value": round(rho, 3)})
+        print("    %-14s Pearson r = %.3f  Spearman rho = %.3f" % (lab, r, rho))
+    r12 = float(np.corrcoef(df["UCL_P1"], df["UCL_P2"])[0, 1])
+    print("    UCL 2010-2013 vs UCL 2014-2017  r = %.3f" % r12)
 
     # 2. same split and scaling as the main pipeline
     sets = {
         "Design only (13)": M.FEAT_M1,
-        "Design + UCF 2013-2017 (14)": M.FEAT_M1 + ["UCF_P1"],
-        "Design + UCF 2010-2020 (14)": M.FEAT_M1 + ["UCF_P2"],
-        "Design + both periods, no derived (15)": M.FEAT_M1 + ["UCF_P1", "UCF_P2"],
+        "Design + UCL 2010-2013 (14)": M.FEAT_M1 + ["UCL_P1"],
+        "Design + UCL 2014-2017 (14)": M.FEAT_M1 + ["UCL_P2"],
+        "Design + both periods, no derived (15)": M.FEAT_M1 + ["UCL_P1", "UCL_P2"],
         "Full Model 2 (18)": M.FEAT_M2,
+        "Design + both UCF periods (15)": M.FEAT_M1 + ["UCF_2010_2013", "UCF_2014_2017"],
     }
     y = df["Target"]
-    X = pd.DataFrame(StandardScaler().fit_transform(df[M.FEAT_M2]), columns=M.FEAT_M2)
+    cols_all = list(dict.fromkeys(M.FEAT_M2 + ["UCF_2010_2013", "UCF_2014_2017"]))
+    X = pd.DataFrame(StandardScaler().fit_transform(df[cols_all]), columns=cols_all)
     X_tr, X_te, y_tr, y_te = train_test_split(
         X, y, test_size=M.TEST_SIZE, stratify=y, random_state=M.RANDOM_STATE)
     kf = StratifiedKFold(M.CV_FOLDS, shuffle=True, random_state=M.RANDOM_STATE)
@@ -88,7 +91,7 @@ def main():
                                   random_state=M.RANDOM_STATE)
 
     rows = []
-    print("\nTuned XGBoost on the main 74-reactor test set, and %d x 5-fold CV" % repeats)
+    print("\nTuned XGBoost on the main %d-reactor test set, and %d x 5-fold CV" % (len(y_te), repeats))
     for name, feats in sets.items():
         Xs, ys = SMOTE(random_state=M.RANDOM_STATE, k_neighbors=3).fit_resample(X_tr[feats], y_tr)
         search = RandomizedSearchCV(

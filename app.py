@@ -96,22 +96,22 @@ HARD = {
     "net_capacity_mw": (50, 2500),
     "age_years": (0, 80),
     "construction_years": (1, 60),
-    "ucf_p1": (0, 100),
-    "ucf_p2": (0, 100),
+    "ucl_p1": (0, 100),
+    "ucl_p2": (0, 100),
 }
 FIELD_UNITS = {
     "net_capacity_mw": " MW",
     "age_years": " years",
     "construction_years": " years",
-    "ucf_p1": "%",
-    "ucf_p2": "%",
+    "ucl_p1": "%",
+    "ucl_p2": "%",
 }
 FIELD_NAMES = {
     "net_capacity_mw": "Net electrical capacity",
     "age_years": "Reactor age",
     "construction_years": "Construction time",
-    "ucf_p1": "UCF 2013 to 2017",
-    "ucf_p2": "UCF 2010 to 2020",
+    "ucl_p1": "UCL 2010 to 2013",
+    "ucl_p2": "UCL 2014 to 2017",
 }
 
 EXPLAIN_GROUPS = {
@@ -125,7 +125,7 @@ EXPLAIN_GROUPS = {
     ],
 }
 EXPLAIN_GROUPS["model2"] = EXPLAIN_GROUPS["model1"] + [
-    ("history", "Past capability factor", ["ucf_p1", "ucf_p2"]),
+    ("history", "Past unplanned loss", ["ucl_p1", "ucl_p2"]),
 ]
 
 
@@ -143,7 +143,7 @@ def parse_inputs(payload, model_key):
     # Numbers
     numeric = ["net_capacity_mw", "age_years", "construction_years"]
     if model_key == "model2":
-        numeric += ["ucf_p1", "ucf_p2"]
+        numeric += ["ucl_p1", "ucl_p2"]
     for name in numeric:
         raw = payload.get(name)
         try:

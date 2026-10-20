@@ -5,16 +5,16 @@ dataset and saves them in the artifacts/ folder.
 
 Run it only when you want to retrain (for example after the dataset changes):
 
-    python train_models.py UCL_Dataset_v5_longitudinal.xlsx
+    python train_models.py data/UCL_Dataset_v6_PRIS.xlsx
 
 The website itself does NOT need the dataset or this script. It only loads the
 saved files in artifacts/.
 
 Model 1  Design features only (13 inputs). Stacking ensemble (RF + ExtraTrees + XGBoost,
          Logistic Regression on top). No hyperparameter search (as in the paper).
-Model 2  Design features + 5 history features from UCF 2013-2017 and UCF 2010-2020
+Model 2  Design features + 5 history features from the mean UCL in 2010-2013 and 2014-2017
          (18 inputs). XGBoost tuned with a 40-iteration random search.
-         UCF 2014-2024 is never used because it defines the target.
+         The label (mean UCL 2018-2024) is never an input.
 
 Both models are trained on the same 80 % stratified training split (SMOTE on the
 training part only) that produced the test results reported in the paper, and the
@@ -76,9 +76,9 @@ def typical_inputs(df, info):
         "nsss_group": df["NSSS_Group"].mode().iloc[0],
         "model_family": df["Model_Family"].mode().iloc[0],
     }
-    if "UCF_P1" in df.columns:
-        t["ucf_p1"] = float(df["UCF_P1"].median())
-        t["ucf_p2"] = float(df["UCF_P2"].median())
+    if "UCL_P1" in df.columns:
+        t["ucl_p1"] = float(df["UCL_P1"].median())
+        t["ucl_p2"] = float(df["UCL_P2"].median())
     return t
 
 
@@ -89,9 +89,9 @@ def training_ranges(df):
         "construction_years": [float(df["Construction_Duration"].min()),
                                float(df["Construction_Duration"].max())],
     }
-    if "UCF_P1" in df.columns:
-        r["ucf_p1"] = [float(df["UCF_P1"].min()), float(df["UCF_P1"].max())]
-        r["ucf_p2"] = [float(df["UCF_P2"].min()), float(df["UCF_P2"].max())]
+    if "UCL_P1" in df.columns:
+        r["ucl_p1"] = [float(df["UCL_P1"].min()), float(df["UCL_P1"].max())]
+        r["ucl_p2"] = [float(df["UCL_P2"].min()), float(df["UCL_P2"].max())]
     return r
 
 
@@ -127,7 +127,7 @@ def build_model1(xlsx):
 def build_model2(xlsx):
     df = U.load_final(xlsx)
     df = U.add_longitudinal(df, xlsx)
-    df = df.dropna(subset=["UCF_2013_2017", "UCF_2010_2020"]).reset_index(drop=True)
+    df = df.dropna(subset=["UCL_2010_2013", "UCL_2014_2017"]).reset_index(drop=True)
     # Model 2 pipeline rule: only model names containing CANDU count as CANDU
     df, info = U.engineer(df, phwr_is_candu=False, temporal=True)
     scaler, Xsm, ysm, Xte, yte = split_and_scale(df, U.FEAT_M2)
@@ -179,5 +179,5 @@ def main(xlsx):
 
 
 if __name__ == "__main__":
-    path = sys.argv[1] if len(sys.argv) > 1 else "UCL_Dataset_v5_longitudinal.xlsx"
+    path = sys.argv[1] if len(sys.argv) > 1 else "data/UCL_Dataset_v6_PRIS.xlsx"
     main(path)

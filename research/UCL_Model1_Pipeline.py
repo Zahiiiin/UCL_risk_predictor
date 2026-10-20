@@ -1,15 +1,15 @@
 # ==============================================================================
 # UCL NUCLEAR POWER PLANT RISK CLASSIFICATION - MODEL 1
-# Static design-based classifier (13 features, 407 reactors)
+# Static design-based classifier (13 features, 387 reactors)
 # ==============================================================================
 #
 # Paper: "Machine Learning Classification of Unplanned Capability Loss Risk in
 #         Nuclear Power Plants" (target journal: Nuclear Engineering and Design)
-# Data : IAEA PRIS / RDS-2, file UCL_Dataset_v5_longitudinal.xlsx
+# Data : IAEA PRIS / RDS-2, file UCL_Dataset_v6_PRIS.xlsx
 #
 # WHAT THIS MODEL DOES:
 #   Predicts the UCL risk class (Low / Medium / High) using ONLY reactor design
-#   and identity features. No operating history (no UCF) is used, so the model
+#   and identity features. No operating history (no UCL or UCF) is used, so the model
 #   can be applied to a reactor before it has any operating record.
 #
 # FEATURES (13 in total):
@@ -128,7 +128,7 @@ def save_fig(fig, name):
 
 print("=" * 65)
 print("  UCL PREDICTION - MODEL 1: Static Design Classifier")
-print("  13 features | n=407 reactors | Target: Low/Medium/High")
+print("  13 features | Target: Low/Medium/High")
 print("=" * 65)
 
 # ==============================================================================
@@ -138,10 +138,10 @@ print("\n[1] Loading data...")
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 DATASET_PATHS = [
-    'UCL_Dataset_v5_longitudinal.xlsx',
-    os.path.join(_HERE, 'UCL_Dataset_v5_longitudinal.xlsx'),
-    os.path.join(_HERE, '..', 'data', 'UCL_Dataset_v5_longitudinal.xlsx'),
-    os.path.join('data', 'UCL_Dataset_v5_longitudinal.xlsx'),
+    'UCL_Dataset_v6_PRIS.xlsx',
+    os.path.join(_HERE, 'UCL_Dataset_v6_PRIS.xlsx'),
+    os.path.join(_HERE, '..', 'data', 'UCL_Dataset_v6_PRIS.xlsx'),
+    os.path.join('data', 'UCL_Dataset_v6_PRIS.xlsx'),
 ]
 df_raw = None
 for path in DATASET_PATHS:
@@ -155,7 +155,7 @@ for path in DATASET_PATHS:
 
 if df_raw is None:
     raise FileNotFoundError(
-        "Cannot find dataset. Place UCL_Dataset_v5_longitudinal.xlsx "
+        "Cannot find dataset. Place UCL_Dataset_v6_PRIS.xlsx "
         "in the same folder as this script."
     )
 
@@ -745,5 +745,5 @@ for _, row in df_boot.iterrows():
 print(f"\n  Output: {OUT}/")
 print(f"  Figures: 7 PNG  |  Tables: 4 CSV")
 print("=" * 65)
-print("\n  -> Run UCL_Model2_Pipeline.py next to see what adding the two UCF")
+print("\n  -> Run UCL_Model2_Pipeline.py next to see what adding the UCL")
 print("    history features does for the Medium class.")

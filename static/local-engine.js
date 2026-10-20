@@ -125,15 +125,15 @@
       Op_Category: op >= 10 ? 2 : op >= 5 ? 1 : 0,
     };
     if (temporal) {
-      const p1 = Number(inp.ucf_p1);
-      const p2 = Number(inp.ucf_p2);
+      const p1 = Number(inp.ucl_p1);
+      const p2 = Number(inp.ucl_p2);
       const ch = p2 - p1;
       Object.assign(row, {
-        UCF_P1: p1,
-        UCF_P2: p2,
-        UCF_change_P1_P2: ch,
-        UCF_mean_2period: (p1 + p2) / 2,
-        UCF_trend_dir: trendDir(ch),
+        UCL_P1: p1,
+        UCL_P2: p2,
+        UCL_change_P1_P2: ch,
+        UCL_mean_2period: (p1 + p2) / 2,
+        UCL_trend_dir: trendDir(ch),
       });
     }
     return row;
@@ -150,7 +150,7 @@
     const warnings = [];
     const clean = {};
     const numeric = ["net_capacity_mw", "age_years", "construction_years"];
-    if (key === "model2") numeric.push("ucf_p1", "ucf_p2");
+    if (key === "model2") numeric.push("ucl_p1", "ucl_p2");
 
     numeric.forEach((name) => {
       const raw = payload[name];

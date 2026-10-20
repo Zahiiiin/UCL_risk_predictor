@@ -41,8 +41,8 @@ def main(n_per_model=300, seed=2024):
                 "construction_years": round(rng.uniform(1, 60), rng.choice([0, 1])),
             }
             if model == 2:
-                payload["ucf_p1"] = round(rng.uniform(0, 100), rng.choice([0, 1, 2]))
-                payload["ucf_p2"] = round(rng.uniform(0, 100), rng.choice([0, 1, 2]))
+                payload["ucl_p1"] = round(rng.uniform(0, 40), rng.choice([0, 1, 2]))
+                payload["ucl_p2"] = round(rng.uniform(0, 40), rng.choice([0, 1, 2]))
             try:
                 out = {"ok": True, "json": A.run_prediction(payload)}
             except A.InputError as exc:
@@ -54,9 +54,9 @@ def main(n_per_model=300, seed=2024):
         {"model": 1, "type": "PWR", "country": "USA", "nsss_group": "Western_PWR", "model_family": "Other",
          "net_capacity_mw": "950", "age_years": "38", "construction_years": "6"},
         {"model": 2, "type": "PWR", "country": "FRANCE", "nsss_group": "French_PWR", "model_family": "Other",
-         "net_capacity_mw": 1300, "age_years": 5, "construction_years": 6, "ucf_p1": 100, "ucf_p2": 0},
+         "net_capacity_mw": 1300, "age_years": 5, "construction_years": 6, "ucl_p1": 100, "ucl_p2": 0},
         {"model": 2, "type": "PWR", "country": "", "nsss_group": "French_PWR", "model_family": "Other",
-         "net_capacity_mw": 1300, "age_years": 0, "construction_years": 6, "ucf_p1": "", "ucf_p2": 50},
+         "net_capacity_mw": 1300, "age_years": 0, "construction_years": 6, "ucl_p1": "", "ucl_p2": 50},
         {"model": 3, "type": "PWR"},
     ]
     for payload in edge:

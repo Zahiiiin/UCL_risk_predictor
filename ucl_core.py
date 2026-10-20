@@ -40,8 +40,8 @@ FEAT_M1 = [
     'Construction_Duration', 'Thermal_Efficiency', 'Model_Family_enc',
     'Age_Group', 'Op_Category',
 ]
-FEAT_TEMPORAL = ['UCF_P1', 'UCF_P2', 'UCF_change_P1_P2',
-                 'UCF_mean_2period', 'UCF_trend_dir']
+FEAT_TEMPORAL = ['UCL_P1', 'UCL_P2', 'UCL_change_P1_P2',
+                 'UCL_mean_2period', 'UCL_trend_dir']
 FEAT_M2 = FEAT_M1 + FEAT_TEMPORAL
 
 
@@ -76,6 +76,7 @@ def age_group(age):
 
 
 def trend_direction(change):
+    """+1 if UCL rose by more than 2 points, -1 if it fell by more than 2, else 0."""
     if change > 2:
         return 1
     if change < -2:
@@ -112,10 +113,10 @@ def load_final(xlsx_path):
 
 
 def add_longitudinal(df, xlsx_path):
-    """Attach UCF 2013-2017 and 2010-2020 (never 2014-2024: that is the target window)."""
-    lg = pd.read_excel(xlsx_path, sheet_name='UCL_LONGITUDAL', header=0)
+    """Attach the UCL history blocks 2010-2013 and 2014-2017 (both end before the 2018-2024 label window)."""
+    lg = pd.read_excel(xlsx_path, sheet_name='HISTORY', header=0)
     lg['Reactor_Name'] = lg['Reactor_Name'].astype(str).str.strip()
-    out = df.merge(lg[['Reactor_Name', 'UCF_2013_2017', 'UCF_2010_2020']],
+    out = df.merge(lg[['Reactor_Name', 'UCL_2010_2013', 'UCL_2014_2017']],
                    on='Reactor_Name', how='left')
     return out
 
@@ -166,11 +167,11 @@ def engineer(df, thermal='constant', phwr_is_candu=True, temporal=False):
 
     feats = list(FEAT_M1)
     if temporal:
-        df['UCF_P1'] = df['UCF_2013_2017']
-        df['UCF_P2'] = df['UCF_2010_2020']
-        df['UCF_change_P1_P2'] = df['UCF_P2'] - df['UCF_P1']
-        df['UCF_mean_2period'] = (df['UCF_P1'] + df['UCF_P2']) / 2
-        df['UCF_trend_dir'] = df['UCF_change_P1_P2'].apply(trend_direction)
+        df['UCL_P1'] = df['UCL_2010_2013']
+        df['UCL_P2'] = df['UCL_2014_2017']
+        df['UCL_change_P1_P2'] = df['UCL_P2'] - df['UCL_P1']
+        df['UCL_mean_2period'] = (df['UCL_P1'] + df['UCL_P2']) / 2
+        df['UCL_trend_dir'] = df['UCL_change_P1_P2'].apply(trend_direction)
         feats = list(FEAT_M2)
 
     info = {
@@ -189,7 +190,7 @@ def design_row(inp, info, temporal=False):
     """
     Turn a plain-language form input into the model's feature dictionary.
     inp keys: type, country, net_capacity_mw, age_years, nsss_group,
-              construction_years, model_family, (ucf_p1, ucf_p2 for Model 2)
+              construction_years, model_family, (ucl_p1, ucl_p2 for Model 2)
     """
     age = float(inp['age_years'])
     cap = float(inp['net_capacity_mw'])
@@ -217,9 +218,9 @@ def design_row(inp, info, temporal=False):
         'Op_Category': op_cat,
     }
     if temporal:
-        p1, p2 = float(inp['ucf_p1']), float(inp['ucf_p2'])
+        p1, p2 = float(inp['ucl_p1']), float(inp['ucl_p2'])
         ch = p2 - p1
-        row.update({'UCF_P1': p1, 'UCF_P2': p2, 'UCF_change_P1_P2': ch,
-                    'UCF_mean_2period': (p1 + p2) / 2,
-                    'UCF_trend_dir': trend_direction(ch)})
+        row.update({'UCL_P1': p1, 'UCL_P2': p2, 'UCL_change_P1_P2': ch,
+                    'UCL_mean_2period': (p1 + p2) / 2,
+                    'UCL_trend_dir': trend_direction(ch)})
     return row

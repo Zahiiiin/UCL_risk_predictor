@@ -12,7 +12,7 @@ import app as A  # noqa: E402
 
 M1 = {"model": "1", "type": "PWR", "country": "USA", "net_capacity_mw": 1100, "age_years": 30,
       "construction_years": 6, "nsss_group": "Western_PWR", "model_family": "Other"}
-M2 = dict(M1, model="2", ucf_p1=90, ucf_p2=88)
+M2 = dict(M1, model="2", ucl_p1=1, ucl_p2=0.8)
 
 
 class AppTests(unittest.TestCase):
@@ -56,8 +56,8 @@ class AppTests(unittest.TestCase):
             self.assertEqual(d["predicted"], max(d["probabilities"], key=d["probabilities"].get))
 
     def test_history_changes_the_answer(self):
-        good = self.post(dict(M2, ucf_p1=92, ucf_p2=90)).get_json()
-        poor = self.post(dict(M2, ucf_p1=55, ucf_p2=60)).get_json()
+        good = self.post(dict(M2, ucl_p1=0.5, ucl_p2=0.4)).get_json()
+        poor = self.post(dict(M2, ucl_p1=15, ucl_p2=18)).get_json()
         self.assertGreater(poor["probabilities"]["High"], good["probabilities"]["High"])
 
     def test_bad_input_is_rejected(self):
@@ -65,7 +65,7 @@ class AppTests(unittest.TestCase):
         self.assertEqual(self.post(dict(M1, type="XYZ")).status_code, 400)
         self.assertEqual(self.post(dict(M1, age_years="old")).status_code, 400)
         self.assertEqual(self.post(dict(M1, model="3")).status_code, 400)
-        self.assertEqual(self.post(dict(M2, ucf_p1=None)).status_code, 400)
+        self.assertEqual(self.post(dict(M2, ucl_p1=None)).status_code, 400)
         self.assertEqual(self.client.post("/api/predict", data="not json").status_code, 400)
 
     def test_soft_warnings(self):
