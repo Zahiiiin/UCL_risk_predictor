@@ -1,4 +1,4 @@
 Model,Random_split_accuracy,Temporal_accuracy,Temporal_F1,Temporal_AUC
-RF,89.19,85.19,81.98,95.81
-XGB,93.24,81.48,80.0,94.33
-Stacking,90.54,85.19,79.98,94.76
+RF,89.19,82.61,78.87,95.66
+XGB,87.84,73.91,73.04,94.37
+Stacking,91.89,78.26,74.37,93.28

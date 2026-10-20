@@ -33,17 +33,17 @@ class AppTests(unittest.TestCase):
         self.assertEqual(len(o["countries"]), 31)
         self.assertEqual({t["value"] for t in o["types"]}, {"PWR", "BWR", "PHWR", "GCR", "LWGR", "FBR"})
         self.assertEqual(o["models"]["model1"]["n_reactors"], 407)
-        self.assertEqual(o["models"]["model2"]["n_reactors"], 370)
+        self.assertEqual(o["models"]["model2"]["n_reactors"], 368)
 
     def test_saved_test_metrics(self):
         with open(os.path.join(A.ART, "meta.json")) as fh:
             meta = json.load(fh)
-        self.assertAlmostEqual(meta["models"]["model1"]["test"]["accuracy"], 76.83, places=1)
-        self.assertAlmostEqual(meta["models"]["model2"]["test"]["accuracy"], 93.24, places=1)
+        self.assertAlmostEqual(meta["models"]["model1"]["test"]["accuracy"], 75.61, places=1)
+        self.assertAlmostEqual(meta["models"]["model2"]["test"]["accuracy"], 87.84, places=1)
         # F1 and AUC as reported in the paper (needs the pinned scikit-learn 1.8.0)
         m1 = meta["models"]["model1"]["test"]
-        self.assertAlmostEqual(m1["f1_weighted"], 75.7, delta=0.1)
-        self.assertAlmostEqual(m1["auc_ovr_weighted"], 86.9, delta=0.1)
+        self.assertAlmostEqual(m1["f1_weighted"], 74.9, delta=0.1)
+        self.assertAlmostEqual(m1["auc_ovr_weighted"], 86.5, delta=0.1)
 
     def test_predictions_are_valid(self):
         for payload, n_drivers in ((M1, 6), (M2, 7)):

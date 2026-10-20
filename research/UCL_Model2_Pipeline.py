@@ -1,7 +1,7 @@
 """
 UCL_Model2_Pipeline.py
 ==============================================================================
-Model 2: design features + two past UCF periods (18 features, 370 reactors)
+Model 2: design features + two past UCF periods (18 features, 368 reactors)
 Paper: "Machine Learning Classification of Unplanned Capability Loss Risk in
         Nuclear Power Plants" (target journal: Nuclear Engineering and Design)
 Data : IAEA PRIS / RDS-2, file UCL_Dataset_v5_longitudinal.xlsx

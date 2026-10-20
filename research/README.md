@@ -6,8 +6,8 @@ These scripts produce the tables and numbers reported in the paper. They find th
 | Script | What it does |
 |---|---|
 | `UCL_Model1_Pipeline.py` | Model 1: 13 design features, 407 reactors. Five classifiers, temporal split, bootstrap, figures. |
-| `UCL_Model2_Pipeline.py` | Model 2: 18 features (design plus two past UCF periods), 370 reactors. Five classifiers, Model 1 baseline on the same reactors, McNemar test, bootstrap, temporal split, feature importance, figures. |
-| `UCL_Model2_History_Ablation.py` | An extra check, not in the paper's main tables. Shows how much each of the two UCF periods adds to Model 2. It imports the Model 2 script, so keep the two files together. |
+| `UCL_Model2_Pipeline.py` | Model 2: 18 features (design plus two past UCF periods), 368 reactors. Five classifiers, Model 1 baseline on the same reactors, McNemar test, bootstrap, temporal split, feature importance, figures. |
+| `UCL_Model2_History_Ablation.py` | The history-period check, reported as Table 8 of the paper (output file `M2_table9_history_ablation.csv`; the script numbers its own tables). Shows how much each of the two UCF periods adds to Model 2. It imports the Model 2 script, so keep the two files together. |
 
 A full run of each script takes roughly 10 to 40 minutes, depending on the computer.
 

@@ -1,6 +1,6 @@
 Model,Temporal_Accuracy
-LR,82.54
-RF,84.13
-ETC,82.54
-XGB,74.6
-Stacking,84.13
+LR,81.97
+RF,83.61
+ETC,80.33
+XGB,72.13
+Stacking,80.33
