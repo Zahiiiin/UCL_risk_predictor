@@ -1,0 +1,24 @@
+{
+  "args": {
+    "first_test": 2010,
+    "last_test": 2025,
+    "window": 0,
+    "grouped": "none",
+    "sets": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "models": [
+      "Ridge",
+      "RF",
+      "XGB"
+    ],
+    "subset": "all",
+    "tag": "main_expanding"
+  },
+  "rows_scored": 6196,
+  "reactors_scored": 505,
+  "seconds": 836
+}
