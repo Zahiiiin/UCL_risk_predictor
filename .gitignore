@@ -10,7 +10,9 @@ venv/
 # Output folders created when the scripts run
 research/results_Model1/
 research/results_Model2/
+research/results_Benchmark/
 results_Model1/
 results_Model2/
+results_Benchmark/
 # One-file preview built by tools/build_preview.py
 preview/

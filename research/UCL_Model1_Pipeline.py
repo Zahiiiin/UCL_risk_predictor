@@ -19,13 +19,14 @@
 #                    Thermal efficiency, Model family, Age group,
 #                    Operational category
 #
-# RESULTS REPORTED IN THE PAPER (test set of 82 reactors, seed 42):
-#   Stacking ensemble: 76.8 % accuracy, 86.9 % AUC-ROC (weighted one-vs-rest)
-#   Temporal split (train on reactors with 10+ years of operation, test on
-#   newer reactors): 84.1 % accuracy for the best model
-#   Per-class F1 of the stacking ensemble: Low 89.8, Medium 27.3, High 72.7.
+# WHAT YOU SHOULD SEE (single 80/20 split, test set of 78 reactors, seed 42):
+#   Accuracy 69 to 76 % depending on the classifier (XGBoost best with 75.64 %),
+#   cohort split accuracy 67 to 71 %. The exact tables are in
+#   expected_results/model1/. ONE SPLIT IS NOT THE MODEL'S ACCURACY: one test reactor
+#   moves it by 1.3 points. The fair figure is the cross-validated benchmark in
+#   UCL_Benchmark_CV.py, where Model 1 reaches 65 to 66 % (Logistic Regression and
+#   Random Forest), below the 69 % of guessing the most common class of each country.
 #   These numbers need the library versions pinned in requirements-research.txt.
-#   scikit-learn 1.9 changes the Random Forest results by one reactor.
 #
 # THINGS A REVIEWER SHOULD KNOW:
 #   1. Thermal_Efficiency is the constant 33.0 for every reactor, because the
@@ -37,7 +38,8 @@
 #      but a stricter design would fit both on the training part only.
 #   3. SMOTE is applied to the training part only. The cross-validation used
 #      inside the random search runs on that balanced training set, so the CV
-#      scores are optimistic. Test-set scores are not affected.
+#      scores (columns CV_Mean_balanced_train) are optimistic and must not be quoted.
+#      Test-set scores are not affected.
 #
 # HOW TO RUN:
 #   pip install -r requirements-research.txt
@@ -478,8 +480,8 @@ for name, mdl in models.items():
     results_s1[name] = {
         'Accuracy': round(acc, 2), 'F1': round(f1, 2),
         'AUC_ROC': round(auc_val, 2),
-        'CV_Mean': round(cvs.mean() * 100, 2),
-        'CV_Std':  round(cvs.std()  * 100, 2),
+        'CV_Mean_balanced_train': round(cvs.mean() * 100, 2),
+        'CV_Std_balanced_train':  round(cvs.std()  * 100, 2),
     }
     preds_s1[name]  = yp
     probas_s1[name] = ypr
@@ -724,7 +726,7 @@ for _, row in df_s1.iterrows():
     star = "*" if row['Model'] == best_name else " "
     print(f"    {star} {row['Model']:12s}: Acc={row['Accuracy']:.1f}%  "
           f"F1={row['F1']:.1f}%  AUC={row['AUC_ROC']:.1f}%  "
-          f"CV={row['CV_Mean']:.1f}%+/-{row['CV_Std']:.1f}%")
+          f"CV(balanced train)={row['CV_Mean_balanced_train']:.1f}%+/-{row['CV_Std_balanced_train']:.1f}%")
 
 print(f"\n  TEMPORAL SPLIT (Cat A->B+C):")
 for n, v in results_temp.items():

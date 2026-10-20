@@ -32,18 +32,23 @@ class AppTests(unittest.TestCase):
         o = self.client.get("/api/options").get_json()
         self.assertEqual(len(o["countries"]), 31)
         self.assertEqual({t["value"] for t in o["types"]}, {"PWR", "BWR", "PHWR", "GCR", "LWGR", "FBR"})
-        self.assertEqual(o["models"]["model1"]["n_reactors"], 407)
-        self.assertEqual(o["models"]["model2"]["n_reactors"], 368)
+        self.assertEqual(o["models"]["model1"]["n_reactors"], 387)
+        self.assertEqual(o["models"]["model2"]["n_reactors"], 324)
 
     def test_saved_test_metrics(self):
         with open(os.path.join(A.ART, "meta.json")) as fh:
             meta = json.load(fh)
-        self.assertAlmostEqual(meta["models"]["model1"]["test"]["accuracy"], 75.61, places=1)
-        self.assertAlmostEqual(meta["models"]["model2"]["test"]["accuracy"], 87.84, places=1)
-        # F1 and AUC as reported in the paper (needs the pinned scikit-learn 1.8.0)
-        m1 = meta["models"]["model1"]["test"]
-        self.assertAlmostEqual(m1["f1_weighted"], 74.9, delta=0.1)
-        self.assertAlmostEqual(m1["auc_ovr_weighted"], 86.5, delta=0.1)
+        m1, m2 = meta["models"]["model1"], meta["models"]["model2"]
+        # cross-validated values; the benchmark (research/expected_results/benchmark) gives
+        # LR 66.0 for Model 1 and RF 71.0 for Model 2
+        self.assertAlmostEqual(m1["test"]["accuracy"], 66.0, delta=1.0)
+        self.assertAlmostEqual(m2["test"]["accuracy"], 71.0, delta=1.0)
+        self.assertAlmostEqual(m1["test"]["baselines"]["country_majority"], 69.0, delta=0.5)
+        self.assertAlmostEqual(m2["test"]["baselines"]["country_majority"], 69.3, delta=0.5)
+        for m in (m1, m2):
+            cm = m["test"]["confusion_matrix"]
+            self.assertEqual([sum(r) for r in cm], [m["class_counts"][c] for c in ("Low", "Medium", "High")])
+            self.assertEqual(m["test"]["n_test"], m["n_reactors"])
 
     def test_predictions_are_valid(self):
         for payload, n_drivers in ((M1, 6), (M2, 7)):

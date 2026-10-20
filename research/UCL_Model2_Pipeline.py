@@ -43,11 +43,13 @@ THINGS A REVIEWER SHOULD KNOW (also listed in the repository README)
        carries no information. Run with --pris-thermal to use the
        Thermal_Efficiency_Pct column instead.
     2. Scaling and the Country encoding are computed on all reactors before the
-       train/test split (as in the paper). The encoding is out-of-fold, and trees
-       ignore scaling, but a stricter design would fit both on the training part only.
+       train/test split. The encoding is out-of-fold, and trees ignore scaling, but a
+       stricter design fits both on the training part only; UCL_Benchmark_CV.py does that.
     3. SMOTE is applied to the training part only. The cross-validation used
        inside the random search runs on that balanced training set, so the CV
-       scores are optimistic. Test-set scores are not affected.
+       scores (columns CV_Mean_balanced_train) are optimistic and must not be quoted.
+       Test-set scores are not affected. A single split of 65 test reactors moves by
+       1.5 points per reactor; use UCL_Benchmark_CV.py for the accuracy of the models.
     4. Model 2 only includes reactors with at least two usable PRIS years in each
        history period (column Model2_Subset of the HISTORY sheet). Reactors that
        were shut down in 2010-2017, such as most Japanese units, drop out.

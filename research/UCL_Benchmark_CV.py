@@ -22,6 +22,10 @@ WHAT IT DOES (nothing is tuned, so no score is selected on its own test fold)
                 C. Design minus Country (12)       on the 324 reactors
                 D. Model 2: design + history (18)  on the 324 reactors
                 E. History only (5)                on the 324 reactors
+                F. Design + UCL 2010-2013 (14)     on the 324 reactors
+                G. Design + UCL 2014-2017 (14)     on the 324 reactors
+                H. Design + both UCL periods (15)  on the 324 reactors (no derived trend features)
+                I. Model 2 without Country (17)    on the 324 reactors
     Inside every training fold: scaling is fitted on the training part, the Country
     encoding (mean class of the other reactors of that country, out-of-fold within the
     training part) is computed from the training part only, and SMOTE (k = 3) is applied
@@ -185,13 +189,71 @@ def nadeau_bengio(d, n_train, n_test):
     return np.mean(d), t, float(2 * stats.t.sf(abs(t), k - 1))
 
 
+def summarise_and_test(res, out_dir):
+    """Write BM_summary.csv and BM_paired_tests.csv from the table of fold scores."""
+    L = {lab[0]: lab for lab in dict.fromkeys(res["Set"])}
+    A, B, C, D, E = [L[k] for k in "ABCDE"]
+    extra = all(k in L for k in "FGHI")
+    repeats = res["Fold"].nunique() // 5
+    metrics = ["accuracy", "balanced_accuracy", "macro_F1", "weighted_F1", "F1_Low", "F1_Medium", "F1_High",
+               "within_one_class", "AUC_macro_OvR"]
+    g = res.groupby(["Set", "Model"], sort=False)[metrics]
+    summ = g.mean().round(2).join(g.std().round(2), rsuffix="_sd").reset_index()
+    summ.to_csv(os.path.join(out_dir, "BM_summary.csv"), index=False)
+    pd.set_option("display.width", 250)
+    print("\nMean over %d test folds (accuracy, macro F1, Medium F1, AUC, within-one-class)" % (5 * repeats))
+    show = summ[["Set", "Model", "accuracy", "accuracy_sd", "macro_F1", "F1_Medium", "AUC_macro_OvR", "within_one_class"]]
+    print(show.to_string(index=False))
+
+    def fold_vec(label, model, metric):
+        r = res[(res["Set"] == label) & (res["Model"] == model)].sort_values("Fold")
+        return r[metric].values, int(r["n_train"].iloc[0]), int(r["n_test"].iloc[0])
+
+    CB, PB = "Baseline: country majority", "Baseline: persistence (past UCL)"
+    pairs = []
+    for m in ["LR", "RF", "ETC", "XGB", "Stacking"]:
+        pairs += [(B, m, B, CB, "design model vs country baseline (324)"),
+                  (A, m, A, CB, "design model vs country baseline (387)"),
+                  (D, m, B, m, "Model 2 vs Model 1, same classifier (324)"),
+                  (D, m, B, CB, "Model 2 vs country baseline (324)"),
+                  (D, m, B, PB, "Model 2 vs persistence baseline (324)"),
+                  (B, m, C, m, "design with vs without country (324)")]
+        if extra:
+            F, G, H, I = [L[k] for k in "FGHI"]
+            pairs += [(F, m, B, m, "adding UCL 2010-2013 to the design features (324)"),
+                      (G, m, B, m, "adding UCL 2014-2017 to the design features (324)"),
+                      (H, m, B, m, "adding both UCL periods to the design features (324)"),
+                      (D, m, H, m, "adding the three derived trend features (324)"),
+                      (D, m, I, m, "Model 2 with vs without country (324)")]
+    out = []
+    for s1, m1, s2, m2, what in pairs:
+        for metric in ("accuracy", "balanced_accuracy", "macro_F1"):
+            a, ntr, nte = fold_vec(s1, m1, metric)
+            b, _, _ = fold_vec(s2, m2, metric)
+            diff, t, p = nadeau_bengio(a - b, ntr, nte)
+            out.append({"Comparison": what, "First": "%s | %s" % (s1.split(",")[0], m1),
+                        "Second": "%s | %s" % (s2.split(",")[0], m2), "Metric": metric,
+                        "Mean_difference_pts": round(diff, 2), "t": round(t, 3) if t == t else np.nan,
+                        "p_corrected": round(p, 4)})
+    pt = pd.DataFrame(out)
+    pt.to_csv(os.path.join(out_dir, "BM_paired_tests.csv"), index=False)
+    print("\nPaired comparisons on the same folds (Nadeau-Bengio corrected t-test), accuracy only")
+    print(pt[pt["Metric"] == "accuracy"].drop(columns="Metric").to_string(index=False))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default=None)
     ap.add_argument("--out", default="results_Benchmark")
     ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--tests-only", action="store_true",
+                    help="skip the model fitting; recompute BM_summary.csv and BM_paired_tests.csv from an existing BM_fold_scores.csv")
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
+    if args.tests_only:
+        res = pd.read_csv(os.path.join(args.out, "BM_fold_scores.csv"))
+        summarise_and_test(res, args.out)
+        return
     repeats = 2 if args.quick else 5
     xlsx = M.find_dataset(args.data)
     all_df = build_static_features(M.load_all(xlsx))
@@ -206,50 +268,19 @@ def main():
         (sub, DESIGN_NO_COUNTRY, "C. Design without country (12), 324 reactors", True, [], "sub"),
         (sub, M.FEAT_M2, "D. Model 2: design + history (18), 324 reactors", True, [], "sub"),
         (sub, M.FEAT_TEMPORAL, "E. History only (5), 324 reactors", True, [], "sub"),
+        # history-period check (sets F to I)
+        (sub, M.FEAT_M1 + ["UCL_P1"], "F. Design + UCL 2010-2013 (14), 324 reactors", True, [], "sub"),
+        (sub, M.FEAT_M1 + ["UCL_P2"], "G. Design + UCL 2014-2017 (14), 324 reactors", True, [], "sub"),
+        (sub, M.FEAT_M1 + ["UCL_P1", "UCL_P2"], "H. Design + both UCL periods, no derived (15), 324 reactors", True, [], "sub"),
+        (sub, DESIGN_NO_COUNTRY + M.FEAT_TEMPORAL, "I. Model 2 without country (17), 324 reactors", True, [], "sub"),
     ]
     for df, feats, label, use_models, bl, tag in plan:
         print("running:", label, flush=True)
         run_set(df, feats, label, use_models, bl, cv, tag, rows, preds)
     res = pd.DataFrame(rows)
     res.to_csv(os.path.join(args.out, "BM_fold_scores.csv"), index=False)
-
-    # summary table
-    metrics = ["accuracy", "balanced_accuracy", "macro_F1", "weighted_F1", "F1_Low", "F1_Medium", "F1_High",
-               "within_one_class", "AUC_macro_OvR"]
-    g = res.groupby(["Set", "Model"], sort=False)[metrics]
-    summ = g.mean().round(2).join(g.std().round(2), rsuffix="_sd").reset_index()
-    summ.to_csv(os.path.join(args.out, "BM_summary.csv"), index=False)
-    pd.set_option("display.width", 250)
-    print("\nMean over %d test folds (accuracy, macro F1, Medium F1, AUC, within-one-class)" % (5 * repeats))
-    show = summ[["Set", "Model", "accuracy", "accuracy_sd", "macro_F1", "F1_Medium", "AUC_macro_OvR", "within_one_class"]]
-    print(show.to_string(index=False))
-
-    # paired comparisons (same folds)
-    def fold_vec(label, model):
-        r = res[(res["Set"] == label) & (res["Model"] == model)].sort_values("Fold")
-        return r["accuracy"].values, int(r["n_train"].iloc[0]), int(r["n_test"].iloc[0])
-
-    pairs = []
-    A, B, C, D, E = [p[2] for p in plan]
-    best_names = ["LR", "RF", "ETC", "XGB", "Stacking"]
-    for m in best_names:
-        pairs += [(B, m, B, "Baseline: country majority", "design model vs country baseline (324)"),
-                  (D, m, B, m, "Model 2 vs Model 1, same classifier (324)"),
-                  (D, m, B, "Baseline: persistence (past UCL)", "Model 2 vs persistence baseline (324)"),
-                  (B, m, C, m, "design with vs without country (324)")]
-        pairs += [(A, m, A, "Baseline: country majority", "design model vs country baseline (387)")]
-    out = []
-    for s1, m1, s2, m2, what in pairs:
-        a, ntr, nte = fold_vec(s1, m1)
-        b, _, _ = fold_vec(s2, m2)
-        diff, t, p = nadeau_bengio(a - b, ntr, nte)
-        out.append({"Comparison": what, "First": "%s | %s" % (s1.split(",")[0], m1), "Second": "%s | %s" % (s2.split(",")[0], m2),
-                    "Mean_accuracy_difference_pts": round(diff, 2), "t": round(t, 3) if t == t else np.nan,
-                    "p_corrected": round(p, 4)})
-    pt = pd.DataFrame(out)
-    pt.to_csv(os.path.join(args.out, "BM_paired_tests.csv"), index=False)
-    print("\nPaired comparisons of fold accuracy (Nadeau-Bengio corrected t-test)")
-    print(pt.to_string(index=False))
+    summarise_and_test(res, args.out)
+    A = plan[0][2]
 
     # pooled confusion matrices (all test folds added up) for the main settings
     cms = {}

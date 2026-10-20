@@ -178,7 +178,7 @@
     const m2 = S.opts.models.model2;
     const found = (m) => `${m.confusion_matrix[1][1]} of ${m.confusion_matrix[1].reduce((a, b) => a + b, 0)}`;
     $('[data-info="medium"]').textContent =
-      `In testing, design only found ${found(m1)} Medium reactors and the model with past performance found ${found(m2)}.`;
+      `In cross-validation, design only found ${found(m1)} Medium reactors and the model with past performance found ${found(m2)}.`;
   }
 
   /* ---------- Building the inputs ---------------------------------------- */
@@ -656,7 +656,7 @@
     setNotices(r.warnings || []);
 
     const f = r.model_facts;
-    let rel = `Tested on ${f.n_test} unseen reactors: ${Math.round(f.accuracy)}% correct.`;
+    let rel = `Cross-validated on ${f.n_test} reactors: ${Math.round(f.accuracy)}% correct. Guessing from the country alone gives ${Math.round(f.baseline)}%.`;
     if (cls === "Medium" || probs.Medium >= 0.25) rel += " Medium is the hardest class.";
     $("#reliability").textContent = rel;
 

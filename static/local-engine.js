@@ -92,6 +92,10 @@
     const x = new Float32Array(b.features.length);
     b.features.forEach((f, j) => { x[j] = (row[f] - b.scaler.mean[j]) / b.scaler.scale[j]; });
     if (b.kind === "xgb") return xgbProba(engine.parts.xgb, x);
+    if (b.kind === "forest") return forestProba(engine.parts.rf, x);
+    if (b.kind === "logreg") {
+      return softmax(b.coef.map((coef, k) => coef.reduce((s, c, j) => s + c * x[j], b.intercept[k])));
+    }
     const z = [];
     b.order.forEach((name) => { partProba(engine.parts[name], x).forEach((v) => z.push(v)); });
     const logits = b.meta_coef.map((coef, k) => coef.reduce((s, c, j) => s + c * z[j], b.meta_intercept[k]));
@@ -259,6 +263,7 @@
         n_reactors: meta.n_reactors,
         n_test: meta.test.n_test,
         accuracy: meta.test.accuracy,
+        baseline: meta.test.baselines.country_majority,
         medium_found: cm[1][1],
         medium_total: cm[1].reduce((a, b) => a + b, 0),
       },
