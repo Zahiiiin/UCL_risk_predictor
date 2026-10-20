@@ -1,0 +1,31 @@
+PASS  workbook has the five expected sheets
+PASS  Reactor_Name is present and unique
+PASS  HISTORY lists the same reactors in the same order
+PASS  flat CSV lists the same reactors in the same order
+PASS  no blank cell in any FINAL_DATASET column
+PASS  reactor types are the six expected ones
+PASS  classes are Low, Medium or High
+INFO  387 reactors, 31 countries, classes {'Low': 218, 'Medium': 91, 'High': 78}
+PASS  Reactor_Age, Operational_Years, Capacity_Category, Construction_Duration and Thermal_Efficiency_Pct follow from their inputs
+PASS  Net_Capacity_MW inside 50..1800
+PASS  First_Grid_Year inside 1950..2024
+PASS  Construction_Duration inside 1..45
+PASS  Thermal_Efficiency_Pct inside 20..40
+PASS  flat CSV agrees with FINAL_DATASET in every shared column
+PASS  raw PRIS download has no duplicate unit-year
+PASS  in the raw PRIS download UCF + PUF + UUF = 100 and UCL = UUF in every row
+WARN  5 unit-years with negative UCF in the raw download (PRIS values, kept as published): [('KOZLODUY-2', '1975', '-0.198'), ('NIEDERAICHBACH', '1973', '-0.432'), ('JPDR', '1974', '-4.1667'), ('FORT ST. VRAIN', '1985', '-0.0002'), ('GARIGLIANO', '1979', '-0.3311')]
+PASS  every labelled reactor is found in the raw PRIS download
+PASS  UCL_Value, UCL_Years_Used and UCL_Class re-computed from the raw PRIS download agree for every reactor
+PASS  all history columns re-computed from the raw PRIS download agree for every reactor
+INFO  reactors within 0.05 of a class limit (their class could flip with a tiny data change): 3 [('HANUL-6', 2.01), ('ROBINSON-2', 1.96), ('WATTS BAR-2', 2.04)]
+PASS  the 20 reactors dropped for too few usable years really have fewer than 3
+PASS  labelled plus dropped reactors add up to the 407-reactor population
+PASS  all 5481 PRIS_YEARLY rows equal the raw download and carry the right Used flag
+PASS  PRIS_YEARLY contains every 2010-2024 year that exists in the download for the 407 reactors
+PASS  every PRIS_Name is found in the raw download
+PASS  Net_Capacity_MW is within 10 MW of the PRIS reference unit power (latest year) for every reactor
+PASS  no reactor has a First_Grid_Year later than the first PRIS year with electricity produced
+WARN  1 reactors where the first PRIS year with energy is more than 3 years after First_Grid_Year (name, grid year, first year with energy, first year in PRIS table; PRIS annual data can start late for older units): [('ARMENIAN-2', 1980, 1987, 1980)]
+PASS  Country agrees with the PRIS country for every reactor (after the usual short names)
+INFO  0 FAIL line(s)
