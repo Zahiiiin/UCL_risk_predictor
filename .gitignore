@@ -16,3 +16,8 @@ results_Model2/
 results_Benchmark/
 # One-file preview built by tools/build_preview.py
 preview/
+research/results_Benchmark_thermal/
+research/results_LabelStability/
+results_LeaveCountryOut/
+research/results_Importance/
+research/results_Threshold/

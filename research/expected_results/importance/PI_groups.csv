@@ -1,0 +1,12 @@
+Model,Group,mean,std
+"Model 1 (design, 13)",Country,18.29,3.34
+"Model 1 (design, 13)","Age (age, age squared, age group)",1.5,3.7
+"Model 1 (design, 13)","Reactor type, family and supplier",5.6,4.37
+"Model 1 (design, 13)","Size (net capacity, capacity category)",0.25,3.36
+"Model 1 (design, 13)","Build (construction duration, operational years and category)",1.52,2.16
+"Model 2 (design + history, 18)",Country,6.93,3.99
+"Model 2 (design + history, 18)","Age (age, age squared, age group)",1.19,2.86
+"Model 2 (design + history, 18)","Reactor type, family and supplier",4.1,2.94
+"Model 2 (design + history, 18)","Size (net capacity, capacity category)",0.35,1.89
+"Model 2 (design + history, 18)","Build (construction duration, operational years and category)",0.09,1.44
+"Model 2 (design + history, 18)",Past UCL (all five history inputs),19.81,5.8

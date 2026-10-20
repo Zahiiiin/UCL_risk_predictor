@@ -220,13 +220,13 @@ INTRO = [
      "Reactors listed as operational at the end of 2024 in RDS-2 (2025 edition), minus nine that were left out (see EXCLUDED), minus the "
      f"{n_drop} that lack enough usable years. Reactors that were permanently shut down before the end of 2024 are not included, so the data describe the current fleet."),
     ("Checks",
-     "The PRIS annual values reproduce figures that IAEA prints: the 2013 to 2017 UCF of RDS-2 2018 Table 14 for 356 reactors (median absolute difference 0.03 points) "
-     "and the 2021 to 2023 planned capability loss by reactor type and size of RDS-2 2024 Table 18 (mean absolute difference 0.39 points over six groups). "
-     "tools/audit_dataset.py re-computes the label and the history columns from the raw download and checks the other columns; its last report is data/AUDIT_REPORT.txt."),
+     "The PRIS annual values reproduce figures that IAEA prints: the 2013 to 2017 UCF of RDS-2 2018 Table 14 for 365 reactors (median absolute difference 0.03 points) "
+     "and the 2021 to 2023 planned capability loss by reactor type and size of RDS-2 2024 Table 18 (mean absolute difference 0.50 points over seven groups with at least five reactors). "
+     "tools/validate_against_rds2.py repeats these comparisons. tools/audit_dataset.py re-computes the label and the history columns from the raw download and checks the other columns; its last report is data/AUDIT_REPORT.txt."),
     ("Note on RDS-2 Table 14",
      "Version 5 of this dataset used the Table 14 columns headed 2010-2020 (2021 edition) and 2014-2024 (2025 edition). Compared with the annual PRIS values, "
-     "those columns match averages over the whole life of each reactor up to 2020 and 2024 (mean absolute difference 0.60 and 0.45 points) and not the stated periods "
-     "(5.23 and 5.27 points). They were therefore not used here."),
+     "those columns match averages over the whole life of each reactor up to 2020 and 2024 (mean absolute difference 0.39 and 0.34 points) and not the stated periods "
+     "(5.05 and 5.18 points). They were therefore not used here."),
 ]
 SOURCES = [
     ("UCL_Value, UCL_Years_Used, history columns, PRIS_YEARLY",

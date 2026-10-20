@@ -62,6 +62,7 @@ warnings.filterwarnings("ignore")
 RS = 42
 CLASSES = ["Low", "Medium", "High"]
 DESIGN_NO_COUNTRY = [f for f in M.FEAT_M1 if f != "Country_OOF"]
+USE_PRIS_THERMAL = False   # set by --pris-thermal: use the computed thermal efficiency instead of the constant 33.0
 
 
 # ------------------------------------------------------------------------------
@@ -75,7 +76,10 @@ def build_static_features(df):
     d["Age_squared"] = d["Reactor_Age"] ** 2
     d["NSSS_Group"] = d["NSSS_Supplier"].map(M.NSSS_GROUP_MAP).fillna("Other")
     d["NSSS_Group_enc"] = LabelEncoder().fit_transform(d["NSSS_Group"])
-    d["Thermal_Efficiency"] = 33.0   # constant, as in the pipelines
+    if USE_PRIS_THERMAL and "Thermal_Efficiency_Pct" in d.columns:
+        d["Thermal_Efficiency"] = pd.to_numeric(d["Thermal_Efficiency_Pct"], errors="coerce").clip(10, 50).fillna(33.0)
+    else:
+        d["Thermal_Efficiency"] = 33.0   # constant, as in the pipelines
     d["Model_Family"] = d["Reactor_Model"].apply(M.model_family)
     d["Model_Family_enc"] = LabelEncoder().fit_transform(d["Model_Family"])
     d["Age_Group"] = d["Reactor_Age"].apply(M.age_group)
@@ -192,7 +196,7 @@ def nadeau_bengio(d, n_train, n_test):
 def summarise_and_test(res, out_dir):
     """Write BM_summary.csv and BM_paired_tests.csv from the table of fold scores."""
     L = {lab[0]: lab for lab in dict.fromkeys(res["Set"])}
-    A, B, C, D, E = [L[k] for k in "ABCDE"]
+    A, B, C, D = [L[k] for k in "ABCD"]
     extra = all(k in L for k in "FGHI")
     repeats = res["Fold"].nunique() // 5
     metrics = ["accuracy", "balanced_accuracy", "macro_F1", "weighted_F1", "F1_Low", "F1_Medium", "F1_High",
@@ -246,9 +250,15 @@ def main():
     ap.add_argument("--data", default=None)
     ap.add_argument("--out", default="results_Benchmark")
     ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--pris-thermal", action="store_true",
+                    help="use the Thermal_Efficiency_Pct column instead of the constant 33.0 (robustness check)")
+    ap.add_argument("--sets", default="ABCDEFGHI",
+                    help="letters of the feature sets to run (default all nine; A to D must be included)")
     ap.add_argument("--tests-only", action="store_true",
                     help="skip the model fitting; recompute BM_summary.csv and BM_paired_tests.csv from an existing BM_fold_scores.csv")
     args = ap.parse_args()
+    global USE_PRIS_THERMAL
+    USE_PRIS_THERMAL = args.pris_thermal
     os.makedirs(args.out, exist_ok=True)
     if args.tests_only:
         res = pd.read_csv(os.path.join(args.out, "BM_fold_scores.csv"))
@@ -274,6 +284,7 @@ def main():
         (sub, M.FEAT_M1 + ["UCL_P1", "UCL_P2"], "H. Design + both UCL periods, no derived (15), 324 reactors", True, [], "sub"),
         (sub, DESIGN_NO_COUNTRY + M.FEAT_TEMPORAL, "I. Model 2 without country (17), 324 reactors", True, [], "sub"),
     ]
+    plan = [p_ for p_ in plan if p_[2][0] in args.sets]
     for df, feats, label, use_models, bl, tag in plan:
         print("running:", label, flush=True)
         run_set(df, feats, label, use_models, bl, cv, tag, rows, preds)

@@ -1,0 +1,32 @@
+Model,Input,mean,std
+"Model 1 (design, 13)",Reactor type,2.2,2.28
+"Model 1 (design, 13)",Country (UCL tendency),18.58,3.79
+"Model 1 (design, 13)",Net capacity (MW),-0.22,2.77
+"Model 1 (design, 13)",Capacity category,-0.12,1.01
+"Model 1 (design, 13)",Reactor age (yr),-1.73,2.84
+"Model 1 (design, 13)",Operational years,0.0,0.0
+"Model 1 (design, 13)",Age squared,-1.65,2.22
+"Model 1 (design, 13)",NSSS technology group,-0.26,1.86
+"Model 1 (design, 13)",Construction duration (yr),1.6,2.31
+"Model 1 (design, 13)",Thermal efficiency (constant),0.0,0.0
+"Model 1 (design, 13)",Model family,1.25,2.57
+"Model 1 (design, 13)",Age group,-0.1,1.96
+"Model 1 (design, 13)",Operational category,0.0,0.0
+"Model 2 (design + history, 18)",Reactor type,1.4,1.45
+"Model 2 (design + history, 18)",Country (UCL tendency),6.9,3.38
+"Model 2 (design + history, 18)",Net capacity (MW),-0.12,1.74
+"Model 2 (design + history, 18)",Capacity category,0.38,0.74
+"Model 2 (design + history, 18)",Reactor age (yr),-0.42,1.73
+"Model 2 (design + history, 18)",Operational years,0.0,0.0
+"Model 2 (design + history, 18)",Age squared,0.2,1.68
+"Model 2 (design + history, 18)",NSSS technology group,0.22,1.64
+"Model 2 (design + history, 18)",Construction duration (yr),-0.08,1.43
+"Model 2 (design + history, 18)",Thermal efficiency (constant),0.0,0.0
+"Model 2 (design + history, 18)",Model family,2.01,1.88
+"Model 2 (design + history, 18)",Age group,-0.0,1.24
+"Model 2 (design + history, 18)",Operational category,0.0,0.0
+"Model 2 (design + history, 18)",UCL 2010-2013,2.46,2.6
+"Model 2 (design + history, 18)",UCL 2014-2017,1.47,1.73
+"Model 2 (design + history, 18)",UCL change (P1 to P2),-0.26,2.04
+"Model 2 (design + history, 18)",UCL mean (2 periods),1.43,2.6
+"Model 2 (design + history, 18)",UCL trend direction,-0.15,1.72

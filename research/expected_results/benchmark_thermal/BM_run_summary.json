@@ -1,0 +1,12 @@
+{
+ "repeats": 5,
+ "folds": 25,
+ "n_all": 387,
+ "n_model2": 324,
+ "versions": {
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "scikit-learn": "1.8.0",
+  "xgboost": "3.4.1"
+ }
+}

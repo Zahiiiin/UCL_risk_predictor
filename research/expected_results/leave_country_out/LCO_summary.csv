@@ -1,0 +1,26 @@
+Set,Model,n,accuracy,balanced_accuracy,macro_F1,F1_Low,F1_Medium,F1_High
+"A. Design without country (12), all 387 reactors",LR,387,22.74,19.71,19.75,31.69,19.19,8.38
+"A. Design without country (12), all 387 reactors",RF,387,35.14,27.35,27.03,49.54,23.23,8.33
+"A. Design without country (12), all 387 reactors",ETC,387,31.52,25.06,25.05,45.08,21.32,8.75
+"A. Design without country (12), all 387 reactors",XGB,387,31.52,27.16,26.62,42.18,23.68,13.99
+"A. Design without country (12), all 387 reactors",Stacking,387,37.98,26.99,26.18,54.62,17.68,6.25
+"A. Design without country (12), all 387 reactors",Baseline: majority class (training countries),387,56.33,33.33,24.02,72.07,0.0,0.0
+"C. Design without country (12), 324 reactors",LR,324,42.59,39.36,38.68,53.78,23.31,38.96
+"C. Design without country (12), 324 reactors",RF,324,32.41,26.92,26.64,43.55,27.06,9.3
+"C. Design without country (12), 324 reactors",ETC,324,32.1,26.87,26.88,43.35,25.77,11.51
+"C. Design without country (12), 324 reactors",XGB,324,34.57,28.7,28.58,46.33,25.45,13.95
+"C. Design without country (12), 324 reactors",Stacking,324,35.19,26.3,25.46,49.1,20.13,7.14
+"C. Design without country (12), 324 reactors",Baseline: majority class (training countries),324,53.7,33.33,23.29,69.88,0.0,0.0
+"I. Model 2 without country (17), 324 reactors",LR,324,58.95,55.93,54.52,72.12,28.22,63.23
+"I. Model 2 without country (17), 324 reactors",RF,324,57.1,56.19,56.29,66.88,35.82,66.17
+"I. Model 2 without country (17), 324 reactors",ETC,324,58.33,53.6,54.4,72.07,38.58,52.54
+"I. Model 2 without country (17), 324 reactors",XGB,324,54.32,52.99,52.27,64.58,30.6,61.64
+"I. Model 2 without country (17), 324 reactors",Stacking,324,56.48,49.96,51.17,69.23,29.27,55.0
+"I. Model 2 without country (17), 324 reactors",Baseline: majority class (training countries),324,53.7,33.33,23.29,69.88,0.0,0.0
+"E. History only (5), 324 reactors",LR,324,70.99,64.65,64.25,83.98,42.55,66.21
+"E. History only (5), 324 reactors",RF,324,61.11,55.1,55.42,75.29,39.05,51.91
+"E. History only (5), 324 reactors",ETC,324,56.17,50.5,50.69,70.76,34.68,46.62
+"E. History only (5), 324 reactors",XGB,324,60.49,55.96,55.88,74.25,40.45,52.94
+"E. History only (5), 324 reactors",Stacking,324,59.26,52.42,52.75,74.64,35.93,47.69
+"E. History only (5), 324 reactors",Baseline: majority class (training countries),324,53.7,33.33,23.29,69.88,0.0,0.0
+"C. Design without country (12), 324 reactors",Baseline: persistence (past UCL),324,63.89,60.4,59.64,78.15,40.91,59.86
