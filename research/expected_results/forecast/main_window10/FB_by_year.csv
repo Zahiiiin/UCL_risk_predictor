@@ -58,7 +58,7 @@ target_year,Method,n,MAE,ClassAcc
 2013,base:mean5,373,4.675,58.9812
 2013,base:median5,373,4.1831,65.9517
 2013,base:country_mean3,373,4.8492,61.6622
-2013,base:fleet_mean,373,5.743,18.4987
+2013,base:fleet_mean,373,5.7431,18.4987
 2013,ml:Ridge|A,373,4.1604,61.6622
 2013,ml:RF|A,373,4.0703,60.3217
 2013,ml:XGB|A,373,4.1205,60.8579

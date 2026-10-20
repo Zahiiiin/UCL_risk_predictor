@@ -226,6 +226,8 @@ def main():
     ap.add_argument("--models", nargs="+", default=["Ridge", "RF", "XGB"])
     ap.add_argument("--subset", choices=["all", "387"], default="all")
     ap.add_argument("--tag", default="")
+    ap.add_argument("--rescore", action="store_true",
+                    help="do not refit anything; re-read the stored predictions of this tag and recompute all scores")
     a = ap.parse_args()
     P = pd.read_csv(PANEL)
     if a.subset == "387":
@@ -238,9 +240,13 @@ def main():
     os.makedirs(outdir, exist_ok=True)
     print(f"run '{tag}': panel rows {len(P)}, sets {a.sets}, models {a.models}, grouped {a.grouped}, window {a.window}")
     t0 = time.time()
-    D = run(P, a.sets, a.models, a.first_test, a.last_test, a.window or None, None if a.grouped == "none" else a.grouped)
+    if a.rescore:
+        D = pd.read_csv(os.path.join(outdir, "FB_predictions.csv.gz"))
+    else:
+        D = run(P, a.sets, a.models, a.first_test, a.last_test, a.window or None,
+                None if a.grouped == "none" else a.grouped)
+        D.round(4).to_csv(os.path.join(outdir, "FB_predictions.csv.gz"), index=False)
     print(f"done in {time.time() - t0:.0f} s")
-    D.round(4).to_csv(os.path.join(outdir, "FB_predictions.csv.gz"), index=False)
 
     def periods(D):
         return {"2010-2025": D, "2018-2025": D[D.target_year >= 2018], "2010-2017": D[D.target_year <= 2017]}
@@ -254,7 +260,7 @@ def main():
         s["MAE_skill_vs_persistence_pct"] = (1 - s.MAE / ref) * 100
         summ.append(s)
         ml = [c for c in method_columns(d) if c.startswith("ml:")]
-        for refname in ["base:persistence", "base:mean5", "base:country_mean3"]:
+        for refname in ["base:persistence", "base:median5", "base:mean5", "base:country_mean3"]:
             b = bootstrap_vs(d, refname, [c for c in method_columns(d) if c != refname])
             b.insert(0, "Period", pname)
             boots.append(b)
@@ -269,6 +275,9 @@ def main():
         s.insert(0, "target_year", Y)
         by.append(s[["target_year", "Method", "n", "MAE", "ClassAcc"]])
     pd.concat(by).round(4).to_csv(os.path.join(outdir, "FB_by_year.csv"), index=False)
+    if a.rescore:
+        print("rescored from stored predictions; FB_run.json left as it was")
+        return
     json.dump({"args": vars(a), "rows_scored": int(len(D)), "reactors_scored": int(D.unit.nunique()),
                "seconds": round(time.time() - t0)}, open(os.path.join(outdir, "FB_run.json"), "w"), indent=2)
     show = S[S.Period == "2010-2025"].sort_values("MAE")
