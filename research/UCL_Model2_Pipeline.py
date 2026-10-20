@@ -246,6 +246,16 @@ def trend_direction(change):
 # ------------------------------------------------------------------------------
 def load_data(xlsx):
     """Returns (model-2 data, number of labelled reactors, number of countries in all)."""
+    df_all = load_all(xlsx)
+    n_all = len(df_all)
+    n_countries_all = int(df_all["Country"].nunique())
+    df = df_all.dropna(subset=["UCL_2010_2013", "UCL_2014_2017"]).reset_index(drop=True)
+    assert (df["Model2_Subset"] == 1).all()
+    return df, n_all, n_countries_all
+
+
+def load_all(xlsx):
+    """All labelled reactors with their history columns (blank where no history exists)."""
     raw = pd.read_excel(xlsx, sheet_name="FINAL_DATASET", header=0)
     raw.columns = [str(c).split("\n")[0].strip() for c in raw.columns]
     df = raw[raw["Reactor_Name"].notna() &
@@ -282,11 +292,7 @@ def load_data(xlsx):
                   on="Reactor_Name", how="left")
     if len(df) != n_before:
         raise ValueError("Merge changed the number of reactors.")
-    n_all = len(df)
-    n_countries_all = int(df["Country"].nunique())
-    df = df.dropna(subset=["UCL_2010_2013", "UCL_2014_2017"]).reset_index(drop=True)
-    assert (df["Model2_Subset"] == 1).all()
-    return df, n_all, n_countries_all
+    return df
 
 
 # ------------------------------------------------------------------------------
