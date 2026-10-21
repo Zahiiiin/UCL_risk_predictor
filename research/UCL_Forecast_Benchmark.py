@@ -32,6 +32,7 @@ FEATURE SETS (what the models may look at; each set adds to the one before):
   B  A + own planned and external unavailability
   C  B + context (world average, country average)
   D  C + reactor age and size
+  E  D + reactor type and construction time (only for the 387 reactors of the paper, run with --subset 387)
 
 SCORES
 ------
@@ -80,8 +81,10 @@ FEATURES = {
 FEATURES["B"] = FEATURES["A"] + ["puf_l0", "puf_mean3", "puf_mean5", "xuf_mean5", "n_shut5"]
 FEATURES["C"] = FEATURES["B"] + ["fleet_mean_t", "fleet_med_t", "fleet_mean3", "country_mean3", "country_units_t"]
 FEATURES["D"] = FEATURES["C"] + ["age", "log_mw"]
+# E is only defined for the 387 reactors of the paper (design facts are missing for the other units): use --subset 387
+FEATURES["E"] = FEATURES["D"] + ["constr_years", "type_PWR", "type_BWR", "type_PHWR", "type_other"]
 SET_LABEL = {"A": "A. own UCL history", "B": "B. A + planned/external", "C": "C. B + world and country context",
-             "D": "D. C + age and size"}
+             "D": "D. C + age and size", "E": "E. D + reactor type and construction time (387 reactors only)"}
 
 
 def to_class(v):

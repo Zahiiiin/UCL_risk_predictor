@@ -84,6 +84,10 @@ def load_unit_year():
     raw["grid_year"] = raw["unit"].map(grid)
     raw["grid_year"] = raw["grid_year"].fillna(raw["unit"].map(first_rep))
     raw["in_paper_387"] = raw["unit"].isin(set(grid.index)).astype(int)
+    # design facts (only known for the 387 reactors of the paper; empty for all other units)
+    typ = final.set_index("PRIS_Name")["Type"]
+    raw["design_type"] = raw["unit"].map(typ)
+    raw["constr_years"] = raw["unit"].map(final.set_index("PRIS_Name")["Construction_Duration"])
     raw["no_value"] = raw.UCL.isna()
     raw["fully_shut"] = (raw.UCF == 0) & (raw.UCL == 0)
     raw["usable"] = ~raw.no_value & ~raw.fully_shut & (raw.year != raw.grid_year)
@@ -155,6 +159,13 @@ def build_panel(raw):
     P["country_mean3"] = [country_mean3.get((c, y), np.nan) for c, y in zip(P.country, P.origin_year)]
     P["country_units_t"] = [country_units.get((c, y), np.nan) for c, y in zip(P.country, P.origin_year)]
     P["site"] = [site_name(u, c) for u, c in zip(P.unit, P.country)]
+    # design columns for the 387 paper reactors (used only by feature set E of the benchmark)
+    dz = raw.drop_duplicates("unit").set_index("unit")[["design_type", "constr_years"]]
+    P["constr_years"] = P.unit.map(dz["constr_years"])
+    dt = P.unit.map(dz["design_type"])
+    for k in ["PWR", "BWR", "PHWR"]:
+        P["type_" + k] = np.where(dt.isna(), np.nan, (dt == k).astype(float))
+    P["type_other"] = np.where(dt.isna(), np.nan, (~dt.isin(["PWR", "BWR", "PHWR"])).astype(float))
     # keep only rows that can be used: next year is usable AND the unit has some recent history
     keep = P.y.notna() & (P.n_usable5 >= MIN_USABLE_IN_5) & P.origin_year.between(years.min(), years.max() - 1)
     P = P[keep].reset_index(drop=True)

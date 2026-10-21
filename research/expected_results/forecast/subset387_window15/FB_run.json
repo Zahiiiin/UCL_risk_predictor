@@ -1,0 +1,23 @@
+{
+  "args": {
+    "first_test": 2010,
+    "last_test": 2025,
+    "window": 15,
+    "grouped": "none",
+    "sets": [
+      "D",
+      "E"
+    ],
+    "models": [
+      "Ridge",
+      "RF",
+      "XGB"
+    ],
+    "subset": "387",
+    "tag": "subset387_window15",
+    "rescore": false
+  },
+  "rows_scored": 5437,
+  "reactors_scored": 387,
+  "seconds": 139
+}
