@@ -50,7 +50,7 @@ def fig_overview():
     ps = json.load(open(os.path.join(FC, "panel_summary.json")))
     hist = pd.read_excel(PF.XLSX, sheet_name="HISTORY")
     n_all, n_sub = len(PF.FINAL), int((hist.Model2_Subset == 1).sum())
-    W, H = 6.5, 5.45
+    W, H = 6.5, 4.70
     fig = plt.figure(figsize=(W, H))
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, W)
@@ -78,18 +78,18 @@ def fig_overview():
         ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
                     arrowprops=dict(arrowstyle="-|>", lw=0.8, color="black", shrinkA=0, shrinkB=0, mutation_scale=6.5))
 
-    L, R, G = 0.12, W - 0.12, 0.17
+    L, R, G = 0.12, W - 0.12, 0.13
     mid = W / 2
     gap = 0.14
     xL0, xL1 = L, mid - gap / 2
     xR0, xR1 = mid + gap / 2, R
     cL, cR = (xL0 + xL1) / 2, (xR0 + xR1) / 2
     t1 = H - 0.08
-    t0 = t1 - 0.56
+    t0 = t1 - 0.5
     box(L, R, t0, t1, "IAEA PRIS: UCL, UCF, planned and external losses of every reactor and year (October 2026 download)\n"
         "IAEA RDS-2, 2025 edition: country, type, capacity, grid date, supplier and model of each operating reactor", wrap=118)
     d1 = t0 - G
-    d0 = d1 - 1.05
+    d0 = d1 - 0.95
     arrow(cL, t0, cL, d1)
     arrow(cR, t0, cR, d1)
     box(xL0, xL1, d0, d1, f"PART I: which UCL class does a reactor fall in?\n{n_all} reactors in {PF.FINAL.Country.nunique()} countries operating at the end of 2024. "
@@ -97,7 +97,7 @@ def fig_overview():
     box(xR0, xR1, d0, d1, f"PART II: what will a reactor's UCL be next year?\n{ps['rows']:,} reactor-years from {ps['units']} reactors in {ps['countries']} countries, "
         "including reactors since closed. Target: UCL of the next year; inputs: only what was known at the end of the year", bold_first=True, wrap=50, fc="#E7EEF5")
     m1 = d0 - G
-    m0 = m1 - 1.0
+    m0 = m1 - 0.9
     arrow(cL, d0, cL, m1)
     arrow(cR, d0, cR, m1)
     box(xL0, xL1, m0, m1, "Model 1: 13 design inputs. Model 2: plus 5 inputs from past UCL\n"
@@ -107,7 +107,7 @@ def fig_overview():
         "Ridge, random forest, XGBoost\n"
         "Rolling origin: for each year 2010 to 2025, learn from earlier years only, then forecast that year", wrap=52)
     c1 = m0 - G
-    c0 = c1 - 0.8
+    c0 = c1 - 0.72
     arrow(cL, m0, cL, c1)
     arrow(cR, m0, cR, c1)
     box(xL0, xL1, c0, c1, "Compared with: majority class, country majority, persistence of past UCL\n"
@@ -115,13 +115,13 @@ def fig_overview():
     box(xR0, xR1, c0, c1, "Compared with: last year's value, mean and median of the last 5 years, country and world average\n"
         "Also: training windows, new sites and new countries, design facts, error by year", wrap=52)
     b1 = c0 - G
-    b0 = b1 - 0.52
+    b0 = b1 - 0.46
     arrow(cL, c0, cL, b1)
     arrow(cR, c0, cR, b1)
     box(L, R, b0, b1, "Robustness check, specified before it was run: the settings of each model searched on training data only (nested), "
         "then compared with the fixed settings of the main analysis", wrap=118, fc="#F4F1E6")
     q1 = b0 - G
-    q0 = q1 - 0.4
+    q0 = q1 - 0.36
     arrow(mid, b0, mid, q1)
     box(L, R, q0, q1, "One question: how much of a reactor's unplanned capability loss can public IAEA data predict beyond simple rules?", bold=True, wrap=118)
     assert q0 >= 0.06, "overview does not fit: raise H (bottom edge at %.2f)" % q0
