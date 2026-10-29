@@ -1,0 +1,7 @@
+{
+ "reactors_before": 387,
+ "ukrainian_removed": 15,
+ "reactors_after": 372,
+ "model2_subset_after": 309,
+ "note": "post hoc sensitivity check; same pipeline as UCL_Benchmark_CV.py"
+}
