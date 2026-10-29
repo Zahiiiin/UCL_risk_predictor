@@ -1,0 +1,19 @@
+{
+  "args": {
+    "first_test": 2010,
+    "last_test": 2025,
+    "window": 0,
+    "sets": [
+      "A",
+      "C"
+    ],
+    "models": [
+      "RF",
+      "XGB"
+    ],
+    "out": null
+  },
+  "rows_scored": 6196,
+  "reactors_scored": 505,
+  "seconds": 2526
+}

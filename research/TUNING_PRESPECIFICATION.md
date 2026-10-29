@@ -35,3 +35,8 @@ Part II: for each test year Y, the three target years just before Y are used as 
 ## What is my own assumption
 
 The ranges, the number of candidates (8) and the inner scores are my own choices, not values from a standard. The paper must say so. Random search with 8 candidates is a limited search, and a larger search could find better settings. The inner scores are noisy because the inner parts are small.
+
+## Run log (added after the runs; the text above was committed before any tuned run)
+
+- Part I (UCL_Benchmark_Tuned.py), Part II 15-year window and Part II 10-year window: one run each; results stored in `expected_results/tuning/`. Short code tests on a few folds were made first; their results were not used.
+- Part II with all earlier years (`UCL_Forecast_Tuned.py --window 0`): the first attempt was stopped by the computer's time limit for background jobs on 29 October 2026 at about 23:18 (local time), after 5 of the 16 test years (2010 to 2014). The script writes its result files only at the end, so no result file existed, and only the progress lines (rows and seconds per year) were read. The run was started again at about 23:19 with the same command, the same seed and unchanged code and ranges. The stored result is from the second run. This restart was not caused by a coding error or by a result, and nothing in the design was changed.
