@@ -1,0 +1,402 @@
+{
+ "seed": 42,
+ "n_candidates": 8,
+ "part1": {
+  "inner_folds": 3,
+  "select_score": "accuracy",
+  "sets": "ABCDE",
+  "space": {
+   "LR": {
+    "C": "log-uniform from 0.001 to 100"
+   },
+   "RF": {
+    "max_depth": [
+     3,
+     5,
+     8,
+     12,
+     null
+    ],
+    "min_samples_leaf": [
+     1,
+     2,
+     3,
+     5,
+     8
+    ],
+    "max_features": [
+     "sqrt",
+     0.3,
+     0.5,
+     0.8
+    ]
+   },
+   "ETC": {
+    "max_depth": [
+     3,
+     5,
+     8,
+     12,
+     null
+    ],
+    "min_samples_leaf": [
+     1,
+     2,
+     3,
+     5,
+     8
+    ],
+    "max_features": [
+     "sqrt",
+     0.3,
+     0.5,
+     0.8
+    ]
+   },
+   "XGB": {
+    "max_depth": [
+     2,
+     3,
+     4,
+     6
+    ],
+    "learning_rate": [
+     0.03,
+     0.05,
+     0.1,
+     0.2,
+     0.3
+    ],
+    "n_estimators": [
+     100,
+     200,
+     300
+    ]
+   }
+  },
+  "stacking": "Stacking is NOT searched on its own. In every outer fold it is built from the tuned RF, ETC and XGB chosen in that fold (RF and ETC with 200 trees as in the untuned stack), with the same fixed final logistic regression (C = 1, 2000 iterations) and the same internal 5-fold stacking as the untuned stack.",
+  "candidates": {
+   "LR": [
+    {
+     "C": 1.0
+    },
+    {
+     "C": 1.826
+    },
+    {
+     "C": 0.0017
+    },
+    {
+     "C": 0.0013
+    },
+    {
+     "C": 15.7059
+    },
+    {
+     "C": 0.8624
+    },
+    {
+     "C": 0.0133
+    },
+    {
+     "C": 5.7407
+    }
+   ],
+   "RF": [
+    {
+     "max_depth": null,
+     "min_samples_leaf": 1,
+     "max_features": "sqrt"
+    },
+    {
+     "max_depth": 12,
+     "min_samples_leaf": 1,
+     "max_features": 0.8
+    },
+    {
+     "max_depth": 5,
+     "min_samples_leaf": 5,
+     "max_features": 0.3
+    },
+    {
+     "max_depth": 3,
+     "min_samples_leaf": 8,
+     "max_features": 0.5
+    },
+    {
+     "max_depth": 3,
+     "min_samples_leaf": 8,
+     "max_features": 0.8
+    },
+    {
+     "max_depth": 3,
+     "min_samples_leaf": 1,
+     "max_features": "sqrt"
+    },
+    {
+     "max_depth": 5,
+     "min_samples_leaf": 3,
+     "max_features": 0.5
+    },
+    {
+     "max_depth": 12,
+     "min_samples_leaf": 5,
+     "max_features": 0.3
+    }
+   ],
+   "ETC": [
+    {
+     "max_depth": null,
+     "min_samples_leaf": 1,
+     "max_features": "sqrt"
+    },
+    {
+     "max_depth": null,
+     "min_samples_leaf": 3,
+     "max_features": 0.5
+    },
+    {
+     "max_depth": 8,
+     "min_samples_leaf": 3,
+     "max_features": 0.8
+    },
+    {
+     "max_depth": 12,
+     "min_samples_leaf": 8,
+     "max_features": 0.5
+    },
+    {
+     "max_depth": 8,
+     "min_samples_leaf": 5,
+     "max_features": 0.8
+    },
+    {
+     "max_depth": 8,
+     "min_samples_leaf": 2,
+     "max_features": 0.3
+    },
+    {
+     "max_depth": 8,
+     "min_samples_leaf": 5,
+     "max_features": 0.5
+    },
+    {
+     "max_depth": 12,
+     "min_samples_leaf": 8,
+     "max_features": 0.8
+    }
+   ],
+   "XGB": [
+    {
+     "max_depth": 6,
+     "learning_rate": 0.3,
+     "n_estimators": 100
+    },
+    {
+     "max_depth": 4,
+     "learning_rate": 0.3,
+     "n_estimators": 100
+    },
+    {
+     "max_depth": 2,
+     "learning_rate": 0.1,
+     "n_estimators": 100
+    },
+    {
+     "max_depth": 2,
+     "learning_rate": 0.2,
+     "n_estimators": 100
+    },
+    {
+     "max_depth": 6,
+     "learning_rate": 0.2,
+     "n_estimators": 300
+    },
+    {
+     "max_depth": 6,
+     "learning_rate": 0.05,
+     "n_estimators": 200
+    },
+    {
+     "max_depth": 3,
+     "learning_rate": 0.2,
+     "n_estimators": 300
+    },
+    {
+     "max_depth": 6,
+     "learning_rate": 0.1,
+     "n_estimators": 200
+    }
+   ]
+  }
+ },
+ "part2": {
+  "inner_years": 3,
+  "select_score": "MAE",
+  "sets": [
+   "A",
+   "C"
+  ],
+  "models": [
+   "RF",
+   "XGB"
+  ],
+  "windows": [
+   15,
+   10,
+   0
+  ],
+  "space": {
+   "RF": {
+    "min_samples_leaf": [
+     1,
+     3,
+     5,
+     10,
+     20
+    ],
+    "max_features": [
+     0.3,
+     0.5,
+     0.7,
+     1.0
+    ],
+    "max_depth": [
+     6,
+     10,
+     null
+    ]
+   },
+   "XGB": {
+    "max_depth": [
+     2,
+     3,
+     4,
+     6
+    ],
+    "learning_rate": [
+     0.02,
+     0.05,
+     0.1
+    ],
+    "n_estimators": [
+     100,
+     200,
+     300
+    ],
+    "min_child_weight": [
+     1,
+     5,
+     10
+    ]
+   }
+  },
+  "candidates": {
+   "RF": [
+    {
+     "min_samples_leaf": 5,
+     "max_features": 0.5,
+     "max_depth": null
+    },
+    {
+     "min_samples_leaf": 1,
+     "max_features": 0.7,
+     "max_depth": 10
+    },
+    {
+     "min_samples_leaf": 10,
+     "max_features": 0.5,
+     "max_depth": 10
+    },
+    {
+     "min_samples_leaf": 1,
+     "max_features": 0.3,
+     "max_depth": 6
+    },
+    {
+     "min_samples_leaf": 20,
+     "max_features": 0.5,
+     "max_depth": 6
+    },
+    {
+     "min_samples_leaf": 20,
+     "max_features": 0.3,
+     "max_depth": 10
+    },
+    {
+     "min_samples_leaf": 5,
+     "max_features": 0.3,
+     "max_depth": 6
+    },
+    {
+     "min_samples_leaf": 10,
+     "max_features": 1.0,
+     "max_depth": null
+    }
+   ],
+   "XGB": [
+    {
+     "max_depth": 4,
+     "learning_rate": 0.05,
+     "n_estimators": 300,
+     "min_child_weight": 5
+    },
+    {
+     "max_depth": 2,
+     "learning_rate": 0.05,
+     "n_estimators": 200,
+     "min_child_weight": 5
+    },
+    {
+     "max_depth": 4,
+     "learning_rate": 0.05,
+     "n_estimators": 100,
+     "min_child_weight": 10
+    },
+    {
+     "max_depth": 6,
+     "learning_rate": 0.05,
+     "n_estimators": 300,
+     "min_child_weight": 10
+    },
+    {
+     "max_depth": 4,
+     "learning_rate": 0.05,
+     "n_estimators": 100,
+     "min_child_weight": 5
+    },
+    {
+     "max_depth": 6,
+     "learning_rate": 0.1,
+     "n_estimators": 300,
+     "min_child_weight": 1
+    },
+    {
+     "max_depth": 6,
+     "learning_rate": 0.02,
+     "n_estimators": 200,
+     "min_child_weight": 1
+    },
+    {
+     "max_depth": 3,
+     "learning_rate": 0.05,
+     "n_estimators": 100,
+     "min_child_weight": 5
+    }
+   ]
+  }
+ },
+ "decision_rule": [
+  "The headline numbers of the paper stay the untuned ones (fixed, documented settings).",
+  "The tuned runs are reported in full for every set, model and window that was run, whatever they show. Nothing is dropped.",
+  "Only one tuned run per design is made. If the result is disappointing, the ranges are NOT changed and the search is NOT repeated. A re-run is allowed only to fix a coding error, and then the first version is described too.",
+  "A tuned model is said to differ from its untuned version only if the corrected resampled t-test on the 25 outer folds (Part I, accuracy) has p < 0.05, or the 95 percent bootstrap interval of the MAE difference (Part II) excludes zero. Otherwise the text says 'no distinguishable change'.",
+  "A claim stays in the main text only if it holds in BOTH the untuned and the tuned analysis. If it holds in only one, the main text states it with that caveat.",
+  "Because of the previous point, no tuned number replaces an untuned headline number, even if it is higher."
+ ],
+ "assumptions": [
+  "The ranges, the number of candidates (8) and the inner scores are my own choices, not values taken from a standard. They must be described as such in the paper.",
+  "Random search with a small number of candidates is a limited search. A larger search could find better settings.",
+  "Only 3 inner folds (Part I) and 3 inner years (Part II) are used, so the inner score is noisy; the default is always one of the 8 candidates, so tuning can leave the default only if another candidate scores higher."
+ ]
+}
