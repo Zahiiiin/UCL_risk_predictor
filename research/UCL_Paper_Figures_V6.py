@@ -230,9 +230,85 @@ def fig_new_places():
     save(fig, "V6_Fig12_forecast_new_places")
 
 
+
+# ----------------------------------------------------------------------------------------------
+# Tuning check figures
+# ----------------------------------------------------------------------------------------------
+def fig_tuning_part1():
+    un = pd.read_csv(os.path.join(HERE, "expected_results", "benchmark", "BM_summary.csv"))
+    tu = pd.read_csv(os.path.join(TU, "part1", "BT_summary.csv"))
+    models = ["LR", "RF", "ETC", "XGB", "Stacking"]
+    panels = [("A", "Model 1, all reactors", ["Baseline: country majority"]), ("D", "Model 2, 324 reactors",
+              ["Baseline: persistence (past UCL)", "Baseline: country majority"])]
+    # baselines of set D come from the untuned file of set B (same reactors, same folds); the persistence rule needs history inputs only
+    fig, axs = plt.subplots(1, 2, figsize=(6.5, 2.7), sharey=True)
+    for k, (ax, (sl, title, bl)) in enumerate(zip(axs, panels)):
+        for i, m in enumerate(models):
+            u = float(un[un.Set.str.startswith(sl + ".") & (un.Model == m)].accuracy.iloc[0])
+            t = float(tu[tu.Set.str.startswith(sl + ".") & (tu.Model == m + "-tuned")].accuracy.iloc[0])
+            ax.plot([u, t], [i, i], color="0.6", lw=1.0, zorder=1)
+            ax.plot([u], [i], marker="o", ms=4.5, mfc="white", mec=NAVY, mew=1.0, ls="", zorder=3, label="Fixed settings" if i == 0 else None)
+            ax.plot([t], [i], marker="o", ms=4.5, color=NAVY, ls="", zorder=3, label="Tuned settings" if i == 0 else None)
+        for j, key in enumerate(bl):
+            bs = "B" if sl == "D" else sl
+            v = float(un[un.Set.str.startswith(bs + ".") & (un.Model == key)].accuracy.iloc[0])
+            ax.axvline(v, color=AMBER if "country" in key else "0.35", ls="-." if "country" in key else "--", lw=0.9)
+            ax.text(v + (-0.08 if "country" in key else 0.08), -0.95, ("country rule " if "country" in key else "persistence ") + f"{v:.1f}", rotation=0,
+                    ha="right" if "country" in key else "left", va="center", fontsize=5.8, color=AMBER if "country" in key else "0.35")
+        ax.set_yticks(range(len(models)))
+        ax.set_yticklabels(models, fontsize=7)
+        ax.invert_yaxis()
+        ax.set_xlabel("Accuracy over 25 test folds (%)", fontsize=7)
+        ax.set_title(title, fontsize=7.2, pad=12)
+        panel_label(ax, "(%s)" % "ab"[k])
+        ax.set_ylim(4.5, -1.25)
+    h, l = axs[0].get_legend_handles_labels()
+    fig.legend(h, l, loc="lower center", ncol=2, frameon=False, fontsize=6.5, bbox_to_anchor=(0.5, -0.01))
+    fig.tight_layout(w_pad=1.2, rect=(0, 0.07, 1, 1))
+    save(fig, "V6_Fig13_tuning_part1")
+
+
+def fig_tuning_part2():
+    wins = [("window15", "main_window15", "Latest 15 years"), ("window10", "main_window10", "Latest 10 years"), ("expanding", "main_expanding", "All earlier years")]
+    combos = [("RF", "A"), ("RF", "C"), ("XGB", "A"), ("XGB", "C")]
+    fig, axs = plt.subplots(1, 3, figsize=(6.5, 2.6), sharey=True)
+    allv = []
+    for k, (ax, (tt, ut, title)) in enumerate(zip(axs, wins)):
+        su = rd(ut, "FB_summary.csv")
+        su = su[su.Period == PER].set_index("Method")
+        st = pd.read_csv(os.path.join(TU, "part2", tt, "FT_summary.csv"))
+        st = st[st.Period == PER].set_index("Method")
+        x = np.arange(len(combos))
+        vu = [su.loc[f"ml:{m}|{s}", "MAE"] for m, s in combos]
+        vt = [st.loc[f"ml:{m}-tuned|{s}", "MAE"] for m, s in combos]
+        allv += vu + vt + [su.loc["base:median5", "MAE"]]
+        # dots, not bars: the axis does not start at zero, so a bar length would mislead
+        for xi, a, c in zip(x, vu, vt):
+            ax.plot([xi, xi], [a, c], color="0.6", lw=1.0, zorder=1)
+        ax.plot(x, vu, marker="o", ms=4.5, mfc="white", mec=NAVY, mew=1.0, ls="", zorder=3, label="Fixed settings")
+        ax.plot(x, vt, marker="o", ms=4.5, color=NAVY, ls="", zorder=3, label="Tuned settings")
+        med = su.loc["base:median5", "MAE"]
+        ax.axhline(med, color=AMBER, ls="-.", lw=0.9, label=f"Median of last 5 years ({med:.2f})")
+        ax.set_xticks(x)
+        ax.set_xticklabels([f"{m}\n{s}" for m, s in combos], fontsize=6.5)
+        ax.set_xlim(-0.5, len(combos) - 0.5)
+        ax.set_title(title, fontsize=7.2, pad=12)
+        panel_label(ax, "(%s)" % "abc"[k])
+    lo, hi = min(allv), max(allv)
+    pad = 0.12 * (hi - lo)
+    axs[0].set_ylim(lo - pad, hi + 3 * pad)
+    axs[0].set_ylabel("Mean absolute error (UCL points)", fontsize=7)
+    axs[0].legend(loc="upper left", frameon=False, fontsize=5.8)
+    fig.tight_layout(w_pad=0.8)
+    save(fig, "V6_Fig14_tuning_part2")
+
 # ----------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     fig_overview()
     fig_by_year()
     fig_intervals()
     fig_new_places()
+    if os.path.exists(os.path.join(TU, "part1", "BT_summary.csv")):
+        fig_tuning_part1()
+    if all(os.path.exists(os.path.join(TU, "part2", w, "FT_summary.csv")) for w in ("window15", "window10", "expanding")):
+        fig_tuning_part2()
