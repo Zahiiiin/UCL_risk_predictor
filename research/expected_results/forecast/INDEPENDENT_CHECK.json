@@ -62,5 +62,13 @@
  "scored rows equal the number in the run summary": {
   "pass": true,
   "info": "6196"
+ },
+ "every scored row is a row of the stored forecasting table": {
+  "pass": true,
+  "info": "6196 rows"
+ },
+ "all 27 input columns of input sets A to D equal values recomputed from the raw table cut off at the origin year (sampled rows)": {
+  "pass": true,
+  "info": "600 rows, 16200 values, 0 differ"
  }
 }
