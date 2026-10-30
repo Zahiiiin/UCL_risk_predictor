@@ -24,9 +24,12 @@ is hard for every model. All Part I numbers below come from 25 test folds in whi
 the training reactors only.
 
 For Part II, a random forest that sees the reactor's own recent UCL and country-level context lowers the mean absolute error by about 21 % against
-repeating last year's value and by about 8 % against the median of the last five usable years (3.60 against 4.56 and 3.92 UCL points). It does not
-raise the accuracy of the forecast class above that of the median rule. A pre-specified tuning check (settings searched on training data only) leaves
-these conclusions unchanged. The details, the two small things that did change, and the limits are below and in the paper.
+repeating last year's value and by about 8 % against the median of the last five usable years (3.60 against 4.56 and 3.92 UCL points). A longer median
+is a stronger simple rule: the best fixed window (15 years, found by looking at the test results) has an MAE of 3.74, and a median whose window is chosen
+on earlier years only has 3.78, so against these the gain is about 4 to 5 %. The class of the forecast is right for 65.9 % of the reactor-years, against
+65.1 % (five-year median), 64.5 % (15-year median) and 64.9 % (selected window): about one point, and the intervals reach zero except against the 15-year
+median. A pre-specified tuning check (settings searched on training data only) leaves the main conclusions unchanged. The details, the two small things
+that did change, and the limits are below and in the paper.
 
 ## What is in this repository
 
@@ -60,7 +63,7 @@ cohort split, figures and feature importance (10 to 40 minutes each). The tables
 
 Part II (forecasts) and the tuning check have their own scripts. They are listed with the run order in `research/README.md`. The reactor-year table is
 `research/results_Forecast/forecast_panel.csv`; `python research/UCL_Forecast_Panel.py` rebuilds it identically from the raw PRIS download, and
-`python research/UCL_Independent_Check.py` recomputes the main Part II numbers from the raw table by a different code path. The two tuned runs take most of the total time (many hours on a laptop).
+`python research/UCL_Independent_Check.py` recomputes the main Part II numbers and all 27 input columns of the input sets A to D (for 600 sampled rows) from the raw table by a different code path. The two tuned runs take most of the total time (many hours on a laptop).
 
 To rebuild the dataset from the raw PRIS download and check it again:
 
@@ -247,8 +250,8 @@ These are listed so that readers can judge the results for themselves.
 8. **The cohort split is not a forecast.** All reactors of Model 2 were connected to the grid by 2011, so a split by years of operation is not possible; the pipeline splits by grid-connection year (1990) instead. This tests transfer to newer reactors, not prediction of future years.
 9. **Not an operating or safety tool.** The web app is a research demonstration. UCL measures lost energy, not safety.
 10. **Part II forecasts are typical-year forecasts.** The learners are fitted to log(1 + UCL), so on average their forecasts lie about 1.8 points below the realised UCL. They are not suited to estimating the expected total energy loss of a reactor.
-11. **Part II gains are small.** The random forest lowers the error against the median rule by about 0.3 UCL points, and the class of its forecast is not more often right. Twelve combinations of learner and input set were compared without adjustment, and the one with the lowest error is quoted, so its advantage is somewhat optimistic.
-12. **Post hoc checks.** The check without the 15 Ukrainian reactors (whose labels rest on four years; without them the gain of Model 2 over the persistence rule is 5.0 points, p = 0.080), the analysis by recent level, the checks without 2020, 2022 and 2025, and the choice of the 15-year window as the primary window were made after the first results were seen. They are reported as checks, not confirmed findings.
+11. **Part II gains are small.** The random forest lowers the error against the five-year median by about 0.3 UCL points and against the best longer median by about 0.14 to 0.19 points (4 to 5 %); the class of its forecast is right about one point more often, a difference whose interval reaches zero for most of these rules. Twelve combinations of learner and input set were compared without adjustment, and the one with the lowest error is quoted, so its advantage is somewhat optimistic.
+12. **Post hoc checks.** The check without the 15 Ukrainian reactors (whose labels rest on four years; without them the gain of Model 2 over the persistence rule is 5.0 points, p = 0.080), the analysis by recent level, the checks without 2020, 2022 and 2025, the choice of the 15-year window as the primary window and the comparison with medians over longer windows (`research/UCL_Forecast_LongMedian.py`, added after a referee-style review) were made after the first results were seen. They are reported as checks, not confirmed findings.
 13. **Tuning is limited.** Eight random candidates per model, in ranges chosen by the author, with small and noisy inner validation parts. A larger search could find better settings.
 14. **2025 values.** The values for 2025 come from the October 2026 download. It is not confirmed that the IAEA treats them as final.
 

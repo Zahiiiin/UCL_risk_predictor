@@ -26,6 +26,7 @@ result file in `expected_results/`, which is produced by one of the scripts belo
 | `UCL_Forecast_Benchmark.py` | The rolling-origin test for the target years 2010 to 2025: simple rules, ridge regression, random forest and XGBoost, bootstrap intervals that resample whole reactors. Options for the training window (`--window 15`, `--window 10`), for places the model has not seen (`--grouped site` or `country`) and for the 387 reactors of Part I (`--subset 387`). |
 | `UCL_Forecast_Report.py` | Writes `expected_results/forecast/FORECAST_RESULTS.md` from the stored forecasts. |
 | `UCL_Forecast_Extra.py` | Extra checks that need no refitting: input sets of one model, other row selections, bias, and errors by the reactor's recent level. |
+| `UCL_Forecast_LongMedian.py` | Post hoc check added after the main results: the median of the last 5, 8, 10, 12, 15 and 20 years and of all earlier years as the simple rule, one rule whose window is chosen on the three target years before each test year, and the comparison of the learners with each (bootstrap over reactors and over the 16 test years). Output in `expected_results/forecast/long_median/`. |
 | `UCL_Independent_Check.py` | Recomputes the targets, the persistence and median forecasts and the headline scores from the raw PRIS table with a different code path, and compares them with the stored results. |
 
 **Tuning check (robustness of both parts)**
