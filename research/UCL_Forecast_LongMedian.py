@@ -23,6 +23,11 @@ WHAT IT DOES
     4. It compares the random forest and XGBoost with input set C (stored forecasts of the three training windows)
        with each rule: difference in MAE and in class accuracy with 95 % intervals from the same bootstrap that
        resamples whole reactors (1000 times, same seed), and the number of test years with a lower MAE.
+    5. It repeats the comparison with a bootstrap that resamples the 16 TEST YEARS instead of the reactors (all rows
+       of a drawn year are kept; 10,000 draws, seed 42), and reports a paired t statistic on the 16 yearly MAE
+       differences. The main analysis resamples reactors, which does not allow for the fact that the errors of all methods
+       move together from year to year. The year bootstrap does, but it has only 16 units, so its intervals are wide.
+       Output: LM_year_bootstrap.csv.
 
 HOW TO RUN (from the repository root; needs the stored forecasts and the raw PRIS download)
     python3 research/UCL_Forecast_LongMedian.py
@@ -63,6 +68,32 @@ def median_table(series_by_unit, units, origins, n):
         if len(v):
             out[i] = float(np.median(v.values))
     return out
+
+
+def year_bootstrap(M, rules, learners, draws=10000, seed=42):
+    """Bootstrap over the test years (all rows of a drawn year are kept) for the learners against each rule."""
+    from scipy import stats
+    years = np.sort(M.target_year.unique())
+    n_y = M.groupby("target_year").size().reindex(years).values.astype(float)
+    ae = {c: (M[c] - M.y).abs().groupby(M.target_year).sum().reindex(years).values for c in rules + learners}
+    cr = {c: (FB.to_class(M[c].values) == M.y_class.values).astype(float) for c in rules + learners}
+    cr = {c: pd.Series(v).groupby(M.target_year.values).sum().reindex(years).values for c, v in cr.items()}
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, len(years), size=(draws, len(years)))
+    tot_n = n_y[idx].sum(axis=1)
+    rows = []
+    for ref in rules:
+        for lrn in learners:
+            point_mae = ae[lrn].sum() / n_y.sum() - ae[ref].sum() / n_y.sum()
+            point_acc = (cr[lrn].sum() - cr[ref].sum()) / n_y.sum() * 100
+            bm = (ae[lrn][idx].sum(axis=1) - ae[ref][idx].sum(axis=1)) / tot_n
+            ba = (cr[lrn][idx].sum(axis=1) - cr[ref][idx].sum(axis=1)) / tot_n * 100
+            dy = ae[lrn] / n_y - ae[ref] / n_y                          # yearly MAE difference
+            t, pv = stats.ttest_1samp(dy, 0.0)
+            rows.append({"Reference": ref, "Method": lrn, "dMAE": point_mae, "dMAE_lo": np.percentile(bm, 2.5), "dMAE_hi": np.percentile(bm, 97.5),
+                         "dClassAcc": point_acc, "dClassAcc_lo": np.percentile(ba, 2.5), "dClassAcc_hi": np.percentile(ba, 97.5),
+                         "years_t": float(t), "years_p": float(pv), "Period": PERIOD})
+    pd.DataFrame(rows).round(4).to_csv(os.path.join(OUT, "LM_year_bootstrap.csv"), index=False)
 
 
 def main():
@@ -130,6 +161,7 @@ def main():
             byyear.append({"Reference": ref, "Method": lrn, "years_lower": int((e_l < e_r).sum()), "years": int(len(e_l))})
     pd.concat(boots, ignore_index=True).round(4).to_csv(os.path.join(OUT, "LM_bootstrap.csv"), index=False)
     pd.DataFrame(byyear).to_csv(os.path.join(OUT, "LM_wins_by_year.csv"), index=False)
+    year_bootstrap(M, rules, learners)
     json.dump({"windows": WINDOWS + ["all"], "rows": int(len(M)), "reactors": int(M.unit.nunique()),
                "median5_max_abs_difference_from_stored": diff5,
                "note": "post hoc check added after the main results; the window of the selected rule is chosen on the three target years before each test year"},
