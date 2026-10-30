@@ -1,0 +1,15 @@
+{
+ "windows": [
+  5,
+  8,
+  10,
+  12,
+  15,
+  20,
+  "all"
+ ],
+ "rows": 6196,
+ "reactors": 505,
+ "median5_max_abs_difference_from_stored": 5.000000000165983e-05,
+ "note": "post hoc check added after the main results; the window of the selected rule is chosen on the three target years before each test year"
+}

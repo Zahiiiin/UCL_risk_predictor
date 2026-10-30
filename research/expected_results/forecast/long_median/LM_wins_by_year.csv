@@ -1,0 +1,193 @@
+Reference,Method,years_lower,years
+base:median5,ml:Ridge|A,11,16
+base:median5,ml:RF|A,15,16
+base:median5,ml:XGB|A,16,16
+base:median5,ml:Ridge|B,12,16
+base:median5,ml:RF|B,16,16
+base:median5,ml:XGB|B,16,16
+base:median5,ml:Ridge|C,11,16
+base:median5,ml:RF|C,16,16
+base:median5,ml:XGB|C,16,16
+base:median5,ml:Ridge|D,10,16
+base:median5,ml:RF|D,16,16
+base:median5,ml:XGB|D,16,16
+base:median5,ml:RF|C (15 years),16,16
+base:median5,ml:XGB|C (15 years),16,16
+base:median5,ml:RF|C (10 years),16,16
+base:median5,ml:XGB|C (10 years),15,16
+base:median5,ml:RF|C (all years),16,16
+base:median5,ml:XGB|C (all years),11,16
+base:median5,ml:RF-tuned|C (15 years),16,16
+base:median5,ml:XGB-tuned|C (15 years),16,16
+base:median5,ml:RF-tuned|C (10 years),16,16
+base:median5,ml:XGB-tuned|C (10 years),16,16
+base:median5,ml:RF-tuned|C (all years),16,16
+base:median5,ml:XGB-tuned|C (all years),14,16
+base:median8,ml:Ridge|A,10,16
+base:median8,ml:RF|A,14,16
+base:median8,ml:XGB|A,14,16
+base:median8,ml:Ridge|B,10,16
+base:median8,ml:RF|B,15,16
+base:median8,ml:XGB|B,15,16
+base:median8,ml:Ridge|C,7,16
+base:median8,ml:RF|C,16,16
+base:median8,ml:XGB|C,15,16
+base:median8,ml:Ridge|D,7,16
+base:median8,ml:RF|D,16,16
+base:median8,ml:XGB|D,15,16
+base:median8,ml:RF|C (15 years),16,16
+base:median8,ml:XGB|C (15 years),15,16
+base:median8,ml:RF|C (10 years),16,16
+base:median8,ml:XGB|C (10 years),16,16
+base:median8,ml:RF|C (all years),15,16
+base:median8,ml:XGB|C (all years),11,16
+base:median8,ml:RF-tuned|C (15 years),16,16
+base:median8,ml:XGB-tuned|C (15 years),15,16
+base:median8,ml:RF-tuned|C (10 years),16,16
+base:median8,ml:XGB-tuned|C (10 years),16,16
+base:median8,ml:RF-tuned|C (all years),16,16
+base:median8,ml:XGB-tuned|C (all years),15,16
+base:median10,ml:Ridge|A,4,16
+base:median10,ml:RF|A,13,16
+base:median10,ml:XGB|A,12,16
+base:median10,ml:Ridge|B,4,16
+base:median10,ml:RF|B,14,16
+base:median10,ml:XGB|B,14,16
+base:median10,ml:Ridge|C,8,16
+base:median10,ml:RF|C,14,16
+base:median10,ml:XGB|C,12,16
+base:median10,ml:Ridge|D,8,16
+base:median10,ml:RF|D,14,16
+base:median10,ml:XGB|D,13,16
+base:median10,ml:RF|C (15 years),14,16
+base:median10,ml:XGB|C (15 years),12,16
+base:median10,ml:RF|C (10 years),14,16
+base:median10,ml:XGB|C (10 years),13,16
+base:median10,ml:RF|C (all years),14,16
+base:median10,ml:XGB|C (all years),9,16
+base:median10,ml:RF-tuned|C (15 years),14,16
+base:median10,ml:XGB-tuned|C (15 years),13,16
+base:median10,ml:RF-tuned|C (10 years),14,16
+base:median10,ml:XGB-tuned|C (10 years),14,16
+base:median10,ml:RF-tuned|C (all years),14,16
+base:median10,ml:XGB-tuned|C (all years),11,16
+base:median12,ml:Ridge|A,5,16
+base:median12,ml:RF|A,13,16
+base:median12,ml:XGB|A,11,16
+base:median12,ml:Ridge|B,6,16
+base:median12,ml:RF|B,13,16
+base:median12,ml:XGB|B,12,16
+base:median12,ml:Ridge|C,8,16
+base:median12,ml:RF|C,13,16
+base:median12,ml:XGB|C,12,16
+base:median12,ml:Ridge|D,8,16
+base:median12,ml:RF|D,13,16
+base:median12,ml:XGB|D,12,16
+base:median12,ml:RF|C (15 years),13,16
+base:median12,ml:XGB|C (15 years),12,16
+base:median12,ml:RF|C (10 years),12,16
+base:median12,ml:XGB|C (10 years),12,16
+base:median12,ml:RF|C (all years),15,16
+base:median12,ml:XGB|C (all years),8,16
+base:median12,ml:RF-tuned|C (15 years),13,16
+base:median12,ml:XGB-tuned|C (15 years),13,16
+base:median12,ml:RF-tuned|C (10 years),12,16
+base:median12,ml:XGB-tuned|C (10 years),12,16
+base:median12,ml:RF-tuned|C (all years),13,16
+base:median12,ml:XGB-tuned|C (all years),11,16
+base:median15,ml:Ridge|A,6,16
+base:median15,ml:RF|A,12,16
+base:median15,ml:XGB|A,11,16
+base:median15,ml:Ridge|B,7,16
+base:median15,ml:RF|B,13,16
+base:median15,ml:XGB|B,12,16
+base:median15,ml:Ridge|C,8,16
+base:median15,ml:RF|C,14,16
+base:median15,ml:XGB|C,11,16
+base:median15,ml:Ridge|D,8,16
+base:median15,ml:RF|D,14,16
+base:median15,ml:XGB|D,12,16
+base:median15,ml:RF|C (15 years),14,16
+base:median15,ml:XGB|C (15 years),11,16
+base:median15,ml:RF|C (10 years),13,16
+base:median15,ml:XGB|C (10 years),9,16
+base:median15,ml:RF|C (all years),14,16
+base:median15,ml:XGB|C (all years),8,16
+base:median15,ml:RF-tuned|C (15 years),14,16
+base:median15,ml:XGB-tuned|C (15 years),13,16
+base:median15,ml:RF-tuned|C (10 years),13,16
+base:median15,ml:XGB-tuned|C (10 years),12,16
+base:median15,ml:RF-tuned|C (all years),14,16
+base:median15,ml:XGB-tuned|C (all years),12,16
+base:median20,ml:Ridge|A,5,16
+base:median20,ml:RF|A,12,16
+base:median20,ml:XGB|A,13,16
+base:median20,ml:Ridge|B,6,16
+base:median20,ml:RF|B,13,16
+base:median20,ml:XGB|B,14,16
+base:median20,ml:Ridge|C,8,16
+base:median20,ml:RF|C,15,16
+base:median20,ml:XGB|C,12,16
+base:median20,ml:Ridge|D,8,16
+base:median20,ml:RF|D,15,16
+base:median20,ml:XGB|D,13,16
+base:median20,ml:RF|C (15 years),15,16
+base:median20,ml:XGB|C (15 years),12,16
+base:median20,ml:RF|C (10 years),13,16
+base:median20,ml:XGB|C (10 years),12,16
+base:median20,ml:RF|C (all years),15,16
+base:median20,ml:XGB|C (all years),8,16
+base:median20,ml:RF-tuned|C (15 years),15,16
+base:median20,ml:XGB-tuned|C (15 years),14,16
+base:median20,ml:RF-tuned|C (10 years),14,16
+base:median20,ml:XGB-tuned|C (10 years),13,16
+base:median20,ml:RF-tuned|C (all years),15,16
+base:median20,ml:XGB-tuned|C (all years),13,16
+base:median_all,ml:Ridge|A,13,16
+base:median_all,ml:RF|A,15,16
+base:median_all,ml:XGB|A,15,16
+base:median_all,ml:Ridge|B,13,16
+base:median_all,ml:RF|B,15,16
+base:median_all,ml:XGB|B,15,16
+base:median_all,ml:Ridge|C,13,16
+base:median_all,ml:RF|C,16,16
+base:median_all,ml:XGB|C,16,16
+base:median_all,ml:Ridge|D,12,16
+base:median_all,ml:RF|D,16,16
+base:median_all,ml:XGB|D,15,16
+base:median_all,ml:RF|C (15 years),16,16
+base:median_all,ml:XGB|C (15 years),16,16
+base:median_all,ml:RF|C (10 years),16,16
+base:median_all,ml:XGB|C (10 years),16,16
+base:median_all,ml:RF|C (all years),16,16
+base:median_all,ml:XGB|C (all years),12,16
+base:median_all,ml:RF-tuned|C (15 years),16,16
+base:median_all,ml:XGB-tuned|C (15 years),15,16
+base:median_all,ml:RF-tuned|C (10 years),16,16
+base:median_all,ml:XGB-tuned|C (10 years),16,16
+base:median_all,ml:RF-tuned|C (all years),16,16
+base:median_all,ml:XGB-tuned|C (all years),15,16
+base:median_selected,ml:Ridge|A,8,16
+base:median_selected,ml:RF|A,14,16
+base:median_selected,ml:XGB|A,13,16
+base:median_selected,ml:Ridge|B,8,16
+base:median_selected,ml:RF|B,15,16
+base:median_selected,ml:XGB|B,14,16
+base:median_selected,ml:Ridge|C,9,16
+base:median_selected,ml:RF|C,15,16
+base:median_selected,ml:XGB|C,12,16
+base:median_selected,ml:Ridge|D,9,16
+base:median_selected,ml:RF|D,15,16
+base:median_selected,ml:XGB|D,13,16
+base:median_selected,ml:RF|C (15 years),15,16
+base:median_selected,ml:XGB|C (15 years),12,16
+base:median_selected,ml:RF|C (10 years),15,16
+base:median_selected,ml:XGB|C (10 years),13,16
+base:median_selected,ml:RF|C (all years),15,16
+base:median_selected,ml:XGB|C (all years),9,16
+base:median_selected,ml:RF-tuned|C (15 years),15,16
+base:median_selected,ml:XGB-tuned|C (15 years),14,16
+base:median_selected,ml:RF-tuned|C (10 years),14,16
+base:median_selected,ml:XGB-tuned|C (10 years),13,16
+base:median_selected,ml:RF-tuned|C (all years),15,16
+base:median_selected,ml:XGB-tuned|C (all years),12,16
