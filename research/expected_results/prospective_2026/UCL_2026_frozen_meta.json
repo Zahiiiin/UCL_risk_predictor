@@ -1,0 +1,9 @@
+{
+ "frozen_utc": "2026-11-21 16:50",
+ "reactors": 388,
+ "countries": 30,
+ "training_rows": 5770,
+ "mixed_model_fit": "lbfgs",
+ "sha256": "f9f31821c1e5d3666113e7e631564a44a0cfd173d3fe1b0bb0bfec51866deb11",
+ "scoring_plan": "MAE and class accuracy (point), Brier score (P>6%), 95% intervals from 1000 resamples of whole reactors, seed 42, on reactors with a usable 2026 value."
+}
