@@ -1,0 +1,8 @@
+{
+ "baseline_rows_compared_with_untuned": 125,
+ "baseline_rows_that_differ": 0,
+ "default_chosen_cases_compared": 64,
+ "default_chosen_cases_that_differ_from_untuned": 0,
+ "stacking_all_default_cases_compared": 0,
+ "stacking_all_default_cases_that_differ": 0
+}

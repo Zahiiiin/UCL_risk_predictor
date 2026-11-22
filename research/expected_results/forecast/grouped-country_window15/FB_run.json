@@ -1,0 +1,22 @@
+{
+  "args": {
+    "first_test": 2010,
+    "last_test": 2025,
+    "window": 15,
+    "grouped": "country",
+    "sets": [
+      "A",
+      "C"
+    ],
+    "models": [
+      "Ridge",
+      "RF",
+      "XGB"
+    ],
+    "subset": "all",
+    "tag": "grouped-country_window15"
+  },
+  "rows_scored": 6196,
+  "reactors_scored": 505,
+  "seconds": 704
+}

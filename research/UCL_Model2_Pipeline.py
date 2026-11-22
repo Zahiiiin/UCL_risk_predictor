@@ -1,63 +1,64 @@
 """
 UCL_Model2_Pipeline.py
 ==============================================================================
-Model 2: design features + two past UCF periods (18 features, 370 reactors)
+Model 2: design features + UCL history from 2010-2017 (18 features)
 Paper: "Machine Learning Classification of Unplanned Capability Loss Risk in
         Nuclear Power Plants" (target journal: Nuclear Engineering and Design)
-Data : IAEA PRIS / RDS-2, file UCL_Dataset_v5_longitudinal.xlsx
+Data : IAEA PRIS / RDS-2, file UCL_Dataset_v6_PRIS.xlsx
 ==============================================================================
 
 WHAT THIS SCRIPT DOES
-    Predicts the UCL risk class (Low / Medium / High) of a reactor from
+    Predicts the UCL risk class (Low / Medium / High) of a reactor, where the
+    label is the mean PRIS unplanned capability loss in 2018-2024, from
         13 design and identity features (the same ones as Model 1), plus
-         5 history features built from two average UCF values taken from earlier IAEA editions:
-            UCF 2013-2017   (period 1)
-            UCF 2010-2020   (period 2)
-            change between the two, their mean, and a trend direction (+1, 0, -1)
+         5 history features built from the reactor's own PRIS record before the label window:
+            UCL 2010-2013   (period 1, mean annual UCL)
+            UCL 2014-2017   (period 2, mean annual UCL)
+            change between the two, their mean, and a trend direction
+            (+1 UCL rose by more than 2 points, -1 fell by more than 2, 0 otherwise)
 
-    UCF 2014-2024 (and UCF_Percent) define the target, so they are NEVER used as
-    inputs. The script stops with an error if one of them ever sneaks into the
-    feature list.
+    Both history periods end before 2018, so the history never overlaps the
+    label window. The label itself (UCL_Value, UCL_Class, UCL_Years_Used) is
+    NEVER an input. The script stops with an error if one of those columns ever
+    sneaks into the feature list.
 
 HOW TO RUN
     pip install -r requirements-research.txt
     python UCL_Model2_Pipeline.py
-    python UCL_Model2_Pipeline.py --data path/to/UCL_Dataset_v5_longitudinal.xlsx
+    python UCL_Model2_Pipeline.py --data path/to/UCL_Dataset_v6_PRIS.xlsx
     python UCL_Model2_Pipeline.py --quick        (fast smoke test, numbers differ)
 
     Full run takes roughly 10 to 30 minutes on a normal laptop (the random
     searches are the slow part). Results go to the folder results_Model2/.
 
-NUMBERS YOU SHOULD SEE (test set of 74 reactors, seed 42)
-    XGBoost  accuracy 93.24 %   weighted F1 92.83 %   AUC (OvR, weighted) 96.35 %
-    Per-class F1 of XGBoost: Low 97.5, Medium 73.7, High 93.9
-    McNemar test, Model 1 XGBoost against Model 2 XGBoost: p = 0.0094
-    Bootstrap 95 % interval for XGBoost accuracy: [86.5, 98.0]
-    Temporal split accuracy: RF 85.2, XGBoost 81.5, Stacking 85.2
-    Feature importance (share of the total): Random Forest, history features 60.6 %,
-    UCF 2010-2020 26.4 %, UCF mean 19.6 %, Country 10.8 % (these are the values in
-    Section 6.4 of the paper); XGBoost, history features 54.1 %, UCF 2010-2020 14.9 %,
-    UCF mean 34.0 %, Country 4.6 %.
-    All of these match the paper when the script runs with the library versions pinned
-    in requirements-research.txt. scikit-learn 1.9 changes the Random Forest rows by one
-    reactor (for example RF accuracy 90.5 instead of 89.2). The versions used for the
-    reference run are written to results_Model2/run_summary.json.
+NUMBERS YOU SHOULD SEE
+    See expected_results/model2/run_summary.json for the reference run. The
+    numbers match when the script runs with the library versions pinned in
+    requirements-research.txt. The versions used for the reference run are
+    written to results_Model2/run_summary.json.
 
 THINGS A REVIEWER SHOULD KNOW (also listed in the repository README)
     1. Thermal_Efficiency is the constant 33.0 for every reactor, because the
-       dataset has no thermal power column. It therefore carries no information.
-       Run with --pris-thermal to use the Thermal_Efficiency_Pct column instead.
+       earlier release of the dataset had no thermal power column. It therefore
+       carries no information. Run with --pris-thermal to use the
+       Thermal_Efficiency_Pct column instead.
     2. Scaling and the Country encoding are computed on all reactors before the
-       train/test split (as in the paper). The encoding is out-of-fold, and trees
-       ignore scaling, but a stricter design would fit both on the training part only.
+       train/test split. The encoding is out-of-fold, and trees ignore scaling, but a
+       stricter design fits both on the training part only; UCL_Benchmark_CV.py does that.
     3. SMOTE is applied to the training part only. The cross-validation used
        inside the random search runs on that balanced training set, so the CV
-       scores are optimistic. Test-set scores are not affected.
-    4. The two history periods overlap. UCF 2013-2017 lies inside UCF 2010-2020, and
-       both overlap the 2014-2024 window that defines the label (UCF 2010-2020 shares
-       seven years with it). Model 2 therefore uses recent performance data and is not
-       a forecast from strictly earlier data. UCL_Model2_History_Ablation.py measures
-       how much each period contributes.
+       scores (columns CV_Mean_balanced_train) are optimistic and must not be quoted.
+       Test-set scores are not affected. A single split of 65 test reactors moves by
+       1.5 points per reactor; use UCL_Benchmark_CV.py for the accuracy of the models.
+    4. Model 2 only includes reactors with at least two usable PRIS years in each
+       history period (column Model2_Subset of the HISTORY sheet). Reactors that
+       were shut down in 2010-2017, such as most Japanese units, drop out.
+       UCL_Model2_History_Ablation.py measures how much each period contributes.
+    5. Model 1 is validated with a temporal split by operational category. That split
+       is impossible for Model 2, because every reactor in the Model 2 subset began
+       operating by 2011. Model 2 therefore uses a cohort split instead: train on reactors
+       first connected to the grid in 1990 or earlier, test on later ones (cut-off chosen
+       by the authors, see COHORT_CUTOFF).
 ==============================================================================
 """
 import argparse
@@ -97,6 +98,7 @@ np.random.seed(42)
 # SETTINGS
 # ------------------------------------------------------------------------------
 RANDOM_STATE = 42
+COHORT_CUTOFF = 1990   # cohort split: train on reactors first connected up to this year (our choice)
 TEST_SIZE = 0.20
 CV_FOLDS = 5
 HPO_ITER = 40          # random-search iterations per model
@@ -140,8 +142,8 @@ FEAT_M1 = [
     "Construction_Duration", "Thermal_Efficiency", "Model_Family_enc",
     "Age_Group", "Op_Category",
 ]
-FEAT_TEMPORAL = ["UCF_P1", "UCF_P2", "UCF_change_P1_P2",
-                 "UCF_mean_2period", "UCF_trend_dir"]
+FEAT_TEMPORAL = ["UCL_P1", "UCL_P2", "UCL_change_P1_P2",
+                 "UCL_mean_2period", "UCL_trend_dir"]
 FEAT_M2 = FEAT_M1 + FEAT_TEMPORAL
 
 FEAT_LABELS = {
@@ -153,15 +155,14 @@ FEAT_LABELS = {
     "Thermal_Efficiency": "Thermal efficiency (%)",
     "Model_Family_enc": "Model family", "Age_Group": "Age group",
     "Op_Category": "Operational category",
-    "UCF_P1": "UCF 2013-2017", "UCF_P2": "UCF 2010-2020",
-    "UCF_change_P1_P2": "UCF change (P1 to P2)",
-    "UCF_mean_2period": "UCF mean (2 periods)",
-    "UCF_trend_dir": "UCF trend direction",
+    "UCL_P1": "UCL 2010-2013", "UCL_P2": "UCL 2014-2017",
+    "UCL_change_P1_P2": "UCL change (P1 to P2)",
+    "UCL_mean_2period": "UCL mean (2 periods)",
+    "UCL_trend_dir": "UCL trend direction",
 }
 
 # Columns that define the target and must never be model inputs
-FORBIDDEN_FEATURES = {"UCF_2014_2024", "UCF_Percent", "UCL_Value",
-                      "UCL_Class", "Target", "UCF_2021_2024"}
+FORBIDDEN_FEATURES = {"UCL_Value", "UCL_Class", "UCL_Years_Used", "Target"}
 
 
 # ------------------------------------------------------------------------------
@@ -174,7 +175,7 @@ def say(text=""):
 def find_dataset(cli_path):
     """Look for the dataset next to the script, in ../data, or where --data says."""
     here = os.path.dirname(os.path.abspath(__file__))
-    name = "UCL_Dataset_v5_longitudinal.xlsx"
+    name = "UCL_Dataset_v6_PRIS.xlsx"
     candidates = [cli_path] if cli_path else []
     candidates += [name, os.path.join(here, name),
                    os.path.join(here, "..", "data", name),
@@ -238,7 +239,7 @@ def age_group(age):
 
 
 def trend_direction(change):
-    """+1 improving, -1 declining, 0 stable (more than 2 points counts as a change)."""
+    """+1 UCL rose, -1 UCL fell, 0 about the same (more than 2 points counts as a change)."""
     return 1 if change > 2 else -1 if change < -2 else 0
 
 
@@ -247,6 +248,16 @@ def trend_direction(change):
 # ------------------------------------------------------------------------------
 def load_data(xlsx):
     """Returns (model-2 data, number of labelled reactors, number of countries in all)."""
+    df_all = load_all(xlsx)
+    n_all = len(df_all)
+    n_countries_all = int(df_all["Country"].nunique())
+    df = df_all.dropna(subset=["UCL_2010_2013", "UCL_2014_2017"]).reset_index(drop=True)
+    assert (df["Model2_Subset"] == 1).all()
+    return df, n_all, n_countries_all
+
+
+def load_all(xlsx):
+    """All labelled reactors with their history columns (blank where no history exists)."""
     raw = pd.read_excel(xlsx, sheet_name="FINAL_DATASET", header=0)
     raw.columns = [str(c).split("\n")[0].strip() for c in raw.columns]
     df = raw[raw["Reactor_Name"].notna() &
@@ -271,20 +282,19 @@ def load_data(xlsx):
     df.loc[df["Operational_Years"] < 10, "Data_Category"] = "B"
     df.loc[df["Operational_Years"] < 5, "Data_Category"] = "C"
 
-    # Attach the two past UCF periods (UCF 2014-2024 is deliberately not copied)
-    lg = pd.read_excel(xlsx, sheet_name="UCL_LONGITUDAL", header=0)
+    # Attach the history blocks (the label columns UCL_Value, UCL_Class and UCL_Years_Used
+    # are kept only to define the target and are never model inputs)
+    lg = pd.read_excel(xlsx, sheet_name="HISTORY", header=0)
     lg["Reactor_Name"] = lg["Reactor_Name"].astype(str).str.strip()
     if lg["Reactor_Name"].duplicated().any():
-        raise ValueError("Duplicate reactor names in UCL_LONGITUDAL sheet.")
+        raise ValueError("Duplicate reactor names in HISTORY sheet.")
     n_before = len(df)
-    df = df.merge(lg[["Reactor_Name", "UCF_2013_2017", "UCF_2010_2020"]],
+    df = df.merge(lg[["Reactor_Name", "UCL_2010_2013", "UCL_2014_2017",
+                      "UCF_2010_2013", "UCF_2014_2017", "Model2_Subset"]],
                   on="Reactor_Name", how="left")
     if len(df) != n_before:
         raise ValueError("Merge changed the number of reactors.")
-    n_all = len(df)
-    n_countries_all = int(df["Country"].nunique())
-    df = df.dropna(subset=["UCF_2013_2017", "UCF_2010_2020"]).reset_index(drop=True)
-    return df, n_all, n_countries_all
+    return df
 
 
 # ------------------------------------------------------------------------------
@@ -323,12 +333,12 @@ def engineer(df, use_pris_thermal=False):
     df["Age_Group"] = df["Reactor_Age"].apply(age_group)
     df["Op_Category"] = df["Data_Category"].map({"A": 2, "B": 1, "C": 0})
 
-    # Five history features from the two past UCF periods
-    df["UCF_P1"] = df["UCF_2013_2017"]
-    df["UCF_P2"] = df["UCF_2010_2020"]
-    df["UCF_change_P1_P2"] = df["UCF_P2"] - df["UCF_P1"]
-    df["UCF_mean_2period"] = (df["UCF_P1"] + df["UCF_P2"]) / 2
-    df["UCF_trend_dir"] = df["UCF_change_P1_P2"].apply(trend_direction)
+    # Five history features from the two UCL history periods (both before 2018)
+    df["UCL_P1"] = df["UCL_2010_2013"]
+    df["UCL_P2"] = df["UCL_2014_2017"]
+    df["UCL_change_P1_P2"] = df["UCL_P2"] - df["UCL_P1"]
+    df["UCL_mean_2period"] = (df["UCL_P1"] + df["UCL_P2"]) / 2
+    df["UCL_trend_dir"] = df["UCL_change_P1_P2"].apply(trend_direction)
 
     leaked = FORBIDDEN_FEATURES.intersection(FEAT_M2)
     if leaked:
@@ -552,7 +562,7 @@ def fig_importance(fi_df, name, out, dpi):
     ax.tick_params(axis="y", labelsize=6.5)
     from matplotlib.patches import Patch
     ax.legend(handles=[Patch(facecolor=C_TEMP, edgecolor="black", linewidth=0.4,
-                             label="History (UCF) features"),
+                             label="History (UCL) features"),
                        Patch(facecolor=C_DESIGN, edgecolor="black", linewidth=0.4,
                              label="Design features")],
               loc="lower right", fontsize=6.5)
@@ -620,16 +630,16 @@ def fig_trajectory(traj, out, dpi):
     fig, ax = plt.subplots(figsize=(3.4, 2.8))
     xs = [0, 1]
     for c in CLASS_LIST:
-        ys = [traj.loc[c, "UCF_P1"], traj.loc[c, "UCF_P2"]]
+        ys = [traj.loc[c, "UCL_P1"], traj.loc[c, "UCL_P2"]]
         ax.plot(xs, ys, marker="o", ms=4, lw=1.6, color=C_CLASS[c], label=c)
     ax.set_xticks(xs)
-    ax.set_xticklabels(["2013-2017", "2010-2020"])
+    ax.set_xticklabels(["2010-2013", "2014-2017"])
     ax.set_xlim(-0.25, 1.25)
-    ax.set_xlabel("UCF averaging period")
-    ax.set_ylabel("Mean UCF (%)")
+    ax.set_xlabel("UCL averaging period")
+    ax.set_ylabel("Mean UCL (%)")
     ax.legend(loc="center right")
     fig.tight_layout()
-    save_fig(fig, out, "M2_fig08_ucf_trajectory", dpi)
+    save_fig(fig, out, "M2_fig08_ucl_trajectory", dpi)
 
 
 # ------------------------------------------------------------------------------
@@ -652,7 +662,7 @@ def main():
     font = set_figure_style()
 
     say("=" * 70)
-    say("UCL MODEL 2: design features + two past UCF periods")
+    say("UCL MODEL 2: design features + UCL history 2010-2017")
     if args.quick:
         say("QUICK RUN: short search, numbers will NOT match the paper.")
     say("=" * 70)
@@ -662,7 +672,7 @@ def main():
     say("\n[1] Loading " + os.path.basename(xlsx))
     df, n_all, n_countries_all = load_data(xlsx)
     say("    reactors in the full dataset      : %d (%d countries)" % (n_all, n_countries_all))
-    say("    reactors with both past UCF values: %d (%d countries)" %
+    say("    reactors with both UCL history values: %d (%d countries)" %
         (len(df), df["Country"].nunique()))
     say("    classes: " + str(df["UCL_Class"].value_counts().to_dict()))
 
@@ -685,12 +695,14 @@ def main():
     X1_tr, X1_te = X1.loc[X2_tr.index], X1.loc[X2_te.index]
     say("    train %d | test %d" % (len(X2_tr), len(X2_te)))
 
-    # 4. temporal split sets (A = 10+ years of operation -> B and C)
-    mask_a = (df["Data_Category"] == "A").values
+    # 4. cohort split sets: older reactors train, newer reactors test. The version 5 split by
+    # operational category cannot be used here because every reactor that has UCL history
+    # for 2010-2013 began operating by 2011.
+    mask_a = (df["First_Grid_Year"] <= COHORT_CUTOFF).values
     X2_trT, y_trT = X2[mask_a], y[mask_a]
     X2_teT, y_teT = X2[~mask_a], y[~mask_a]
-    say("    temporal split: train %d (category A) | test %d (B and C)" %
-        (len(X2_trT), len(X2_teT)))
+    say("    cohort split: train %d (grid connection %d or earlier) | test %d (later)" %
+        (len(X2_trT), COHORT_CUTOFF, len(X2_teT)))
 
     # 5. SMOTE on the training parts only
     say("\n[4] SMOTE on training data only (k = 3)")
@@ -746,7 +758,7 @@ def main():
     df_boot = pd.DataFrame(boot_rows)
 
     # 10. temporal split (library defaults, no tuning)
-    say("\n[10] Temporal split (train: 10+ years of operation, test: newer reactors)")
+    say("\n[10] Cohort split (train: first connected in %d or earlier, test: connected later)" % COHORT_CUTOFF)
     X2_trT_sm, y_trT_sm = SMOTE(random_state=RANDOM_STATE,
                                 k_neighbors=3).fit_resample(X2_trT, y_trT)
     temporal = {}
@@ -780,9 +792,9 @@ def main():
         for _, r in fi.head(4).iterrows():
             say("        %-28s %.1f %%" % (r["Feature"], r["Importance"] * 100))
 
-    # 12. mean UCF by class (supports the trajectory figure)
-    traj = df.groupby("UCL_Class")[["UCF_P1", "UCF_P2"]].mean().reindex(CLASS_LIST).round(1)
-    say("\n[12] Mean UCF by class")
+    # 12. mean history UCL by class (supports the trajectory figure)
+    traj = df.groupby("UCL_Class")[["UCL_P1", "UCL_P2"]].mean().reindex(CLASS_LIST).round(1)
+    say("\n[12] Mean history UCL by class")
     say(traj.to_string())
 
     # 13. figures
@@ -821,7 +833,7 @@ def main():
                    "Temporal_AUC": v["AUC_ROC"]} for n, v in temporal.items()]
                  ).to_csv(t("M2_table6_temporal_split.csv"), index=False)
     traj.reset_index().rename(columns={"UCL_Class": "Class"}).to_csv(
-        t("M2_table7_mean_ucf_by_class.csv"), index=False)
+        t("M2_table7_mean_ucl_history_by_class.csv"), index=False)
     rows = []
     for which in ("model1", "model2"):
         for name, tab in pc_all[which].items():

@@ -1,3 +1,5 @@
-Period,Pearson_r_with_UCF_2014_2024
-UCF 2013-2017,0.598
-UCF 2010-2020,0.932
+Period,Pearson_r_with_UCL_Value,Spearman_rho_with_UCL_Value
+UCL 2010-2013,0.539,0.65
+UCL 2014-2017,0.4,0.616
+UCF 2010-2013,-0.331,-0.439
+UCF 2014-2017,-0.412,-0.483

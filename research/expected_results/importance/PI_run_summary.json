@@ -1,0 +1,6 @@
+{
+ "folds": 25,
+ "shuffles_per_input": 10,
+ "n_reactors": 324,
+ "classifier": "RandomForest, 300 trees, balanced class weights, untuned"
+}

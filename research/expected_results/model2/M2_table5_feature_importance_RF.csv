@@ -1,19 +1,19 @@
 Feature,Importance,Is_Temporal
-UCF 2010-2020,0.2638925296462892,True
-UCF mean (2 periods),0.19573448948070413,True
-Country (UCL tendency),0.10762302817197979,False
-UCF 2013-2017,0.07949145832985655,True
-UCF change (P1 to P2),0.05525578870049391,True
-Net capacity (MW),0.04805563283606631,False
-Construction duration (yr),0.040959827769490705,False
-Reactor type,0.03477551980944802,False
-NSSS technology group,0.034526333903898844,False
-Model family,0.03394362169351066,False
-Age squared,0.03381018103699018,False
-Reactor age (yr),0.030112047686449338,False
-Age group,0.013692196224223975,False
-Capacity category,0.012132175491608204,False
-UCF trend direction,0.011523910358807933,True
-Operational years,0.002604466067068192,False
-Operational category,0.0018667927931141546,False
+Country (UCL tendency),0.213021172686079,False
+UCL mean (2 periods),0.123080820538438,True
+UCL 2010-2013,0.11740604463247661,True
+UCL 2014-2017,0.09805195919807747,True
+Net capacity (MW),0.06071785131456043,False
+UCL change (P1 to P2),0.058318621310758004,True
+Age squared,0.05470602163103666,False
+Reactor age (yr),0.054171560788121846,False
+NSSS technology group,0.05253519459581311,False
+Construction duration (yr),0.04386466276413322,False
+Model family,0.03660204691091243,False
+Reactor type,0.03216840941132928,False
+UCL trend direction,0.03003179034125508,True
+Age group,0.017336117245733522,False
+Capacity category,0.007987726631275475,False
+Operational years,0.0,False
 Thermal efficiency (%),0.0,False
+Operational category,0.0,False

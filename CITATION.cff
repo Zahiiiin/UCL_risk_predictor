@@ -7,13 +7,12 @@ authors:
     given-names: "Noor"
     affiliation: "Department of Nuclear Science and Engineering, Military Institute of Science and Technology"
 preferred-citation:
-  type: article
-  title: "Machine Learning Classification of Unplanned Capability Loss Risk in Nuclear Power Plants: A Longitudinal Study Using IAEA RDS-2 Data"
+  type: unpublished
+  title: "Machine Learning Classification of Unplanned Capability Loss Risk in Nuclear Power Plants: Evidence from IAEA RDS-2 Data"
   authors:
     - family-names: "Zahin"
       given-names: "Noor"
-  journal: "Nuclear Engineering and Design"
-  notes: "Submitted. Update the authors, volume, year and DOI after acceptance."
+  notes: "Manuscript in preparation. Update the authors, journal, volume, year and DOI after acceptance."
 repository-code: "https://github.com/Zahiiiin/UCL_risk_predictor"
 url: "https://ucl-risk-predictor.onrender.com"
 license: MIT

@@ -1,0 +1,106 @@
+{
+ "early_vs_late": {
+  "comparison": "label window, early block 2018-2021 vs late block 2022-2024",
+  "n_reactors": 362,
+  "class_agreement_pct": 64.9,
+  "within_one_class_pct": 94.5,
+  "low_high_swaps": 20,
+  "weighted_kappa": 0.5,
+  "spearman_rho_of_means": 0.652,
+  "confusion_rows_first_cols_second": [
+   [
+    163,
+    24,
+    8
+   ],
+   [
+    41,
+    31,
+    17
+   ],
+   [
+    12,
+    25,
+    41
+   ]
+  ]
+ },
+ "history_2014_2017_vs_label": {
+  "comparison": "history block 2014-2017 vs label (2018-2024)",
+  "n_reactors": 347,
+  "class_agreement_pct": 61.4,
+  "within_one_class_pct": 93.1,
+  "low_high_swaps": 24,
+  "weighted_kappa": 0.443,
+  "spearman_rho_of_means": 0.623,
+  "confusion_rows_first_cols_second": [
+   [
+    146,
+    28,
+    9
+   ],
+   [
+    31,
+    35,
+    31
+   ],
+   [
+    15,
+    20,
+    32
+   ]
+  ]
+ },
+ "history_2010_2013_vs_label": {
+  "comparison": "history block 2010-2013 vs label (2018-2024)",
+  "n_reactors": 328,
+  "class_agreement_pct": 64.3,
+  "within_one_class_pct": 96.3,
+  "low_high_swaps": 12,
+  "weighted_kappa": 0.527,
+  "spearman_rho_of_means": 0.635,
+  "confusion_rows_first_cols_second": [
+   [
+    137,
+    30,
+    6
+   ],
+   [
+    34,
+    31,
+    20
+   ],
+   [
+    6,
+    21,
+    43
+   ]
+  ]
+ },
+ "late_block_vs_label_overlapping": {
+  "comparison": "late block 2022-2024 vs label (2018-2024); the blocks overlap, shown for scale only",
+  "n_reactors": 372,
+  "class_agreement_pct": 77.7,
+  "within_one_class_pct": 98.7,
+  "low_high_swaps": 5,
+  "weighted_kappa": 0.706,
+  "spearman_rho_of_means": 0.865,
+  "confusion_rows_first_cols_second": [
+   [
+    187,
+    28,
+    5
+   ],
+   [
+    18,
+    48,
+    18
+   ],
+   [
+    0,
+    14,
+    54
+   ]
+  ]
+ }
+}

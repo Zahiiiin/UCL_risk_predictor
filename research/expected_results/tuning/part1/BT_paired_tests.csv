@@ -1,0 +1,91 @@
+Comparison,First,Second,Metric,Mean_difference_pts,t,p_corrected
+design model vs country baseline (324),B | LR-tuned,B | Baseline: country majority,accuracy,-2.46,-0.853,0.4022
+design model vs country baseline (324),B | LR-tuned,B | Baseline: country majority,balanced_accuracy,0.29,0.086,0.9322
+design model vs country baseline (324),B | LR-tuned,B | Baseline: country majority,macro_F1,0.9,0.258,0.799
+design model vs country baseline (387),A | LR-tuned,A | Baseline: country majority,accuracy,-2.17,-0.679,0.5033
+design model vs country baseline (387),A | LR-tuned,A | Baseline: country majority,balanced_accuracy,2.48,0.948,0.3526
+design model vs country baseline (387),A | LR-tuned,A | Baseline: country majority,macro_F1,2.64,0.992,0.331
+"Model 2 vs Model 1, same classifier (324)",D | LR-tuned,B | LR-tuned,accuracy,3.14,1.281,0.2125
+"Model 2 vs Model 1, same classifier (324)",D | LR-tuned,B | LR-tuned,balanced_accuracy,2.13,0.729,0.4733
+"Model 2 vs Model 1, same classifier (324)",D | LR-tuned,B | LR-tuned,macro_F1,1.17,0.386,0.7026
+Model 2 vs country baseline (324),D | LR-tuned,B | Baseline: country majority,accuracy,0.68,0.276,0.7846
+Model 2 vs country baseline (324),D | LR-tuned,B | Baseline: country majority,balanced_accuracy,2.42,0.875,0.39
+Model 2 vs country baseline (324),D | LR-tuned,B | Baseline: country majority,macro_F1,2.07,0.711,0.484
+Model 2 vs persistence baseline (324),D | LR-tuned,B | Baseline: persistence (past UCL),accuracy,6.11,1.98,0.0593
+Model 2 vs persistence baseline (324),D | LR-tuned,B | Baseline: persistence (past UCL),balanced_accuracy,4.32,1.271,0.2158
+Model 2 vs persistence baseline (324),D | LR-tuned,B | Baseline: persistence (past UCL),macro_F1,4.03,1.191,0.2453
+design with vs without country (324),B | LR-tuned,C | LR-tuned,accuracy,9.01,3.259,0.0033
+design with vs without country (324),B | LR-tuned,C | LR-tuned,balanced_accuracy,6.0,2.434,0.0228
+design with vs without country (324),B | LR-tuned,C | LR-tuned,macro_F1,7.01,2.667,0.0135
+design model vs country baseline (324),B | RF-tuned,B | Baseline: country majority,accuracy,-0.73,-0.275,0.7854
+design model vs country baseline (324),B | RF-tuned,B | Baseline: country majority,balanced_accuracy,1.93,0.723,0.4765
+design model vs country baseline (324),B | RF-tuned,B | Baseline: country majority,macro_F1,2.76,0.973,0.3405
+design model vs country baseline (387),A | RF-tuned,A | Baseline: country majority,accuracy,-1.9,-0.755,0.4578
+design model vs country baseline (387),A | RF-tuned,A | Baseline: country majority,balanced_accuracy,1.25,0.459,0.6504
+design model vs country baseline (387),A | RF-tuned,A | Baseline: country majority,macro_F1,1.65,0.594,0.5583
+"Model 2 vs Model 1, same classifier (324)",D | RF-tuned,B | RF-tuned,accuracy,1.41,0.847,0.4053
+"Model 2 vs Model 1, same classifier (324)",D | RF-tuned,B | RF-tuned,balanced_accuracy,1.24,0.623,0.5392
+"Model 2 vs Model 1, same classifier (324)",D | RF-tuned,B | RF-tuned,macro_F1,1.21,0.626,0.5371
+Model 2 vs country baseline (324),D | RF-tuned,B | Baseline: country majority,accuracy,0.68,0.291,0.7738
+Model 2 vs country baseline (324),D | RF-tuned,B | Baseline: country majority,balanced_accuracy,3.17,1.088,0.2875
+Model 2 vs country baseline (324),D | RF-tuned,B | Baseline: country majority,macro_F1,3.97,1.388,0.1778
+Model 2 vs persistence baseline (324),D | RF-tuned,B | Baseline: persistence (past UCL),accuracy,6.11,2.1,0.0464
+Model 2 vs persistence baseline (324),D | RF-tuned,B | Baseline: persistence (past UCL),balanced_accuracy,5.07,1.383,0.1794
+Model 2 vs persistence baseline (324),D | RF-tuned,B | Baseline: persistence (past UCL),macro_F1,5.93,1.713,0.0996
+design with vs without country (324),B | RF-tuned,C | RF-tuned,accuracy,4.64,2.865,0.0085
+design with vs without country (324),B | RF-tuned,C | RF-tuned,balanced_accuracy,4.09,2.237,0.0349
+design with vs without country (324),B | RF-tuned,C | RF-tuned,macro_F1,4.31,2.703,0.0124
+design model vs country baseline (324),B | ETC-tuned,B | Baseline: country majority,accuracy,0.19,0.058,0.9541
+design model vs country baseline (324),B | ETC-tuned,B | Baseline: country majority,balanced_accuracy,2.91,0.822,0.419
+design model vs country baseline (324),B | ETC-tuned,B | Baseline: country majority,macro_F1,3.53,0.977,0.3385
+design model vs country baseline (387),A | ETC-tuned,A | Baseline: country majority,accuracy,-2.68,-1.191,0.2455
+design model vs country baseline (387),A | ETC-tuned,A | Baseline: country majority,balanced_accuracy,0.88,0.457,0.6519
+design model vs country baseline (387),A | ETC-tuned,A | Baseline: country majority,macro_F1,0.92,0.423,0.676
+"Model 2 vs Model 1, same classifier (324)",D | ETC-tuned,B | ETC-tuned,accuracy,2.53,1.014,0.3208
+"Model 2 vs Model 1, same classifier (324)",D | ETC-tuned,B | ETC-tuned,balanced_accuracy,1.2,0.395,0.6961
+"Model 2 vs Model 1, same classifier (324)",D | ETC-tuned,B | ETC-tuned,macro_F1,1.27,0.417,0.6802
+Model 2 vs country baseline (324),D | ETC-tuned,B | Baseline: country majority,accuracy,2.72,1.218,0.2351
+Model 2 vs country baseline (324),D | ETC-tuned,B | Baseline: country majority,balanced_accuracy,4.11,1.366,0.1846
+Model 2 vs country baseline (324),D | ETC-tuned,B | Baseline: country majority,macro_F1,4.8,1.482,0.1513
+Model 2 vs persistence baseline (324),D | ETC-tuned,B | Baseline: persistence (past UCL),accuracy,8.15,2.558,0.0173
+Model 2 vs persistence baseline (324),D | ETC-tuned,B | Baseline: persistence (past UCL),balanced_accuracy,6.0,1.592,0.1245
+Model 2 vs persistence baseline (324),D | ETC-tuned,B | Baseline: persistence (past UCL),macro_F1,6.76,1.789,0.0862
+design with vs without country (324),B | ETC-tuned,C | ETC-tuned,accuracy,4.95,1.605,0.1216
+design with vs without country (324),B | ETC-tuned,C | ETC-tuned,balanced_accuracy,5.01,1.633,0.1155
+design with vs without country (324),B | ETC-tuned,C | ETC-tuned,macro_F1,5.42,1.775,0.0885
+design model vs country baseline (324),B | XGB-tuned,B | Baseline: country majority,accuracy,-3.88,-1.119,0.2742
+design model vs country baseline (324),B | XGB-tuned,B | Baseline: country majority,balanced_accuracy,-0.95,-0.281,0.7812
+design model vs country baseline (324),B | XGB-tuned,B | Baseline: country majority,macro_F1,-0.32,-0.09,0.9291
+design model vs country baseline (387),A | XGB-tuned,A | Baseline: country majority,accuracy,-2.94,-1.288,0.2099
+design model vs country baseline (387),A | XGB-tuned,A | Baseline: country majority,balanced_accuracy,0.88,0.368,0.7163
+design model vs country baseline (387),A | XGB-tuned,A | Baseline: country majority,macro_F1,1.22,0.437,0.6661
+"Model 2 vs Model 1, same classifier (324)",D | XGB-tuned,B | XGB-tuned,accuracy,1.48,0.522,0.6067
+"Model 2 vs Model 1, same classifier (324)",D | XGB-tuned,B | XGB-tuned,balanced_accuracy,0.41,0.133,0.8953
+"Model 2 vs Model 1, same classifier (324)",D | XGB-tuned,B | XGB-tuned,macro_F1,0.6,0.2,0.8429
+Model 2 vs country baseline (324),D | XGB-tuned,B | Baseline: country majority,accuracy,-2.4,-0.791,0.4368
+Model 2 vs country baseline (324),D | XGB-tuned,B | Baseline: country majority,balanced_accuracy,-0.54,-0.157,0.8768
+Model 2 vs country baseline (324),D | XGB-tuned,B | Baseline: country majority,macro_F1,0.28,0.08,0.9368
+Model 2 vs persistence baseline (324),D | XGB-tuned,B | Baseline: persistence (past UCL),accuracy,3.04,0.861,0.3978
+Model 2 vs persistence baseline (324),D | XGB-tuned,B | Baseline: persistence (past UCL),balanced_accuracy,1.36,0.307,0.7613
+Model 2 vs persistence baseline (324),D | XGB-tuned,B | Baseline: persistence (past UCL),macro_F1,2.24,0.545,0.5906
+design with vs without country (324),B | XGB-tuned,C | XGB-tuned,accuracy,3.9,1.514,0.1431
+design with vs without country (324),B | XGB-tuned,C | XGB-tuned,balanced_accuracy,4.34,1.504,0.1457
+design with vs without country (324),B | XGB-tuned,C | XGB-tuned,macro_F1,4.18,1.474,0.1536
+design model vs country baseline (324),B | Stacking-tuned,B | Baseline: country majority,accuracy,-1.66,-0.665,0.5127
+design model vs country baseline (324),B | Stacking-tuned,B | Baseline: country majority,balanced_accuracy,-0.78,-0.286,0.7776
+design model vs country baseline (324),B | Stacking-tuned,B | Baseline: country majority,macro_F1,-0.04,-0.012,0.9905
+design model vs country baseline (387),A | Stacking-tuned,A | Baseline: country majority,accuracy,-0.88,-0.428,0.6728
+design model vs country baseline (387),A | Stacking-tuned,A | Baseline: country majority,balanced_accuracy,0.63,0.257,0.799
+design model vs country baseline (387),A | Stacking-tuned,A | Baseline: country majority,macro_F1,1.29,0.454,0.6541
+"Model 2 vs Model 1, same classifier (324)",D | Stacking-tuned,B | Stacking-tuned,accuracy,2.9,1.317,0.2003
+"Model 2 vs Model 1, same classifier (324)",D | Stacking-tuned,B | Stacking-tuned,balanced_accuracy,1.53,0.514,0.6118
+"Model 2 vs Model 1, same classifier (324)",D | Stacking-tuned,B | Stacking-tuned,macro_F1,2.06,0.651,0.5211
+Model 2 vs country baseline (324),D | Stacking-tuned,B | Baseline: country majority,accuracy,1.24,0.482,0.6343
+Model 2 vs country baseline (324),D | Stacking-tuned,B | Baseline: country majority,balanced_accuracy,0.75,0.22,0.8276
+Model 2 vs country baseline (324),D | Stacking-tuned,B | Baseline: country majority,macro_F1,2.02,0.558,0.5819
+Model 2 vs persistence baseline (324),D | Stacking-tuned,B | Baseline: persistence (past UCL),accuracy,6.67,2.097,0.0467
+Model 2 vs persistence baseline (324),D | Stacking-tuned,B | Baseline: persistence (past UCL),balanced_accuracy,2.65,0.682,0.5017
+Model 2 vs persistence baseline (324),D | Stacking-tuned,B | Baseline: persistence (past UCL),macro_F1,3.99,1.051,0.304
+design with vs without country (324),B | Stacking-tuned,C | Stacking-tuned,accuracy,5.49,1.961,0.0616
+design with vs without country (324),B | Stacking-tuned,C | Stacking-tuned,balanced_accuracy,5.18,1.58,0.1273
+design with vs without country (324),B | Stacking-tuned,C | Stacking-tuned,macro_F1,5.02,1.535,0.1379

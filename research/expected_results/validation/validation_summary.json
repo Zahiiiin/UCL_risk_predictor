@@ -1,0 +1,87 @@
+{
+ "n_reactors_in_dataset": 387,
+ "ucf_2013_2017_vs_PRIS_2013_2017": {
+  "n": 365,
+  "mean_abs_diff": 0.32,
+  "median_abs_diff": 0.03,
+  "share_within_0.5": 91.0,
+  "share_within_1": 93.2,
+  "pearson_r": 0.9957
+ },
+ "ucf_2010_2020_vs_PRIS_period": {
+  "n": 377,
+  "mean_abs_diff": 5.05,
+  "median_abs_diff": 2.79,
+  "share_within_0.5": 15.6,
+  "share_within_1": 24.7,
+  "pearson_r": 0.7454
+ },
+ "ucf_2010_2020_vs_PRIS_lifetime_to_2020": {
+  "n": 377,
+  "mean_abs_diff": 0.39,
+  "median_abs_diff": 0.17,
+  "share_within_0.5": 80.6,
+  "share_within_1": 92.3,
+  "pearson_r": 0.9908
+ },
+ "ucf_2014_2024_vs_PRIS_period": {
+  "n": 387,
+  "mean_abs_diff": 5.18,
+  "median_abs_diff": 3.51,
+  "share_within_0.5": 11.9,
+  "share_within_1": 23.3,
+  "pearson_r": 0.7755
+ },
+ "ucf_2014_2024_vs_PRIS_lifetime_to_2024": {
+  "n": 387,
+  "mean_abs_diff": 0.34,
+  "median_abs_diff": 0.19,
+  "share_within_0.5": 81.1,
+  "share_within_1": 93.0,
+  "pearson_r": 0.9963
+ },
+ "pcl_2021_2023": {
+  "groups_compared": 7,
+  "mean_abs_diff": 0.5,
+  "largest_abs_diff": 1.56,
+  "rule": "groups with at least 5 dataset reactors"
+ },
+ "fleet_ucl_by_year_all_reporting_units": {
+  "1990": {
+   "mean": 7.25,
+   "median": 3.23,
+   "units": 413
+  },
+  "2000": {
+   "mean": 4.33,
+   "median": 1.12,
+   "units": 419
+  },
+  "2010": {
+   "mean": 5.84,
+   "median": 1.58,
+   "units": 435
+  },
+  "2020": {
+   "mean": 5.1,
+   "median": 0.77,
+   "units": 417
+  },
+  "2023": {
+   "mean": 3.37,
+   "median": 0.46,
+   "units": 398
+  },
+  "2024": {
+   "mean": 3.22,
+   "median": 0.55,
+   "units": 404
+  }
+ },
+ "raw_table": {
+  "unit_years": 20600,
+  "units": 649,
+  "first_year": 1969,
+  "last_year": 2025
+ }
+}

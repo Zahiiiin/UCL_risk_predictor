@@ -29,18 +29,18 @@
     { id: "net_capacity_mw", label: "Net capacity", noun: "net capacity", unit: "MW", min: 50, max: 2500, step: 10, driver: "size", group: "reactor", title: "Net electrical capacity: the power sent to the grid" },
     { id: "age_years", label: "Age in 2024", noun: "age", unit: "years", min: 0, max: 80, step: 1, driver: "age", group: "reactor", title: "Years since first grid connection, counted to 2024" },
     { id: "construction_years", label: "Construction time", noun: "construction time", unit: "years", min: 1, max: 60, step: 1, driver: "build", group: "reactor", title: "Years from the start of construction to first grid connection" },
-    { id: "ucf_p1", label: "UCF 2013 to 2017", noun: "UCF for 2013 to 2017", unit: "%", min: 0, max: 100, step: 1, group: "history", title: "Unit capability factor, 2013 to 2017" },
-    { id: "ucf_p2", label: "UCF 2010 to 2020", noun: "UCF for 2010 to 2020", unit: "%", min: 0, max: 100, step: 1, group: "history", title: "Unit capability factor, 2010 to 2020" },
+    { id: "ucl_p1", label: "UCL 2010 to 2013", noun: "UCL for 2010 to 2013", unit: "%", min: 0, max: 100, step: 0.5, group: "history", title: "Average unplanned capability loss, 2010 to 2013 (IAEA PRIS)" },
+    { id: "ucl_p2", label: "UCL 2014 to 2017", noun: "UCL for 2014 to 2017", unit: "%", min: 0, max: 100, step: 0.5, group: "history", title: "Average unplanned capability loss, 2014 to 2017 (IAEA PRIS)" },
   ];
   const FIELD = Object.fromEntries(FIELDS.map((f) => [f.id, f]));
   const CHOICES = ["type", "country", "nsss_group", "model_family"];
 
   const EXAMPLES = [
-    { label: "Mid-life PWR", values: { type: "PWR", country: "USA", net_capacity_mw: 1100, age_years: 30, construction_years: 6, nsss_group: "Western_PWR", model_family: "Other", ucf_p1: 90, ucf_p2: 88 } },
-    { label: "Ageing VVER", values: { type: "PWR", country: "RUSSIA", net_capacity_mw: 950, age_years: 33, construction_years: 7, nsss_group: "Russian_VVER", model_family: "VVER", ucf_p1: 82, ucf_p2: 80 } },
-    { label: "Heavy-water", values: { type: "PHWR", country: "CANADA", net_capacity_mw: 650, age_years: 40, construction_years: 7, nsss_group: "Canadian_CANDU", model_family: "CANDU", ucf_p1: 78, ucf_p2: 76 } },
-    { label: "Gas-cooled", values: { type: "GCR", country: "UK", net_capacity_mw: 480, age_years: 45, construction_years: 8, nsss_group: "Korean_Other", model_family: "GCR", ucf_p1: 70, ucf_p2: 72 } },
-    { label: "New build", only: "1", values: { type: "PWR", country: "CHINA", net_capacity_mw: 1000, age_years: 3, construction_years: 5, nsss_group: "Chinese", model_family: "Other", ucf_p1: 90, ucf_p2: 88 } },
+    { label: "Mid-life PWR", values: { type: "PWR", country: "USA", net_capacity_mw: 1100, age_years: 30, construction_years: 6, nsss_group: "Western_PWR", model_family: "Other", ucl_p1: 1, ucl_p2: 0.8 } },
+    { label: "Ageing VVER", values: { type: "PWR", country: "RUSSIA", net_capacity_mw: 950, age_years: 33, construction_years: 7, nsss_group: "Russian_VVER", model_family: "VVER", ucl_p1: 2.5, ucl_p2: 2 } },
+    { label: "Heavy-water", values: { type: "PHWR", country: "CANADA", net_capacity_mw: 650, age_years: 40, construction_years: 7, nsss_group: "Canadian_CANDU", model_family: "CANDU", ucl_p1: 4, ucl_p2: 3 } },
+    { label: "Gas-cooled", values: { type: "GCR", country: "UK", net_capacity_mw: 480, age_years: 45, construction_years: 8, nsss_group: "Korean_Other", model_family: "GCR", ucl_p1: 8, ucl_p2: 9 } },
+    { label: "New build", only: "1", values: { type: "PWR", country: "CHINA", net_capacity_mw: 1000, age_years: 3, construction_years: 5, nsss_group: "Chinese", model_family: "Other", ucl_p1: 1, ucl_p2: 1 } },
   ];
 
   const S = {
@@ -178,7 +178,7 @@
     const m2 = S.opts.models.model2;
     const found = (m) => `${m.confusion_matrix[1][1]} of ${m.confusion_matrix[1].reduce((a, b) => a + b, 0)}`;
     $('[data-info="medium"]').textContent =
-      `In testing, design only found ${found(m1)} Medium reactors and the model with past performance found ${found(m2)}.`;
+      `In cross-validation, design only found ${found(m1)} Medium reactors and the model with past performance found ${found(m2)}.`;
   }
 
   /* ---------- Building the inputs ---------------------------------------- */
@@ -269,8 +269,8 @@
           ${pullHtml("history")}
         </div>
         <div class="pair">
-          ${sliderSub(f.ucf_p1)}
-          ${sliderSub(f.ucf_p2)}
+          ${sliderSub(f.ucl_p1)}
+          ${sliderSub(f.ucl_p2)}
         </div>
       </div>`;
 
@@ -656,7 +656,7 @@
     setNotices(r.warnings || []);
 
     const f = r.model_facts;
-    let rel = `Tested on ${f.n_test} unseen reactors: ${Math.round(f.accuracy)}% correct.`;
+    let rel = `Cross-validated on ${f.n_test} reactors: ${Math.round(f.accuracy)}% correct. Guessing from the country alone gives ${Math.round(f.baseline)}%.`;
     if (cls === "Medium" || probs.Medium >= 0.25) rel += " Medium is the hardest class.";
     $("#reliability").textContent = rel;
 

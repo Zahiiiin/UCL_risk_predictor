@@ -1,0 +1,74 @@
+{
+ "target value equals the raw PRIS UCL of the target year (sampled rows)": {
+  "pass": true,
+  "info": "1500 rows, 0 differ"
+ },
+ "persistence forecast equals the last usable UCL up to the origin year (sampled rows)": {
+  "pass": true,
+  "info": "1500 rows, 0 differ"
+ },
+ "median-of-five forecast equals the median of the usable values of the five years ending at the origin year (sampled rows)": {
+  "pass": true,
+  "info": "1500 rows, 0 differ"
+ },
+ "every sampled row has at least two usable years in the five years ending at the origin year": {
+  "pass": true,
+  "info": "0 violate"
+ },
+ "recomputed": {
+  "base:persistence": {
+   "MAE": 4.563018947708199,
+   "class_accuracy": 61.07165913492576
+  },
+  "base:median5": {
+   "MAE": 3.917488202065849,
+   "class_accuracy": 65.13879922530666
+  },
+  "ml:RF|C": {
+   "MAE": 3.596474903163331,
+   "class_accuracy": 65.8650742414461
+  },
+  "rows": 6196,
+  "reactors": 505,
+  "countries": 32,
+  "years_rf_below_median": 16,
+  "years_rf_below_persistence": 16,
+  "years": 16
+ },
+ "MAE of base:persistence agrees with FB_summary.csv": {
+  "pass": true,
+  "info": "4.5630 vs 4.5630"
+ },
+ "class accuracy of base:persistence agrees with FB_summary.csv": {
+  "pass": true,
+  "info": "61.072 vs 61.072"
+ },
+ "MAE of base:median5 agrees with FB_summary.csv": {
+  "pass": true,
+  "info": "3.9175 vs 3.9175"
+ },
+ "class accuracy of base:median5 agrees with FB_summary.csv": {
+  "pass": true,
+  "info": "65.139 vs 65.139"
+ },
+ "MAE of ml:RF|C agrees with FB_summary.csv": {
+  "pass": true,
+  "info": "3.5965 vs 3.5965"
+ },
+ "class accuracy of ml:RF|C agrees with FB_summary.csv": {
+  "pass": true,
+  "info": "65.865 vs 65.865"
+ },
+ "scored rows equal the number in the run summary": {
+  "pass": true,
+  "info": "6196"
+ },
+ "every scored row is a row of the stored forecasting table": {
+  "pass": true,
+  "info": "6196 rows"
+ },
+ "all 27 input columns of input sets A to D equal values recomputed from the raw table cut off at the origin year (sampled rows)": {
+  "pass": true,
+  "info": "600 rows, 16200 values, 0 differ"
+ }
+}

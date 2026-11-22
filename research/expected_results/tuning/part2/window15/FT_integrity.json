@@ -1,0 +1,9 @@
+{
+ "rows_tuned": 6196,
+ "rows_matched_to_untuned": 6196,
+ "baseline_max_abs_diff_persistence": 0.0,
+ "baseline_max_abs_diff_median5": 0.0,
+ "default_chosen_cases": 8,
+ "default_cases_that_differ_by_more_than_0.001": 0,
+ "largest_difference_in_default_cases": 8.270263656129373e-07
+}

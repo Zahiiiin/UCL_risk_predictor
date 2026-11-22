@@ -1,15 +1,15 @@
 # ==============================================================================
 # UCL NUCLEAR POWER PLANT RISK CLASSIFICATION - MODEL 1
-# Static design-based classifier (13 features, 407 reactors)
+# Static design-based classifier (13 features, 387 reactors)
 # ==============================================================================
 #
 # Paper: "Machine Learning Classification of Unplanned Capability Loss Risk in
 #         Nuclear Power Plants" (target journal: Nuclear Engineering and Design)
-# Data : IAEA PRIS / RDS-2, file UCL_Dataset_v5_longitudinal.xlsx
+# Data : IAEA PRIS / RDS-2, file UCL_Dataset_v6_PRIS.xlsx
 #
 # WHAT THIS MODEL DOES:
 #   Predicts the UCL risk class (Low / Medium / High) using ONLY reactor design
-#   and identity features. No operating history (no UCF) is used, so the model
+#   and identity features. No operating history (no UCL or UCF) is used, so the model
 #   can be applied to a reactor before it has any operating record.
 #
 # FEATURES (13 in total):
@@ -19,13 +19,14 @@
 #                    Thermal efficiency, Model family, Age group,
 #                    Operational category
 #
-# RESULTS REPORTED IN THE PAPER (test set of 82 reactors, seed 42):
-#   Stacking ensemble: 76.8 % accuracy, 86.9 % AUC-ROC (weighted one-vs-rest)
-#   Temporal split (train on reactors with 10+ years of operation, test on
-#   newer reactors): 84.1 % accuracy for the best model
-#   Per-class F1 of the stacking ensemble: Low 89.8, Medium 27.3, High 72.7.
+# WHAT YOU SHOULD SEE (single 80/20 split, test set of 78 reactors, seed 42):
+#   Accuracy 69 to 76 % depending on the classifier (XGBoost best with 75.64 %),
+#   cohort split accuracy 67 to 71 %. The exact tables are in
+#   expected_results/model1/. ONE SPLIT IS NOT THE MODEL'S ACCURACY: one test reactor
+#   moves it by 1.3 points. The fair figure is the cross-validated benchmark in
+#   UCL_Benchmark_CV.py, where Model 1 reaches 65 to 66 % (Logistic Regression and
+#   Random Forest), below the 69 % of guessing the most common class of each country.
 #   These numbers need the library versions pinned in requirements-research.txt.
-#   scikit-learn 1.9 changes the Random Forest results by one reactor.
 #
 # THINGS A REVIEWER SHOULD KNOW:
 #   1. Thermal_Efficiency is the constant 33.0 for every reactor, because the
@@ -37,7 +38,8 @@
 #      but a stricter design would fit both on the training part only.
 #   3. SMOTE is applied to the training part only. The cross-validation used
 #      inside the random search runs on that balanced training set, so the CV
-#      scores are optimistic. Test-set scores are not affected.
+#      scores (columns CV_Mean_balanced_train) are optimistic and must not be quoted.
+#      Test-set scores are not affected.
 #
 # HOW TO RUN:
 #   pip install -r requirements-research.txt
@@ -128,7 +130,7 @@ def save_fig(fig, name):
 
 print("=" * 65)
 print("  UCL PREDICTION - MODEL 1: Static Design Classifier")
-print("  13 features | n=407 reactors | Target: Low/Medium/High")
+print("  13 features | Target: Low/Medium/High")
 print("=" * 65)
 
 # ==============================================================================
@@ -138,10 +140,10 @@ print("\n[1] Loading data...")
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 DATASET_PATHS = [
-    'UCL_Dataset_v5_longitudinal.xlsx',
-    os.path.join(_HERE, 'UCL_Dataset_v5_longitudinal.xlsx'),
-    os.path.join(_HERE, '..', 'data', 'UCL_Dataset_v5_longitudinal.xlsx'),
-    os.path.join('data', 'UCL_Dataset_v5_longitudinal.xlsx'),
+    'UCL_Dataset_v6_PRIS.xlsx',
+    os.path.join(_HERE, 'UCL_Dataset_v6_PRIS.xlsx'),
+    os.path.join(_HERE, '..', 'data', 'UCL_Dataset_v6_PRIS.xlsx'),
+    os.path.join('data', 'UCL_Dataset_v6_PRIS.xlsx'),
 ]
 df_raw = None
 for path in DATASET_PATHS:
@@ -155,7 +157,7 @@ for path in DATASET_PATHS:
 
 if df_raw is None:
     raise FileNotFoundError(
-        "Cannot find dataset. Place UCL_Dataset_v5_longitudinal.xlsx "
+        "Cannot find dataset. Place UCL_Dataset_v6_PRIS.xlsx "
         "in the same folder as this script."
     )
 
@@ -478,8 +480,8 @@ for name, mdl in models.items():
     results_s1[name] = {
         'Accuracy': round(acc, 2), 'F1': round(f1, 2),
         'AUC_ROC': round(auc_val, 2),
-        'CV_Mean': round(cvs.mean() * 100, 2),
-        'CV_Std':  round(cvs.std()  * 100, 2),
+        'CV_Mean_balanced_train': round(cvs.mean() * 100, 2),
+        'CV_Std_balanced_train':  round(cvs.std()  * 100, 2),
     }
     preds_s1[name]  = yp
     probas_s1[name] = ypr
@@ -724,7 +726,7 @@ for _, row in df_s1.iterrows():
     star = "*" if row['Model'] == best_name else " "
     print(f"    {star} {row['Model']:12s}: Acc={row['Accuracy']:.1f}%  "
           f"F1={row['F1']:.1f}%  AUC={row['AUC_ROC']:.1f}%  "
-          f"CV={row['CV_Mean']:.1f}%+/-{row['CV_Std']:.1f}%")
+          f"CV(balanced train)={row['CV_Mean_balanced_train']:.1f}%+/-{row['CV_Std_balanced_train']:.1f}%")
 
 print(f"\n  TEMPORAL SPLIT (Cat A->B+C):")
 for n, v in results_temp.items():
@@ -745,5 +747,5 @@ for _, row in df_boot.iterrows():
 print(f"\n  Output: {OUT}/")
 print(f"  Figures: 7 PNG  |  Tables: 4 CSV")
 print("=" * 65)
-print("\n  -> Run UCL_Model2_Pipeline.py next to see what adding the two UCF")
+print("\n  -> Run UCL_Model2_Pipeline.py next to see what adding the UCL")
 print("    history features does for the Medium class.")

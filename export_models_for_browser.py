@@ -119,20 +119,33 @@ def export_bundle(key):
                    "scale": [float(x) for x in b["scaler"].scale_]},
         "info": b["info"],
     }
-    if hasattr(model, "estimators_"):  # stacking (Model 1)
+    name = type(model).__name__
+    if name == "StackingClassifier":
         names = [n for n, _ in model.estimators]
         parts = {}
-        for name, est in zip(names, model.estimators_):
-            parts[name] = export_forest(est) if hasattr(est, "estimators_") else export_xgb(est, feats)
+        for n, est in zip(names, model.estimators_):
+            parts[n] = export_forest(est) if hasattr(est, "estimators_") else export_xgb(est, feats)
         out["kind"] = "stack"
         out["parts"] = parts
         out["order"] = names
         out["meta_coef"] = model.final_estimator_.coef_.tolist()
         out["meta_intercept"] = model.final_estimator_.intercept_.tolist()
-    else:  # single XGBoost (Model 2)
+    elif name in ("RandomForestClassifier", "ExtraTreesClassifier"):
+        out["kind"] = "forest"
+        out["parts"] = {"rf": export_forest(model)}
+        out["order"] = ["rf"]
+    elif name == "LogisticRegression":
+        out["kind"] = "logreg"
+        out["parts"] = {}
+        out["order"] = []
+        out["coef"] = model.coef_.tolist()
+        out["intercept"] = model.intercept_.tolist()
+    elif name == "XGBClassifier":
         out["kind"] = "xgb"
         out["parts"] = {"xgb": export_xgb(model, feats)}
         out["order"] = ["xgb"]
+    else:
+        raise ValueError(f"cannot export a {name} to the browser")
     return out
 
 

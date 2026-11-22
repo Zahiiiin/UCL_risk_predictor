@@ -6,10 +6,20 @@ venv/
 # Spreadsheets stay out of the repository, except the paper's dataset
 *.xlsx
 !data/UCL_Dataset_v5_longitudinal.xlsx
+!data/UCL_Dataset_v6_PRIS.xlsx
 # Output folders created when the scripts run
 research/results_Model1/
 research/results_Model2/
+research/results_Benchmark/
 results_Model1/
 results_Model2/
+results_Benchmark/
 # One-file preview built by tools/build_preview.py
 preview/
+research/results_Benchmark_thermal/
+research/results_LabelStability/
+results_LeaveCountryOut/
+research/results_Importance/
+research/results_Threshold/
+research/results_Forecast/*
+!research/results_Forecast/forecast_panel.csv

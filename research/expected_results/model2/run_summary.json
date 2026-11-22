@@ -1,144 +1,144 @@
 {
-  "n_reactors_full": 407,
-  "n_reactors_model2": 370,
+  "n_reactors_full": 387,
+  "n_reactors_model2": 324,
   "n_countries_full": 31,
-  "n_countries_model2": 29,
-  "n_train": 296,
-  "n_test": 74,
+  "n_countries_model2": 28,
+  "n_train": 259,
+  "n_test": 65,
   "thermal_efficiency": "constant 33.0",
-  "best_model_1": "RF",
-  "best_model_2": "XGB",
+  "best_model_1": "XGB",
+  "best_model_2": "LR",
   "model1_results": {
     "LR": {
-      "Accuracy": 72.97,
-      "F1": 72.42,
-      "AUC_ROC": 86.15,
-      "MCC": 0.538,
-      "CV_Mean_balanced_train": 67.9,
-      "CV_Std_balanced_train": 3.62
+      "Accuracy": 67.69,
+      "F1": 67.05,
+      "AUC_ROC": 78.69,
+      "MCC": 0.461,
+      "CV_Mean_balanced_train": 71.71,
+      "CV_Std_balanced_train": 4.66
     },
     "RF": {
-      "Accuracy": 79.73,
-      "F1": 79.64,
-      "AUC_ROC": 90.93,
-      "MCC": 0.654,
-      "CV_Mean_balanced_train": 83.34,
-      "CV_Std_balanced_train": 5.12
+      "Accuracy": 63.08,
+      "F1": 55.14,
+      "AUC_ROC": 78.63,
+      "MCC": 0.347,
+      "CV_Mean_balanced_train": 80.82,
+      "CV_Std_balanced_train": 1.79
     },
     "ETC": {
-      "Accuracy": 78.38,
-      "F1": 77.87,
-      "AUC_ROC": 90.89,
-      "MCC": 0.627,
-      "CV_Mean_balanced_train": 84.37,
-      "CV_Std_balanced_train": 2.36
-    },
-    "XGB": {
-      "Accuracy": 79.73,
-      "F1": 79.53,
-      "AUC_ROC": 90.43,
-      "MCC": 0.655,
-      "CV_Mean_balanced_train": 82.93,
+      "Accuracy": 63.08,
+      "F1": 57.17,
+      "AUC_ROC": 78.47,
+      "MCC": 0.35,
+      "CV_Mean_balanced_train": 83.22,
       "CV_Std_balanced_train": 3.38
     },
+    "XGB": {
+      "Accuracy": 70.77,
+      "F1": 66.8,
+      "AUC_ROC": 80.61,
+      "MCC": 0.499,
+      "CV_Mean_balanced_train": 78.91,
+      "CV_Std_balanced_train": 3.09
+    },
     "Stacking": {
-      "Accuracy": 78.38,
-      "F1": 77.87,
-      "AUC_ROC": 91.45,
-      "MCC": 0.627,
-      "CV_Mean_balanced_train": 83.33,
-      "CV_Std_balanced_train": 2.55
+      "Accuracy": 64.62,
+      "F1": 58.88,
+      "AUC_ROC": 79.63,
+      "MCC": 0.382,
+      "CV_Mean_balanced_train": 81.06,
+      "CV_Std_balanced_train": 2.0
     }
   },
   "model2_results": {
     "LR": {
-      "Accuracy": 81.08,
-      "F1": 82.69,
-      "AUC_ROC": 95.79,
-      "MCC": 0.701,
-      "CV_Mean_balanced_train": 84.15,
-      "CV_Std_balanced_train": 3.19
+      "Accuracy": 69.23,
+      "F1": 68.86,
+      "AUC_ROC": 81.03,
+      "MCC": 0.482,
+      "CV_Mean_balanced_train": 72.44,
+      "CV_Std_balanced_train": 4.56
     },
     "RF": {
-      "Accuracy": 89.19,
-      "F1": 89.24,
-      "AUC_ROC": 98.25,
-      "MCC": 0.818,
-      "CV_Mean_balanced_train": 93.42,
-      "CV_Std_balanced_train": 1.64
+      "Accuracy": 69.23,
+      "F1": 67.5,
+      "AUC_ROC": 83.25,
+      "MCC": 0.474,
+      "CV_Mean_balanced_train": 82.5,
+      "CV_Std_balanced_train": 3.52
     },
     "ETC": {
-      "Accuracy": 89.19,
-      "F1": 89.18,
-      "AUC_ROC": 98.37,
-      "MCC": 0.822,
-      "CV_Mean_balanced_train": 93.21,
-      "CV_Std_balanced_train": 2.39
+      "Accuracy": 66.15,
+      "F1": 63.33,
+      "AUC_ROC": 83.01,
+      "MCC": 0.42,
+      "CV_Mean_balanced_train": 86.1,
+      "CV_Std_balanced_train": 3.13
     },
     "XGB": {
-      "Accuracy": 93.24,
-      "F1": 92.83,
-      "AUC_ROC": 96.35,
-      "MCC": 0.887,
-      "CV_Mean_balanced_train": 94.45,
-      "CV_Std_balanced_train": 2.72
+      "Accuracy": 69.23,
+      "F1": 67.39,
+      "AUC_ROC": 83.59,
+      "MCC": 0.471,
+      "CV_Mean_balanced_train": 82.02,
+      "CV_Std_balanced_train": 4.31
     },
     "Stacking": {
-      "Accuracy": 90.54,
-      "F1": 90.72,
-      "AUC_ROC": 98.78,
-      "MCC": 0.841,
-      "CV_Mean_balanced_train": 94.04,
-      "CV_Std_balanced_train": 1.75
+      "Accuracy": 67.69,
+      "F1": 65.55,
+      "AUC_ROC": 84.26,
+      "MCC": 0.449,
+      "CV_Mean_balanced_train": 84.42,
+      "CV_Std_balanced_train": 3.74
     }
   },
   "model1_best_params": {
     "LR": {
       "solver": "lbfgs",
-      "C": 6.158482110660261
+      "C": 233.57214690901213
     },
     "RF": {
       "n_estimators": 300,
-      "min_samples_split": 5,
-      "max_features": "log2",
+      "min_samples_split": 2,
+      "max_features": "sqrt",
       "max_depth": 20
     },
     "ETC": {
-      "n_estimators": 300,
+      "n_estimators": 200,
       "min_samples_split": 2,
-      "max_features": "sqrt",
-      "max_depth": null
+      "max_features": "log2",
+      "max_depth": 20
     },
     "XGB": {
       "subsample": 0.8,
-      "n_estimators": 100,
+      "n_estimators": 200,
       "max_depth": 7,
-      "learning_rate": 0.1
+      "learning_rate": 0.05
     },
     "Stacking": {}
   },
   "model2_best_params": {
     "LR": {
       "solver": "lbfgs",
-      "C": 54.555947811685144
+      "C": 12.74274985703132
     },
     "RF": {
-      "n_estimators": 200,
+      "n_estimators": 300,
       "min_samples_split": 2,
-      "max_features": "log2",
-      "max_depth": 10
+      "max_features": "sqrt",
+      "max_depth": 20
     },
     "ETC": {
       "n_estimators": 300,
-      "min_samples_split": 10,
+      "min_samples_split": 5,
       "max_features": "log2",
-      "max_depth": 20
+      "max_depth": null
     },
     "XGB": {
-      "subsample": 1.0,
-      "n_estimators": 200,
-      "max_depth": 7,
-      "learning_rate": 0.01
+      "subsample": 0.8,
+      "n_estimators": 100,
+      "max_depth": 5,
+      "learning_rate": 0.05
     },
     "Stacking": {}
   },
@@ -146,287 +146,286 @@
     "model1": {
       "LR": {
         "Low": {
-          "precision": 85.0,
-          "recall": 85.0,
-          "f1": 85.0,
-          "support": 40
+          "precision": 80.6,
+          "recall": 82.9,
+          "f1": 81.7,
+          "support": 35
         },
         "Medium": {
-          "precision": 33.3,
-          "recall": 27.3,
-          "f1": 30.0,
-          "support": 11
+          "precision": 35.7,
+          "recall": 31.2,
+          "f1": 33.3,
+          "support": 16
         },
         "High": {
-          "precision": 68.0,
-          "recall": 73.9,
-          "f1": 70.8,
-          "support": 23
+          "precision": 66.7,
+          "recall": 71.4,
+          "f1": 69.0,
+          "support": 14
         }
       },
       "RF": {
         "Low": {
-          "precision": 87.8,
-          "recall": 90.0,
-          "f1": 88.9,
-          "support": 40
+          "precision": 68.0,
+          "recall": 97.1,
+          "f1": 80.0,
+          "support": 35
         },
         "Medium": {
-          "precision": 54.5,
-          "recall": 54.5,
-          "f1": 54.5,
-          "support": 11
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
         },
         "High": {
-          "precision": 77.3,
-          "recall": 73.9,
-          "f1": 75.6,
-          "support": 23
+          "precision": 63.6,
+          "recall": 50.0,
+          "f1": 56.0,
+          "support": 14
         }
       },
       "ETC": {
         "Low": {
-          "precision": 85.7,
-          "recall": 90.0,
-          "f1": 87.8,
-          "support": 40
+          "precision": 70.2,
+          "recall": 94.3,
+          "f1": 80.5,
+          "support": 35
         },
         "Medium": {
-          "precision": 55.6,
-          "recall": 45.5,
-          "f1": 50.0,
-          "support": 11
+          "precision": 16.7,
+          "recall": 6.2,
+          "f1": 9.1,
+          "support": 16
         },
         "High": {
-          "precision": 73.9,
-          "recall": 73.9,
-          "f1": 73.9,
-          "support": 23
+          "precision": 58.3,
+          "recall": 50.0,
+          "f1": 53.8,
+          "support": 14
         }
       },
       "XGB": {
         "Low": {
-          "precision": 90.0,
-          "recall": 90.0,
-          "f1": 90.0,
-          "support": 40
+          "precision": 73.3,
+          "recall": 94.3,
+          "f1": 82.5,
+          "support": 35
         },
         "Medium": {
-          "precision": 50.0,
-          "recall": 45.5,
-          "f1": 47.6,
-          "support": 11
+          "precision": 42.9,
+          "recall": 18.8,
+          "f1": 26.1,
+          "support": 16
         },
         "High": {
-          "precision": 75.0,
-          "recall": 78.3,
-          "f1": 76.6,
-          "support": 23
+          "precision": 76.9,
+          "recall": 71.4,
+          "f1": 74.1,
+          "support": 14
         }
       },
       "Stacking": {
         "Low": {
-          "precision": 85.7,
-          "recall": 90.0,
-          "f1": 87.8,
-          "support": 40
+          "precision": 71.7,
+          "recall": 94.3,
+          "f1": 81.5,
+          "support": 35
         },
         "Medium": {
-          "precision": 55.6,
-          "recall": 45.5,
-          "f1": 50.0,
-          "support": 11
+          "precision": 16.7,
+          "recall": 6.2,
+          "f1": 9.1,
+          "support": 16
         },
         "High": {
-          "precision": 73.9,
-          "recall": 73.9,
-          "f1": 73.9,
-          "support": 23
+          "precision": 61.5,
+          "recall": 57.1,
+          "f1": 59.3,
+          "support": 14
         }
       }
     },
     "model2": {
       "LR": {
         "Low": {
-          "precision": 97.1,
-          "recall": 85.0,
-          "f1": 90.7,
-          "support": 40
+          "precision": 78.4,
+          "recall": 82.9,
+          "f1": 80.6,
+          "support": 35
         },
         "Medium": {
-          "precision": 41.2,
-          "recall": 63.6,
-          "f1": 50.0,
-          "support": 11
+          "precision": 40.0,
+          "recall": 37.5,
+          "f1": 38.7,
+          "support": 16
         },
         "High": {
-          "precision": 86.4,
-          "recall": 82.6,
-          "f1": 84.4,
-          "support": 23
+          "precision": 76.9,
+          "recall": 71.4,
+          "f1": 74.1,
+          "support": 14
         }
       },
       "RF": {
         "Low": {
-          "precision": 97.4,
-          "recall": 95.0,
-          "f1": 96.2,
-          "support": 40
+          "precision": 80.0,
+          "recall": 91.4,
+          "f1": 85.3,
+          "support": 35
         },
         "Medium": {
-          "precision": 63.6,
-          "recall": 63.6,
-          "f1": 63.6,
-          "support": 11
+          "precision": 41.7,
+          "recall": 31.2,
+          "f1": 35.7,
+          "support": 16
         },
         "High": {
-          "precision": 87.5,
-          "recall": 91.3,
-          "f1": 89.4,
-          "support": 23
+          "precision": 61.5,
+          "recall": 57.1,
+          "f1": 59.3,
+          "support": 14
         }
       },
       "ETC": {
         "Low": {
-          "precision": 97.3,
-          "recall": 90.0,
-          "f1": 93.5,
-          "support": 40
+          "precision": 78.0,
+          "recall": 91.4,
+          "f1": 84.2,
+          "support": 35
         },
         "Medium": {
-          "precision": 63.6,
-          "recall": 63.6,
-          "f1": 63.6,
-          "support": 11
+          "precision": 30.0,
+          "recall": 18.8,
+          "f1": 23.1,
+          "support": 16
         },
         "High": {
-          "precision": 88.5,
-          "recall": 100.0,
-          "f1": 93.9,
-          "support": 23
+          "precision": 57.1,
+          "recall": 57.1,
+          "f1": 57.1,
+          "support": 14
         }
       },
       "XGB": {
         "Low": {
-          "precision": 97.5,
-          "recall": 97.5,
-          "f1": 97.5,
-          "support": 40
+          "precision": 78.0,
+          "recall": 91.4,
+          "f1": 84.2,
+          "support": 35
         },
         "Medium": {
-          "precision": 87.5,
-          "recall": 63.6,
-          "f1": 73.7,
-          "support": 11
+          "precision": 41.7,
+          "recall": 31.2,
+          "f1": 35.7,
+          "support": 16
         },
         "High": {
-          "precision": 88.5,
-          "recall": 100.0,
-          "f1": 93.9,
-          "support": 23
+          "precision": 66.7,
+          "recall": 57.1,
+          "f1": 61.5,
+          "support": 14
         }
       },
       "Stacking": {
         "Low": {
-          "precision": 97.4,
-          "recall": 95.0,
-          "f1": 96.2,
-          "support": 40
+          "precision": 80.0,
+          "recall": 91.4,
+          "f1": 85.3,
+          "support": 35
         },
         "Medium": {
-          "precision": 66.7,
-          "recall": 72.7,
-          "f1": 69.6,
-          "support": 11
+          "precision": 36.4,
+          "recall": 25.0,
+          "f1": 29.6,
+          "support": 16
         },
         "High": {
-          "precision": 91.3,
-          "recall": 91.3,
-          "f1": 91.3,
-          "support": 23
+          "precision": 57.1,
+          "recall": 57.1,
+          "f1": 57.1,
+          "support": 14
         }
       }
     }
   },
   "per_class_compared": {
-    "classifier": "XGB",
+    "classifier": "LR",
     "model1": {
       "Low": {
-        "precision": 90.0,
-        "recall": 90.0,
-        "f1": 90.0,
-        "support": 40
+        "precision": 80.6,
+        "recall": 82.9,
+        "f1": 81.7,
+        "support": 35
       },
       "Medium": {
-        "precision": 50.0,
-        "recall": 45.5,
-        "f1": 47.6,
-        "support": 11
+        "precision": 35.7,
+        "recall": 31.2,
+        "f1": 33.3,
+        "support": 16
       },
       "High": {
-        "precision": 75.0,
-        "recall": 78.3,
-        "f1": 76.6,
-        "support": 23
+        "precision": 66.7,
+        "recall": 71.4,
+        "f1": 69.0,
+        "support": 14
       }
     },
     "model2": {
       "Low": {
-        "precision": 97.5,
-        "recall": 97.5,
-        "f1": 97.5,
-        "support": 40
+        "precision": 78.4,
+        "recall": 82.9,
+        "f1": 80.6,
+        "support": 35
       },
       "Medium": {
-        "precision": 87.5,
-        "recall": 63.6,
-        "f1": 73.7,
-        "support": 11
+        "precision": 40.0,
+        "recall": 37.5,
+        "f1": 38.7,
+        "support": 16
       },
       "High": {
-        "precision": 88.5,
-        "recall": 100.0,
-        "f1": 93.9,
-        "support": 23
+        "precision": 76.9,
+        "recall": 71.4,
+        "f1": 74.1,
+        "support": 14
       }
     }
   },
   "mcnemar": {
-    "same classifier (XGB)": {
-      "b_M1_right_M2_wrong": 1,
-      "c_M1_wrong_M2_right": 11,
-      "chi2": 6.75,
-      "p_chi2_corrected": 0.0094,
-      "p_exact": 0.0063
+    "same classifier (LR)": {
+      "b_M1_right_M2_wrong": 4,
+      "c_M1_wrong_M2_right": 5,
+      "chi2": 0.0,
+      "p_chi2_corrected": 1.0,
+      "p_exact": 1.0
     },
-    "best M1 (RF) vs best M2 (XGB)": {
-      "b_M1_right_M2_wrong": 1,
-      "c_M1_wrong_M2_right": 11,
-      "chi2": 6.75,
-      "p_chi2_corrected": 0.0094,
-      "p_exact": 0.0063
+    "best M1 (XGB) vs best M2 (LR)": {
+      "b_M1_right_M2_wrong": 6,
+      "c_M1_wrong_M2_right": 5,
+      "chi2": 0.0,
+      "p_chi2_corrected": 1.0,
+      "p_exact": 1.0
     }
   },
   "temporal_split": {
     "RF": {
-      "Accuracy": 85.19,
-      "F1": 81.98,
-      "AUC_ROC": 95.81
+      "Accuracy": 59.72,
+      "F1": 59.72,
+      "AUC_ROC": 64.15
     },
     "XGB": {
-      "Accuracy": 81.48,
-      "F1": 80.0,
-      "AUC_ROC": 94.33
+      "Accuracy": 48.61,
+      "F1": 48.97,
+      "AUC_ROC": 56.96
     },
     "Stacking": {
-      "Accuracy": 85.19,
-      "F1": 79.98,
-      "AUC_ROC": 94.76
+      "Accuracy": 55.56,
+      "F1": 53.1,
+      "AUC_ROC": 66.57
     }
   },
   "history_feature_importance_share": {
-    "XGB": 0.5413,
-    "RF": 0.6059
+    "RF": 0.4269
   },
   "quick_run": false,
   "versions": {
